@@ -1,5 +1,15 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+
+mongoose
+    .connect(
+        'mongodb+srv://Nika:wwwwww@cluster.bw68ue0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster'
+    )
+    .then(() => {
+        console.log('DB OK');
+    })
+    .catch((err) => console.log('DB error', err));
 
 const app = express();
 

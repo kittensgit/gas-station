@@ -14,6 +14,8 @@
 
 `jsonwebtoken`
 
+`mongoose`
+
 ### Start server
 
 `npm run start:dev`
