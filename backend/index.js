@@ -38,15 +38,7 @@ app.post('/auth/register', registerValidation, async (req, res) => {
 
         const user = await doc.save();
 
-        const token = jwt.sign(
-            {
-                _id: user._id,
-            },
-            'secret123',
-            {
-                expiresIn: '365d',
-            }
-        );
+        const token = createToken(user._id);
 
         const { passwordHash, ...userData } = user._doc;
 
@@ -62,8 +54,56 @@ app.post('/auth/register', registerValidation, async (req, res) => {
     }
 });
 
+app.post('/auth/login', async (req, res) => {
+    try {
+        const user = await UserModel.findOne({
+            email: req.body.email,
+        });
+        if (!user)
+            return res.status(404).json({
+                message: 'User not found',
+            });
+
+        const isValidPass = await bcrypt.compare(
+            req.body.password,
+            user._doc.passwordHash
+        );
+        if (!isValidPass)
+            return req.status(400).json({
+                message: 'Invalid password or email',
+            });
+
+        const token = createToken(user._id);
+
+        const { passwordHash, ...userData } = user._doc;
+
+        res.json({
+            ...userData,
+            token,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to login',
+        });
+    }
+});
+
 app.listen(2222, (err) => {
     if (err) return console.log(err);
 
     console.log('Server OK');
 });
+
+const createToken = (id) => {
+    const token = jwt.sign(
+        {
+            _id: id,
+        },
+        'secret123',
+        {
+            expiresIn: '365d',
+        }
+    );
+    return token;
+};
