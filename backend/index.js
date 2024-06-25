@@ -4,8 +4,9 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 
-import UserModel from './models/User.js';
 import { registerValidation } from './validations/auth.js';
+import UserModel from './models/User.js';
+import checkAuth from './utils/checkAuth.js';
 
 mongoose
     .connect(
@@ -89,6 +90,26 @@ app.post('/auth/login', async (req, res) => {
     }
 });
 
+app.get('/auth/me', checkAuth, async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.userId);
+
+        if (!user)
+            return res.status(404).json({
+                message: 'User not found',
+            });
+
+        const { passwordHash, ...userData } = user._doc;
+
+        res.json(userData);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'No access',
+        });
+    }
+});
+
 app.listen(2222, (err) => {
     if (err) return console.log(err);
 
@@ -102,7 +123,7 @@ const createToken = (id) => {
         },
         'secret123',
         {
-            expiresIn: '365d',
+            expiresIn: '35d',
         }
     );
     return token;
