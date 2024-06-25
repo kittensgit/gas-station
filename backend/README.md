@@ -16,6 +16,8 @@
 
 `mongoose`
 
+`express-validator`
+
 ### Start server
 
 `npm run start:dev`
