@@ -18,6 +18,8 @@
 
 `express-validator`
 
+`bcrypt`
+
 ### Start server
 
 `npm run start:dev`
