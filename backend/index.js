@@ -9,6 +9,7 @@ import {
 import checkAuth from './utils/checkAuth.js';
 import * as UserController from './controllers/UserController.js';
 import * as MachineController from './controllers/MachineController.js';
+import * as ProductController from './controllers/ProductController.js';
 
 mongoose
     .connect(
@@ -42,6 +43,14 @@ app.post(
     '/machines/:number/release',
     checkAuth,
     MachineController.releaseMachine
+);
+
+app.get('/products', ProductController.getProducts);
+app.get('/products/:productId', ProductController.getProduct);
+app.post(
+    '/products/:productId/order',
+    checkAuth,
+    ProductController.orderProduct
 );
 
 app.listen(2222, (err) => {

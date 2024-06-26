@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 
 import UserModel from '../models/User.js';
-import MachineModel from '../models/Machine.js';
 import { createToken, validationErrors } from '../helpers.js';
 
 export const register = async (req, res) => {
@@ -83,11 +82,6 @@ export const getMe = async (req, res) => {
             return res.status(404).json({
                 message: 'User not found',
             });
-
-        // for (let i = 1; i <= 3; i++) {
-        //     const machine = new MachineModel({ number: i });
-        //     await machine.save();
-        // }
 
         const { passwordHash, ...userData } = user._doc;
 

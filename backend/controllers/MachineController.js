@@ -31,7 +31,7 @@ export const bookMachine = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (user.scores < 3) {
+        if (user.scores >= 3) {
             const machine = await MachineModel.findOne({
                 number: req.params.number,
             });
@@ -55,13 +55,14 @@ export const bookMachine = async (req, res) => {
             user.scores = user.scores - 3;
 
             await user.save();
-
-            res.json({
-                message: 'Machine booked successfully and you spent 3 points',
-            });
         } else {
-            res.status(400).json({ message: "You don't have enough points" });
+            return res
+                .status(400)
+                .json({ message: "You don't have enough points" });
         }
+        res.json({
+            message: 'Machine booked successfully and you spent 3 points',
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
