@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { validationResult } from 'express-validator';
 
 import UserModel from '../models/User.js';
+import MachineModel from '../models/Machine.js';
+import { createToken, validationErrors } from '../helpers.js';
 
 export const register = async (req, res) => {
     try {
@@ -84,6 +84,11 @@ export const getMe = async (req, res) => {
                 message: 'User not found',
             });
 
+        // for (let i = 1; i <= 3; i++) {
+        //     const machine = new MachineModel({ number: i });
+        //     await machine.save();
+        // }
+
         const { passwordHash, ...userData } = user._doc;
 
         res.json(userData);
@@ -134,24 +139,4 @@ export const refuel = async (req, res) => {
             message: 'Failed to record information about refueling',
         });
     }
-};
-
-const createToken = (id) => {
-    const token = jwt.sign(
-        {
-            _id: id,
-        },
-        'secret123',
-        {
-            expiresIn: '35d',
-        }
-    );
-    return token;
-};
-
-const validationErrors = (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-        return res.status(400).json(errors.array().map((item) => item.msg));
-    return null;
 };

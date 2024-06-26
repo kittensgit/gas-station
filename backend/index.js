@@ -8,6 +8,7 @@ import {
 } from './validations.js';
 import checkAuth from './utils/checkAuth.js';
 import * as UserController from './controllers/UserController.js';
+import * as MachineController from './controllers/MachineController.js';
 
 mongoose
     .connect(
@@ -33,6 +34,14 @@ app.post(
     checkAuth,
     refuelValidation,
     UserController.refuel
+);
+
+app.get('/machines', MachineController.getMachines);
+app.post('/machines/:number/book', checkAuth, MachineController.bookMachine);
+app.post(
+    '/machines/:number/release',
+    checkAuth,
+    MachineController.releaseMachine
 );
 
 app.listen(2222, (err) => {
