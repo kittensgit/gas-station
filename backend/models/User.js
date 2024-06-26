@@ -15,6 +15,30 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        scores: {
+            type: Number,
+            default: 0,
+        },
+        refuelingHistory: [
+            {
+                stationName: {
+                    type: String,
+                    required: true,
+                },
+                litersFilled: {
+                    type: Number,
+                    required: true,
+                },
+                cost: {
+                    type: Number,
+                    required: true,
+                },
+                refuelDate: {
+                    type: Date,
+                    default: Date.now(),
+                },
+            },
+        ],
     },
     {
         timestamps: true,

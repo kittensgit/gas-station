@@ -6,9 +6,8 @@ import UserModel from '../models/User.js';
 
 export const register = async (req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty())
-            return res.status(400).json(errors.array().map((item) => item.msg));
+        const validationRes = validationErrors(req, res);
+        if (validationRes) return;
 
         const password = req.body.password;
         const salt = await bcrypt.genSalt(10);
@@ -40,6 +39,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
+        const validationRes = validationErrors(req, res);
+        if (validationRes) return;
+
         const user = await UserModel.findOne({
             email: req.body.email,
         });
@@ -93,6 +95,47 @@ export const getMe = async (req, res) => {
     }
 };
 
+export const refuel = async (req, res) => {
+    try {
+        const validationRes = validationErrors(req, res);
+        if (validationRes) return;
+
+        const { userId } = req.params;
+        const { stationName, litersFilled, costPerLiter } = req.body;
+
+        const cost = litersFilled * costPerLiter;
+
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+
+        // payments logic
+
+        user.refuelingHistory.push({
+            stationName,
+            litersFilled,
+            cost,
+        });
+
+        user.scores += 3;
+
+        await user.save();
+
+        res.json({
+            message: 'Refueling record added successfully and you got 3 points',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to record information about refueling',
+        });
+    }
+};
+
 const createToken = (id) => {
     const token = jwt.sign(
         {
@@ -104,4 +147,11 @@ const createToken = (id) => {
         }
     );
     return token;
+};
+
+const validationErrors = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(400).json(errors.array().map((item) => item.msg));
+    return null;
 };
