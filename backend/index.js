@@ -81,6 +81,7 @@ app.get(
     checkAuth,
     ShowerController.releaseShower
 );
+app.post('/showers/add', checkAuth, checkAdmin, ShowerController.addShower);
 app.delete(
     '/showers/:showerId',
     checkAuth,

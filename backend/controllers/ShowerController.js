@@ -112,3 +112,20 @@ export const deleteShower = async (req, res) => {
         });
     }
 };
+
+export const addShower = async (req, res) => {
+    try {
+        for (let i = 1; i <= req.body.quantity; i++) {
+            const newShower = new ShowerModel();
+            await newShower.save();
+        }
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to add shower',
+        });
+    }
+};
