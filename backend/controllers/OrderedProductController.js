@@ -45,7 +45,18 @@ export const orderNowProduct = async (req, res) => {
         };
 
         if (userOrder) {
-            userOrder.products = [...userOrder.products, newProduct];
+            // if product exist in order
+            const existingProductIndex = userOrder.products.findIndex(
+                (item) => item.product == productId
+            );
+
+            if (existingProductIndex >= 0) {
+                userOrder.products[existingProductIndex].quantity += +quantity;
+                userOrder.products[existingProductIndex].totalScores +=
+                    totalScores;
+            } else {
+                userOrder.products.push(newProduct);
+            }
 
             await userOrder.save();
         } else {
