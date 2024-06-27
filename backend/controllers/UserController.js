@@ -125,3 +125,26 @@ export const refuel = async (req, res) => {
         });
     }
 };
+
+export const setUserRole = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.userId);
+
+        if (!user)
+            return res.status(401).json({
+                message: 'User not found',
+            });
+
+        user.role = req.body.role;
+        await user.save();
+
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to set role',
+        });
+    }
+};

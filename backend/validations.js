@@ -46,3 +46,7 @@ export const addProductValidation = [
         .isNumeric()
         .isFloat({ gt: 0 }),
 ];
+
+export const setUserRoleValidation = [
+    body('role', 'The role can be admin or user').isIn(['admin', 'user']),
+];

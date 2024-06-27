@@ -7,6 +7,7 @@ import {
     registerValidation,
     quantityValidation,
     addProductValidation,
+    setUserRoleValidation,
 } from './validations.js';
 
 import {
@@ -42,14 +43,12 @@ app.post(
     handleValidationErrors,
     UserController.register
 );
-
 app.post(
     '/auth/login',
     loginValidation,
     handleValidationErrors,
     UserController.login
 );
-
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post(
@@ -58,6 +57,14 @@ app.post(
     refuelValidation,
     handleValidationErrors,
     UserController.refuel
+);
+app.post(
+    '/users/:userId/setRole',
+    checkAuth,
+    checkAdmin,
+    setUserRoleValidation,
+    handleValidationErrors,
+    UserController.setUserRole
 );
 
 app.get('/machines', MachineController.getMachines);
