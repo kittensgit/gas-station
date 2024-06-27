@@ -66,6 +66,7 @@ app.get(
     checkAuth,
     MachineController.releaseMachine
 );
+app.post('/machines/add', checkAuth, checkAdmin, MachineController.addMachine);
 app.delete(
     '/machines/:machineId',
     checkAuth,

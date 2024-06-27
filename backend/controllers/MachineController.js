@@ -120,10 +120,17 @@ export const deleteMachine = async (req, res) => {
 
 export const addMachine = async (req, res) => {
     try {
+        for (let i = 1; i <= req.body.quantity; i++) {
+            const newMachine = new MachineModel();
+            await newMachine.save();
+        }
+        res.json({
+            success: true,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'Failed to delete machine',
+            message: 'Failed to add machine',
         });
     }
 };
