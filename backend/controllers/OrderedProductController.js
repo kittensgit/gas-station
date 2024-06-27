@@ -42,23 +42,26 @@ export const orderProduct = async (req, res) => {
 
         if (userOrder) {
             // if product exist in order
-            const existingProductIndex = userOrder.products.findIndex((item) =>
+            let userOrderProducts = userOrder.order.products;
+            const existingProductIndex = userOrderProducts.findIndex((item) =>
                 item.product.equals(productId)
             );
 
             if (existingProductIndex >= 0) {
-                userOrder.products[existingProductIndex].quantity += +quantity;
-                userOrder.products[existingProductIndex].totalScores +=
+                userOrderProducts[existingProductIndex].quantity += +quantity;
+                userOrderProducts[existingProductIndex].totalScores +=
                     totalScores;
             } else {
-                userOrder.products.push(newProduct);
+                userOrderProducts.push(newProduct);
             }
 
             await userOrder.save();
         } else {
             const newOrderedProduct = new OrderedProductModel({
                 user: userId,
-                products: [newProduct],
+                order: {
+                    products: [newProduct],
+                },
             });
 
             await newOrderedProduct.save();
@@ -75,11 +78,13 @@ export const orderProduct = async (req, res) => {
     }
 };
 
+// admin
+
 export const getAllOrders = async (_, res) => {
     try {
         const orders = await OrderedProductModel.find()
             .populate('user')
-            .populate('products.product')
+            .populate('order.products.product')
             .exec();
         if (!orders)
             return res.status(404).json({
@@ -99,7 +104,7 @@ export const getOrder = async (req, res) => {
     try {
         const order = await OrderedProductModel.findById(req.params.orderId)
             .populate('user')
-            .populate('products.product')
+            .populate('order.products.product')
             .exec();
 
         if (!order)
@@ -112,6 +117,32 @@ export const getOrder = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to get user order',
+        });
+    }
+};
+
+export const changeStatusReady = async (req, res) => {
+    try {
+        const orderedProducts = await OrderedProductModel.findById(
+            req.params.orderId
+        );
+        if (!orderedProducts)
+            return res.json({
+                message: 'Order not found',
+            });
+
+        const isReady = orderedProducts.order.statusReady;
+
+        orderedProducts.order.statusReady = !isReady;
+        orderedProducts.save();
+
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to change order status',
         });
     }
 };

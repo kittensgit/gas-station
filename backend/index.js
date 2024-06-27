@@ -148,6 +148,12 @@ app.get(
     checkAdmin,
     OrderedProductController.getOrder
 );
+app.get(
+    '/orders/:orderId/changeStatusReady',
+    checkAuth,
+    checkAdmin,
+    OrderedProductController.changeStatusReady
+);
 
 app.listen(2222, (err) => {
     if (err) return console.log(err);
