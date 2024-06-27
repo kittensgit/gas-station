@@ -49,10 +49,13 @@ app.post(
 app.get('/products', ProductController.getProducts);
 app.get('/products/:productId', ProductController.getProduct);
 app.post(
-    '/products/:productId/order',
+    '/products/:productId/orderNow',
     checkAuth,
-    OrderedProductController.orderProduct
+    OrderedProductController.orderNowProduct
 );
+
+app.get('/orders', OrderedProductController.getAllOrders);
+app.get('/orders/:orderId', OrderedProductController.getOrder);
 
 app.listen(2222, (err) => {
     if (err) return console.log(err);

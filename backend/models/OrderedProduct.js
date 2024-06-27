@@ -2,20 +2,16 @@ import mongoose from 'mongoose';
 
 const OrderedProductSchema = new mongoose.Schema(
     {
-        userId: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
         products: [
             {
-                productId: {
+                product: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'Product',
-                    required: true,
-                },
-                name: {
-                    type: String,
                     required: true,
                 },
                 quantity: {
@@ -25,6 +21,10 @@ const OrderedProductSchema = new mongoose.Schema(
                 totalScores: {
                     type: Number,
                     required: true,
+                },
+                statusReady: {
+                    type: Boolean,
+                    default: false,
                 },
             },
         ],

@@ -3,7 +3,7 @@ import ProductModel from '../models/Product.js';
 import OrderedProductModel from '../models/OrderedProduct.js';
 import { validationErrors } from '../helpers.js';
 
-export const orderProduct = async (req, res) => {
+export const orderNowProduct = async (req, res) => {
     try {
         const validationRes = validationErrors(req, res);
         if (validationRes) return;
@@ -29,38 +29,29 @@ export const orderProduct = async (req, res) => {
             user.scores = user.scores - totalScores;
             await user.save();
         } else {
-            return res
-                .status(400)
-                .json({ message: "You don't have enough points" });
+            return res.status(400).json({
+                message: "You don't have enough points",
+            });
         }
 
         const userOrder = await OrderedProductModel.findOne({
-            userId,
+            user: userId,
         });
 
+        const newProduct = {
+            product: productId,
+            quantity,
+            totalScores,
+        };
+
         if (userOrder) {
-            userOrder.products = [
-                ...userOrder.products,
-                {
-                    productId,
-                    quantity,
-                    totalScores,
-                    name: product.name,
-                },
-            ];
+            userOrder.products = [...userOrder.products, newProduct];
 
             await userOrder.save();
         } else {
             const newOrderedProduct = new OrderedProductModel({
-                userId,
-                products: [
-                    {
-                        productId,
-                        quantity,
-                        totalScores,
-                        name: product.name,
-                    },
-                ],
+                user: userId,
+                products: [newProduct],
             });
 
             await newOrderedProduct.save();
@@ -73,6 +64,47 @@ export const orderProduct = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to get product',
+        });
+    }
+};
+
+export const getAllOrders = async (req, res) => {
+    try {
+        const orders = await OrderedProductModel.find()
+            .populate('user')
+            .populate('products.product')
+            .exec();
+        if (!orders)
+            return res.status(404).json({
+                message: 'Orders not found',
+            });
+
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get all orders',
+        });
+    }
+};
+
+export const getOrder = async (req, res) => {
+    try {
+        const order = await OrderedProductModel.findById(req.params.orderId)
+            .populate('user')
+            .populate('products.product')
+            .exec();
+
+        if (!order)
+            return res.status(404).json({
+                message: 'User order not found',
+            });
+
+        res.json(order);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get user order',
         });
     }
 };
