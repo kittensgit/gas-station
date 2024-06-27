@@ -60,11 +60,17 @@ app.post(
 );
 
 app.get('/machines', MachineController.getMachines);
-app.post('/machines/:number/book', checkAuth, MachineController.bookMachine);
-app.post(
-    '/machines/:number/release',
+app.get('/machines/:machineId/book', checkAuth, MachineController.bookMachine);
+app.get(
+    '/machines/:machineId/release',
     checkAuth,
     MachineController.releaseMachine
+);
+app.delete(
+    '/machines/:machineId',
+    checkAuth,
+    checkAdmin,
+    MachineController.deleteMachine
 );
 
 app.get('/showers', ShowerController.getShowers);

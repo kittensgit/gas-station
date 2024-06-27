@@ -30,9 +30,7 @@ export const bookMachine = async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         if (user.scores >= 3) {
-            const machine = await MachineModel.findOne({
-                number: req.params.number,
-            });
+            const machine = await MachineModel.findById(req.params.machineId);
 
             if (!machine)
                 return res.status(404).json({
@@ -71,9 +69,7 @@ export const bookMachine = async (req, res) => {
 
 export const releaseMachine = async (req, res) => {
     try {
-        const machine = await MachineModel.findOne({
-            number: req.params.number,
-        });
+        const machine = await MachineModel.findById(req.params.machineId);
 
         if (!machine)
             return res.status(404).json({
@@ -104,10 +100,20 @@ export const releaseMachine = async (req, res) => {
 
 export const deleteMachine = async (req, res) => {
     try {
+        const machine = await MachineModel.findByIdAndDelete(
+            req.params.machineId
+        );
+        if (!machine)
+            return res.status(404).json({
+                message: 'Machine not found',
+            });
+        res.json({
+            success: true,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'Failed to add machine',
+            message: 'Failed to remove machine',
         });
     }
 };
