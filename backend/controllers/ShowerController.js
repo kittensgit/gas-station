@@ -95,6 +95,8 @@ export const releaseShower = async (req, res) => {
     }
 };
 
+// admin
+
 export const deleteShower = async (req, res) => {
     try {
         const shower = await ShowerModel.findByIdAndDelete(req.params.showerId);

@@ -126,6 +126,24 @@ export const refuel = async (req, res) => {
     }
 };
 
+// admin
+
+export const getUsers = async (_, res) => {
+    try {
+        const users = await UserModel.find();
+        if (!users)
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        res.json(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get users',
+        });
+    }
+};
+
 export const setUserRole = async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.userId);

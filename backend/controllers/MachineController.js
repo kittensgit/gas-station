@@ -98,6 +98,8 @@ export const releaseMachine = async (req, res) => {
     }
 };
 
+// admin
+
 export const deleteMachine = async (req, res) => {
     try {
         const machine = await MachineModel.findByIdAndDelete(
