@@ -12,6 +12,7 @@ import {
     MachineController,
     OrderedProductController,
     ProductController,
+    ShowerController,
     UserController,
 } from './controllers/index.js';
 
@@ -65,6 +66,10 @@ app.post(
     checkAuth,
     MachineController.releaseMachine
 );
+
+app.get('/showers', ShowerController.getShowers);
+app.get('/showers/:number/book', checkAuth, ShowerController.bookShower);
+app.get('/showers/:number/release', checkAuth, ShowerController.releaseShower);
 
 app.get('/products', ProductController.getProducts);
 app.get('/products/:productId', ProductController.getProduct);

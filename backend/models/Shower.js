@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MachineSchema = new mongoose.Schema(
+const ShowerSchema = new mongoose.Schema(
     {
         number: {
             type: Number,
@@ -20,4 +20,4 @@ const MachineSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model('Machine', MachineSchema);
+export default mongoose.model('Shower', ShowerSchema);

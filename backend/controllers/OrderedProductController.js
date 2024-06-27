@@ -42,8 +42,8 @@ export const orderProduct = async (req, res) => {
 
         if (userOrder) {
             // if product exist in order
-            const existingProductIndex = userOrder.products.findIndex(
-                (item) => item.product == productId
+            const existingProductIndex = userOrder.products.findIndex((item) =>
+                item.product.equals(productId)
             );
 
             if (existingProductIndex >= 0) {

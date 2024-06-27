@@ -3,7 +3,9 @@ import MachineModel from '../models/Machine.js';
 
 export const getMachines = async (req, res) => {
     try {
-        const machines = await MachineModel.find();
+        const machines = await MachineModel.find()
+            .populate('occupied.user')
+            .exec();
 
         if (!machines)
             return res.status(404).json({
@@ -37,13 +39,13 @@ export const bookMachine = async (req, res) => {
                     message: 'Machine not found',
                 });
 
-            if (machine.occupied.userId)
+            if (machine.occupied.user)
                 return res.status(400).json({
                     message: `Machine is already occupied by user`,
                 });
 
             machine.occupied = {
-                userId,
+                user: userId,
             };
 
             await machine.save();
@@ -78,9 +80,9 @@ export const releaseMachine = async (req, res) => {
                 message: 'Machine not found',
             });
 
-        if (machine.occupied.userId.equals(req.body.userId)) {
+        if (machine.occupied.user.equals(req.body.userId)) {
             machine.occupied = {
-                userId: null,
+                user: null,
             };
             await machine.save();
         } else {
@@ -96,6 +98,26 @@ export const releaseMachine = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to release machine',
+        });
+    }
+};
+
+export const deleteMachine = async (req, res) => {
+    try {
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to add machine',
+        });
+    }
+};
+
+export const addMachine = async (req, res) => {
+    try {
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to delete machine',
         });
     }
 };
