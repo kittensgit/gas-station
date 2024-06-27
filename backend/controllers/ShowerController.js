@@ -27,9 +27,7 @@ export const bookShower = async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         if (user.scores >= 6) {
-            const shower = await ShowerModel.findOne({
-                number: req.params.number,
-            });
+            const shower = await ShowerModel.findById(req.params.showerId);
 
             if (!shower)
                 return res.status(404).json({
@@ -68,9 +66,7 @@ export const bookShower = async (req, res) => {
 
 export const releaseShower = async (req, res) => {
     try {
-        const shower = await ShowerModel.findOne({
-            number: req.params.number,
-        });
+        const shower = await ShowerModel.findById(req.params.showerId);
 
         if (!shower)
             return res.status(404).json({
@@ -95,6 +91,24 @@ export const releaseShower = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to release shower',
+        });
+    }
+};
+
+export const deleteShower = async (req, res) => {
+    try {
+        const shower = await ShowerModel.findByIdAndDelete(req.params.showerId);
+        if (!shower)
+            return res.status(404).json({
+                message: 'Shower not found',
+            });
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to remove shower',
         });
     }
 };
