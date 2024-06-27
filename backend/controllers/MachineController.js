@@ -1,4 +1,3 @@
-import { validationErrors } from '../helpers.js';
 import UserModel from '../models/User.js';
 import MachineModel from '../models/Machine.js';
 
@@ -22,9 +21,6 @@ export const getMachines = async (req, res) => {
 
 export const bookMachine = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const userId = req.userId;
 
         const user = await UserModel.findById(userId);
@@ -73,9 +69,6 @@ export const bookMachine = async (req, res) => {
 
 export const releaseMachine = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const machine = await MachineModel.findOne({
             number: req.params.number,
         });

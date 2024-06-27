@@ -1,13 +1,9 @@
 import UserModel from '../models/User.js';
 import ProductModel from '../models/Product.js';
 import OrderedProductModel from '../models/OrderedProduct.js';
-import { validationErrors } from '../helpers.js';
 
-export const orderNowProduct = async (req, res) => {
+export const orderProduct = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const userId = req.userId;
         const productId = req.params.productId;
         const quantity = req.body.quantity;
@@ -79,7 +75,7 @@ export const orderNowProduct = async (req, res) => {
     }
 };
 
-export const getAllOrders = async (req, res) => {
+export const getAllOrders = async (_, res) => {
     try {
         const orders = await OrderedProductModel.find()
             .populate('user')

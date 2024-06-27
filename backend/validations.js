@@ -31,3 +31,9 @@ export const refuelValidation = [
         .isNumeric()
         .isFloat({ gt: 0 }),
 ];
+
+export const orderProductValidation = [
+    body('quantity', 'Quantity must be more than 0')
+        .isNumeric()
+        .isFloat({ gt: 0 }),
+];

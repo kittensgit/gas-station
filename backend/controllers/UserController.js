@@ -1,13 +1,10 @@
 import bcrypt from 'bcrypt';
 
 import UserModel from '../models/User.js';
-import { createToken, validationErrors } from '../helpers.js';
+import { createToken } from '../helpers.js';
 
 export const register = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const password = req.body.password;
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
@@ -38,9 +35,6 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const user = await UserModel.findOne({
             email: req.body.email,
         });
@@ -96,9 +90,6 @@ export const getMe = async (req, res) => {
 
 export const refuel = async (req, res) => {
     try {
-        const validationRes = validationErrors(req, res);
-        if (validationRes) return;
-
         const { userId } = req.params;
         const { stationName, litersFilled, costPerLiter } = req.body;
 

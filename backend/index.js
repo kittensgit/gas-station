@@ -5,13 +5,21 @@ import {
     loginValidation,
     refuelValidation,
     registerValidation,
+    orderProductValidation,
 } from './validations.js';
-import checkAuth from './utils/checkAuth.js';
-import checkAdmin from './utils/checkAdmin.js';
-import * as UserController from './controllers/UserController.js';
-import * as MachineController from './controllers/MachineController.js';
-import * as ProductController from './controllers/ProductController.js';
-import * as OrderedProductController from './controllers/OrderedProductController.js';
+
+import {
+    MachineController,
+    OrderedProductController,
+    ProductController,
+    UserController,
+} from './controllers/index.js';
+
+import {
+    checkAdmin,
+    checkAuth,
+    handleValidationErrors,
+} from './utils/index.js';
 
 mongoose
     .connect(
@@ -26,9 +34,19 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/auth/register', registerValidation, UserController.register);
+app.post(
+    '/auth/register',
+    registerValidation,
+    handleValidationErrors,
+    UserController.register
+);
 
-app.post('/auth/login', loginValidation, UserController.login);
+app.post(
+    '/auth/login',
+    loginValidation,
+    handleValidationErrors,
+    UserController.login
+);
 
 app.get('/auth/me', checkAuth, UserController.getMe);
 
@@ -36,6 +54,7 @@ app.post(
     '/users/:userId/refuel',
     checkAuth,
     refuelValidation,
+    handleValidationErrors,
     UserController.refuel
 );
 
@@ -50,9 +69,11 @@ app.post(
 app.get('/products', ProductController.getProducts);
 app.get('/products/:productId', ProductController.getProduct);
 app.post(
-    '/products/:productId/orderNow',
+    '/products/:productId/order',
     checkAuth,
-    OrderedProductController.orderNowProduct
+    orderProductValidation,
+    handleValidationErrors,
+    OrderedProductController.orderProduct
 );
 
 app.get(
