@@ -5,7 +5,8 @@ import {
     loginValidation,
     refuelValidation,
     registerValidation,
-    orderProductValidation,
+    quantityValidation,
+    addProductValidation,
 } from './validations.js';
 
 import {
@@ -66,7 +67,14 @@ app.get(
     checkAuth,
     MachineController.releaseMachine
 );
-app.post('/machines/add', checkAuth, checkAdmin, MachineController.addMachine);
+app.post(
+    '/machines/add',
+    checkAuth,
+    checkAdmin,
+    quantityValidation,
+    handleValidationErrors,
+    MachineController.addMachine
+);
 app.delete(
     '/machines/:machineId',
     checkAuth,
@@ -81,7 +89,14 @@ app.get(
     checkAuth,
     ShowerController.releaseShower
 );
-app.post('/showers/add', checkAuth, checkAdmin, ShowerController.addShower);
+app.post(
+    '/showers/add',
+    checkAuth,
+    checkAdmin,
+    quantityValidation,
+    handleValidationErrors,
+    ShowerController.addShower
+);
 app.delete(
     '/showers/:showerId',
     checkAuth,
@@ -94,9 +109,23 @@ app.get('/products/:productId', ProductController.getProduct);
 app.post(
     '/products/:productId/order',
     checkAuth,
-    orderProductValidation,
+    quantityValidation,
     handleValidationErrors,
     OrderedProductController.orderProduct
+);
+app.post(
+    '/products/add',
+    checkAuth,
+    checkAdmin,
+    addProductValidation,
+    handleValidationErrors,
+    ProductController.addProduct
+);
+app.delete(
+    '/products/:productId',
+    checkAuth,
+    checkAdmin,
+    ProductController.deleteProduct
 );
 
 app.get(

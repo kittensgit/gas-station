@@ -32,8 +32,17 @@ export const refuelValidation = [
         .isFloat({ gt: 0 }),
 ];
 
-export const orderProductValidation = [
+export const quantityValidation = [
     body('quantity', 'Quantity must be more than 0')
+        .isNumeric()
+        .isFloat({ gt: 0 }),
+];
+
+export const addProductValidation = [
+    body('name', 'The name must be more than 3 characters').isLength({
+        min: 3,
+    }),
+    body('scoresCount', 'Scores count must be more than 0')
         .isNumeric()
         .isFloat({ gt: 0 }),
 ];

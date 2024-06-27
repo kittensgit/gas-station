@@ -108,7 +108,7 @@ export const deleteShower = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'Failed to remove shower',
+            message: 'Failed to delete shower',
         });
     }
 };
