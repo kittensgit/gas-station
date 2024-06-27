@@ -7,6 +7,7 @@ import {
     registerValidation,
 } from './validations.js';
 import checkAuth from './utils/checkAuth.js';
+import checkAdmin from './utils/checkAdmin.js';
 import * as UserController from './controllers/UserController.js';
 import * as MachineController from './controllers/MachineController.js';
 import * as ProductController from './controllers/ProductController.js';
@@ -54,8 +55,18 @@ app.post(
     OrderedProductController.orderNowProduct
 );
 
-app.get('/orders', OrderedProductController.getAllOrders);
-app.get('/orders/:orderId', OrderedProductController.getOrder);
+app.get(
+    '/orders',
+    checkAuth,
+    checkAdmin,
+    OrderedProductController.getAllOrders
+);
+app.get(
+    '/orders/:orderId',
+    checkAuth,
+    checkAdmin,
+    OrderedProductController.getOrder
+);
 
 app.listen(2222, (err) => {
     if (err) return console.log(err);
