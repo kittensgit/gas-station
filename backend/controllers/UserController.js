@@ -91,7 +91,8 @@ export const getMe = async (req, res) => {
 export const refuel = async (req, res) => {
     try {
         const { userId } = req.params;
-        const { stationName, litersFilled, costPerLiter } = req.body;
+        const { stationName, litersFilled, costPerLiter, paymentMethodId } =
+            req.body;
 
         const cost = litersFilled * costPerLiter;
 

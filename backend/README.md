@@ -20,6 +20,12 @@
 
 `bcrypt`
 
+`dotenv`
+
+`cors`
+
+`multer`
+
 ### Start server
 
 `npm run start:dev`

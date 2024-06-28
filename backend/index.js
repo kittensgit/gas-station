@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
 import {
     loginValidation,
@@ -23,10 +25,13 @@ import {
     checkAuth,
     handleValidationErrors,
 } from './utils/index.js';
+import multer from 'multer';
+
+dotenv.config();
 
 mongoose
     .connect(
-        'mongodb+srv://Nika:wwwwww@cluster.bw68ue0.mongodb.net/gas_station?retryWrites=true&w=majority&appName=Cluster'
+        `mongodb+srv://Nika:${process.env.MONGODB_CLUSTER_PASSWORD}@cluster.bw68ue0.mongodb.net/gas_station?retryWrites=true&w=majority&appName=Cluster`
     )
     .then(() => {
         console.log('DB OK');
@@ -35,7 +40,28 @@ mongoose
 
 const app = express();
 
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({
+    storage,
+});
+
 app.use(express.json());
+app.use(cors());
+app.use('/uploads', express.static('uploads'));
+
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+    res.json({
+        url: `/uploads/${req.file.originalname}`,
+    });
+});
 
 app.post(
     '/auth/register',
