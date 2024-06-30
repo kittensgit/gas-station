@@ -1,5 +1,74 @@
 .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     background-color: #1e2b40;
     padding: 15px;
     border-radius: 30px;
+    width: 280px;
+}
+
+.info h2 {
+    font-size: 22px;
+    font-weight: 700;
+    padding: 10px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.input input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #6582aa;
+    color: #fff;
+    outline: none;
+    padding: 5px 0;
+    font-size: 15px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.input input::placeholder {
+    color: #6582aa;
+}
+
+.fuel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.fuel p {
+    font-weight: 700;
+    color: #415a7b;
+}
+
+.disabledPay {
+    font-family: 'Work Sans', sans-serif;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 800;
+    color: #4d6280;
+    background-color: #2c4260;
+    border: none;
+    font-size: 18px;
+    cursor: auto;
 }

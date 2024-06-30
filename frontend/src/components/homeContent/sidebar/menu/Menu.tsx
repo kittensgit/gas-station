@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import fuelIcon from 'assets/icons/fuel.png';
+import fuelIcon from 'assets/icons/fuelSm.png';
 import showerIcon from 'assets/icons/shower.png';
 import productsIcon from 'assets/icons/products.png';
 import laundryIcon from 'assets/icons/laundry.png';
