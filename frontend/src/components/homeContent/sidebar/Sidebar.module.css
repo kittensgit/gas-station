@@ -1,0 +1,26 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 250px;
+}
+
+.sidebar_wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e2b40;
+    padding: 15px;
+    border-radius: 30px;
+    gap: 20px;
+}
+
+.logo {
+    font-family: 'Paytone One', sans-serif;
+    font-size: 32px;
+    text-align: center;
+    padding: 10px;
+}
+
+.logo span {
+    color: #78b1ff;
+}
