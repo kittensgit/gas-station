@@ -1,0 +1,55 @@
+.fuel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 180px;
+}
+
+.fuelIcon {
+    display: flex;
+    padding: 10px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.fuelIcon span {
+    color: #0c121d;
+    font-weight: 700;
+    font-size: 135px;
+    transform: translate(15%);
+}
+
+.title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.price p {
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.price button {
+    background-color: #415a7b;
+    font-weight: 800;
+    color: #fff;
+    font-size: 20px;
+    align-self: flex-end;
+    border-radius: 25px;
+    padding: 5px 0;
+    width: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.price button:hover {
+    background-color: #2c4260;
+}
