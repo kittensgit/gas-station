@@ -1,6 +1,7 @@
 .info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 10px;
     background-color: #1e2b40;
     padding: 15px;
@@ -41,10 +42,15 @@
     padding: 5px 0;
     font-size: 15px;
     font-family: 'Work Sans', sans-serif;
+    transition: all 0.3s ease-in;
 }
 
 .input input::placeholder {
     color: #6582aa;
+}
+
+.input input:hover {
+    border-bottom: 2px solid #fff;
 }
 
 .fuel {

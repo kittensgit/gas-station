@@ -53,3 +53,13 @@
 .price button:hover {
     background-color: #2c4260;
 }
+
+@media (max-width: 1200px) {
+    .fuel {
+        width: 150px;
+    }
+    .fuelIcon span {
+        font-size: 120px;
+        transform: translate(10%);
+    }
+}

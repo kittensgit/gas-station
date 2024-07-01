@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import Sidebar from 'components/common/sidebar/Sidebar';
+
 import Home from 'pages/Home';
 import NotFound from 'pages/NotFound';
 import Laundry from 'pages/Laundry';
@@ -15,20 +17,23 @@ import Profile from 'pages/Profile';
 const App: FC = () => {
     return (
         <div className="wrapper">
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/laundry" element={<Laundry />} />
-                <Route path="/showers" element={<Showers />} />
-                <Route path="/products" element={<Products />} />
-                {/* Admin Routes */}
-                <Route path="/users" element={<Products />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/orders/:orderId" element={<Order />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="container">
+                <Sidebar />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/laundry" element={<Laundry />} />
+                    <Route path="/showers" element={<Showers />} />
+                    <Route path="/products" element={<Products />} />
+                    {/* Admin Routes */}
+                    <Route path="/users" element={<Products />} />
+                    <Route path="/orders" element={<Orders />} />
+                    <Route path="/orders/:orderId" element={<Order />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
         </div>
     );
 };
