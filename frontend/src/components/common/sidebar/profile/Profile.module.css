@@ -21,28 +21,32 @@
 }
 
 .info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+.info img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.about {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    flex: 1;
-    min-width: 0;
 }
-.info h2 {
+
+.about h2 {
     font-weight: 800;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 125%;
 }
 
-.ava {
-    width: 54px;
-    height: 54px;
-    object-fit: cover;
-    background-color: #bec5d8;
-    border-radius: 50%;
-}
-
-.info p {
+.about p {
     color: #cf8dc9;
     font-weight: 800;
     background-color: #486389;
@@ -67,6 +71,7 @@
     border-radius: 30px;
     width: 100%;
     text-align: center;
+    transition: all 0.2s ease-in;
 }
 
 .active {

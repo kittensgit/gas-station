@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import logoutIcon from 'assets/icons/logout.png';
+
 import styles from './Profile.module.css';
 
 interface ProfileProps {
@@ -15,10 +17,12 @@ const Profile: FC<ProfileProps> = ({ isAuth }) => {
                 <>
                     <h3>Profile</h3>
                     <div className={styles.profile}>
-                        <img className={styles.ava} alt="ava" />
                         <div className={styles.info}>
-                            <h2>Antony Wonko</h2>
-                            <p>1300 points</p>
+                            <div className={styles.about}>
+                                <h2>Antony Wonko</h2>
+                                <p>1300 points</p>
+                            </div>
+                            <img src={logoutIcon} alt="logout" />
                         </div>
                     </div>
                 </>

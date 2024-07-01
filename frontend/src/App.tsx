@@ -12,7 +12,7 @@ import Orders from 'pages/Orders';
 import Order from 'pages/Order';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
-import Profile from 'pages/Profile';
+import RefuelHistory from 'pages/RefuelHistory';
 
 const App: FC = () => {
     return (
@@ -24,7 +24,10 @@ const App: FC = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route
+                            path="/refuelHistory"
+                            element={<RefuelHistory />}
+                        />
                         <Route path="/laundry" element={<Laundry />} />
                         <Route path="/showers" element={<Showers />} />
                         <Route path="/products" element={<Products />} />

@@ -13,9 +13,9 @@ const Sidebar: FC = () => {
                 <Link to={'/'} className={styles.logo}>
                     G<span>A</span>S<span>I</span>K
                 </Link>
-                <Menu />
+                <Menu isAuth={true} />
             </div>
-            <Profile isAuth={false} />
+            <Profile isAuth={true} />
         </div>
     );
 };
