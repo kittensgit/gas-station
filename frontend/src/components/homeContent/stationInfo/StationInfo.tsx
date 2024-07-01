@@ -4,7 +4,7 @@ import locationIcon from 'assets/icons/location.png';
 import stationIcon from 'assets/icons/station.png';
 import fuelIcon from 'assets/icons/fuelLg.png';
 
-import styles from './Station.module.css';
+import styles from './StationInfo.module.css';
 
 const StationInfo: FC = () => {
     return (

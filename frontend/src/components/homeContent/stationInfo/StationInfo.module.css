@@ -33,7 +33,7 @@
 }
 
 .input input {
-    width: 100%;
+    width: 230px;
     background-color: transparent;
     border: none;
     border-bottom: 2px solid #6582aa;
@@ -76,5 +76,4 @@
     border: none;
     font-size: 18px;
     cursor: auto;
-    width: 250px;
 }

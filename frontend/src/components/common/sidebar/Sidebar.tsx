@@ -15,7 +15,7 @@ const Sidebar: FC = () => {
                 </Link>
                 <Menu />
             </div>
-            <Profile />
+            <Profile isAuth={false} />
         </div>
     );
 };

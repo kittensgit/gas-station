@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import fuelIcon from 'assets/icons/fuelSm.png';
 import showerIcon from 'assets/icons/shower.png';
@@ -32,11 +32,18 @@ const linkList = [
 ];
 
 const Menu: FC = () => {
+    const { pathname } = useLocation();
     return (
         <ul className={styles.list}>
             {linkList.map((item, index) => (
                 <Link key={index} to={`/${item.path}`}>
-                    <li className={styles.link}>
+                    <li
+                        className={
+                            pathname === `/${item.path}`
+                                ? `${styles.link} ${styles.active}`
+                                : styles.link
+                        }
+                    >
                         <img src={item.img} alt={item.naming} />
                         {item.naming}
                     </li>

@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
+import SignUp from 'components/signUp/SignUp';
+
 const Register: FC = () => {
-    return <div>Register</div>;
+    return <SignUp />;
 };
 
 export default Register;

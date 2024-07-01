@@ -19,20 +19,22 @@ const App: FC = () => {
         <div className="wrapper">
             <div className="container">
                 <Sidebar />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/laundry" element={<Laundry />} />
-                    <Route path="/showers" element={<Showers />} />
-                    <Route path="/products" element={<Products />} />
-                    {/* Admin Routes */}
-                    <Route path="/users" element={<Products />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/orders/:orderId" element={<Order />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                <div className="content">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/laundry" element={<Laundry />} />
+                        <Route path="/showers" element={<Showers />} />
+                        <Route path="/products" element={<Products />} />
+                        {/* Admin Routes */}
+                        <Route path="/users" element={<Products />} />
+                        <Route path="/orders" element={<Orders />} />
+                        <Route path="/orders/:orderId" element={<Order />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
             </div>
         </div>
     );

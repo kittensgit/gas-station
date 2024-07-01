@@ -1,6 +1,7 @@
 .list {
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
 .link {
@@ -11,6 +12,7 @@
     font-weight: 500;
     transition: all 0.3s ease-in;
     border-radius: 25px;
+    cursor: pointer;
 }
 
 .link img {
@@ -23,5 +25,10 @@
     background-color: #4d6280;
     font-weight: 600;
     border-radius: 25px;
-    cursor: pointer;
+}
+
+.active {
+    background-color: #4d6280;
+    font-weight: 600;
+    border-radius: 25px;
 }
