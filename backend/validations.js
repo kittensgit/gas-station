@@ -21,13 +21,16 @@ export const refuelValidation = [
     body('stationName', 'The name must be more than 3 characters').isLength({
         min: 3,
     }),
+    body('location', 'The location must be more than 3 characters').isLength({
+        min: 3,
+    }),
     body(
         'litersFilled',
         'The number of liters must be a number and greater than 0'
     )
         .isNumeric()
         .isFloat({ gt: 0 }),
-    body('costPerLiter', 'Cost per liter must be a number and greater than 0')
+    body('cost', 'Cost must be a number and greater than 0')
         .isNumeric()
         .isFloat({ gt: 0 }),
 ];

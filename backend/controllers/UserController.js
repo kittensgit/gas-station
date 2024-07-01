@@ -91,10 +91,7 @@ export const getMe = async (req, res) => {
 export const refuel = async (req, res) => {
     try {
         const { userId } = req.params;
-        const { stationName, litersFilled, costPerLiter, paymentMethodId } =
-            req.body;
-
-        const cost = litersFilled * costPerLiter;
+        const { stationName, litersFilled, cost, location } = req.body;
 
         const user = await UserModel.findById(userId);
 
@@ -108,11 +105,12 @@ export const refuel = async (req, res) => {
 
         user.refuelingHistory.push({
             stationName,
+            location,
             litersFilled,
             cost,
         });
 
-        user.scores += 3;
+        user.scores += 200;
 
         await user.save();
 
