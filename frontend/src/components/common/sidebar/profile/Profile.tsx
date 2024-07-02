@@ -7,10 +7,17 @@ import styles from './Profile.module.css';
 
 interface ProfileProps {
     isAuth: boolean;
+    fullName: string;
+    scores: number;
+    logOut: () => void;
 }
 
-const Profile: FC<ProfileProps> = ({ isAuth }) => {
+const Profile: FC<ProfileProps> = ({ isAuth, fullName, scores, logOut }) => {
     const { pathname } = useLocation();
+
+    const onLogOut = () => {
+        logOut();
+    };
     return (
         <div className={styles.wrapper}>
             {isAuth ? (
@@ -19,10 +26,12 @@ const Profile: FC<ProfileProps> = ({ isAuth }) => {
                     <div className={styles.profile}>
                         <div className={styles.info}>
                             <div className={styles.about}>
-                                <h2>Antony Wonko</h2>
-                                <p>1300 points</p>
+                                <h2>{fullName}</h2>
+                                <p>Scores: {scores}</p>
                             </div>
-                            <img src={logoutIcon} alt="logout" />
+                            <button className={styles.btn} onClick={onLogOut}>
+                                <img src={logoutIcon} alt="logout" />
+                            </button>
                         </div>
                     </div>
                 </>
