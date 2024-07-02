@@ -40,28 +40,8 @@ mongoose
 
 const app = express();
 
-const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, 'uploads');
-    },
-    filename: (_, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-
-const upload = multer({
-    storage,
-});
-
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static('uploads'));
-
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-    res.json({
-        url: `/uploads/${req.file.originalname}`,
-    });
-});
 
 app.post(
     '/auth/register',
