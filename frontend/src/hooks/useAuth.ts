@@ -16,9 +16,9 @@ export const useAuth = () => {
     } else {
         return {
             isAuth: false,
-            email: null,
-            fullName: null,
-            role: null,
+            email: '',
+            fullName: '',
+            role: '',
             scores: null,
             refuelingHistory: [],
         };

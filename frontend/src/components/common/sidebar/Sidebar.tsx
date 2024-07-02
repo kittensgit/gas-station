@@ -28,7 +28,7 @@ const Sidebar: FC = () => {
             </div>
             <Profile
                 isAuth={isAuth}
-                fullName={fullName!}
+                fullName={fullName}
                 scores={scores!}
                 logOut={logOut}
             />
