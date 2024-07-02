@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { IUser } from 'types/user';
-import { ISignInData } from 'types/auth';
+import { ISignInData, ISignUpData } from 'types/auth';
 
 import axios from '../../axios';
 
@@ -9,6 +9,13 @@ export const fetchAuth = createAsyncThunk(
     'auth/fetchAuth',
     async (params: ISignInData) => {
         const { data } = await axios.post('/auth/login', params);
+        return data;
+    }
+);
+export const fetchRegister = createAsyncThunk(
+    'auth/fetchRegister',
+    async (params: ISignUpData) => {
+        const { data } = await axios.post('/auth/register', params);
         return data;
     }
 );
@@ -42,6 +49,18 @@ const authSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchAuth.rejected, (state) => {
+                state.data = null;
+                state.status = 'error';
+            })
+            .addCase(fetchRegister.pending, (state) => {
+                state.data = null;
+                state.status = 'loading';
+            })
+            .addCase(fetchRegister.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.status = 'loaded';
+            })
+            .addCase(fetchRegister.rejected, (state) => {
                 state.data = null;
                 state.status = 'error';
             });

@@ -1,13 +1,39 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import userIcon from 'assets/icons/user.png';
 import emailIcon from 'assets/icons/email.png';
 import passwordIcon from 'assets/icons/password.png';
 
+import { ISignUpData } from 'types/auth';
+
 import styles from './SignUp.module.css';
 
-const SignUp: FC = () => {
+interface SignUpProps {
+    signUp: (values: ISignUpData) => void;
+}
+
+const SignUp: FC<SignUpProps> = ({ signUp }) => {
+    const [signUpData, setSignUpData] = useState<ISignUpData>({
+        email: '',
+        fullName: '',
+        password: '',
+    });
+    const onChangeSignUpData = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setSignUpData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+    const onSignUp = () => {
+        signUp(signUpData);
+        setSignUpData({
+            email: '',
+            fullName: '',
+            password: '',
+        });
+    };
     return (
         <div className={styles.wrapper}>
             <div className={styles.introducing}>
@@ -22,18 +48,39 @@ const SignUp: FC = () => {
                 <div className={styles.inputs}>
                     <div className={styles.input}>
                         <img src={userIcon} alt="username" />
-                        <input placeholder="Name" />
+                        <input
+                            value={signUpData.fullName}
+                            name="fullName"
+                            type="text"
+                            placeholder="Name"
+                            onChange={onChangeSignUpData}
+                        />
                     </div>
                     <div className={styles.input}>
                         <img src={emailIcon} alt="email" />
-                        <input placeholder="Email" />
+                        <input
+                            value={signUpData.email}
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            onChange={onChangeSignUpData}
+                        />
                     </div>
                     <div className={styles.input}>
                         <img src={passwordIcon} alt="password" />
-                        <input placeholder="Password" />
+                        <input
+                            value={signUpData.password}
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            onChange={onChangeSignUpData}
+                        />
                     </div>
                 </div>
-                <button className={styles.btn + ' ' + styles.btnFilled}>
+                <button
+                    onClick={onSignUp}
+                    className={styles.btn + ' ' + styles.btnFilled}
+                >
                     Sign Up
                 </button>
             </div>
