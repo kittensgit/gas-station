@@ -1,29 +1,44 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { IUser } from 'types/user';
+import { IOrderFuel } from 'types/fuel';
 
 interface IInitialState {
-    fuel: string;
-    quantity: number | null;
-    cost: number | null;
+    orderFuel: IOrderFuel;
+    totalCost: number | null;
 }
 
 const initialState: IInitialState = {
-    fuel: '',
-    cost: null,
-    quantity: null,
+    orderFuel: {
+        name: '',
+        color: '',
+        price: null,
+        literQuantity: null,
+    },
+    totalCost: null,
 };
 
 const refuelSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        addFuel: (state, payload) => {
-            state.cost = payload.payload.cost;
-            state.fuel = payload.payload.fuel;
-            state.quantity = payload.payload.quantity;
+        addOrderFuel: (state, payload) => {
+            state.orderFuel.price = payload.payload.price;
+            state.orderFuel.name = payload.payload.name;
+            state.orderFuel.color = payload.payload.color;
+            state.orderFuel.literQuantity = payload.payload.literQuantity;
+            if (payload.payload.discount) {
+                state.totalCost =
+                    payload.payload.literQuantity *
+                    payload.payload.price *
+                    (payload.payload.discount / 100);
+            } else {
+                state.totalCost =
+                    payload.payload.literQuantity * payload.payload.price;
+            }
         },
     },
 });
+
+export const { addOrderFuel } = refuelSlice.actions;
 
 export const refuelReducer = refuelSlice.reducer;

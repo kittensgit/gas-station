@@ -33,7 +33,7 @@
 }
 
 .input input {
-    width: 230px;
+    min-width: 180px;
     background-color: transparent;
     border: none;
     border-bottom: 2px solid #6582aa;
@@ -76,4 +76,14 @@
     border: none;
     font-size: 18px;
     cursor: auto;
+}
+
+@media (max-width: 1200px) {
+    .input input {
+        font-size: 14px;
+    }
+    .input img {
+        width: 20px;
+        height: 20px;
+    }
 }

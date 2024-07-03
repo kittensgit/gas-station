@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
-import { IFuel } from 'types/fuel';
+import { IFuel, IOrderFuel } from 'types/fuel';
 
 import addIcon from 'assets/icons/add.png';
 
@@ -8,14 +8,34 @@ import styles from './FuelItem.module.css';
 
 interface FuelItemProps {
     fuel: IFuel;
+    literQuantity: number;
+    onChangeLiterQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
+    onAddOrderFuel: (orderfuel: IOrderFuel) => void;
 }
 
-const FuelItem: FC<FuelItemProps> = ({ fuel }) => {
+const FuelItem: FC<FuelItemProps> = ({
+    fuel,
+    literQuantity,
+    onChangeLiterQuantity,
+    onAddOrderFuel,
+}) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const toggleEdit = () => setIsEdit(!isEdit);
 
     const { color, logo, name, price } = fuel;
+
+    const addOrderFuel = () => {
+        const newOrderFuel: IOrderFuel = {
+            color,
+            name,
+            price,
+            literQuantity,
+        };
+        onAddOrderFuel(newOrderFuel);
+        toggleEdit();
+    };
+
     return (
         <div className={styles.fuel}>
             <div className={styles.fuelIcon} style={{ backgroundColor: color }}>
@@ -27,8 +47,14 @@ const FuelItem: FC<FuelItemProps> = ({ fuel }) => {
                 {isEdit ? (
                     <div className={styles.edit}>
                         <p>L:</p>
-                        <input type="number" placeholder="0" />
-                        <button onClick={toggleEdit}>
+                        <input
+                            value={literQuantity}
+                            type="number"
+                            placeholder="0"
+                            name={name}
+                            onChange={onChangeLiterQuantity}
+                        />
+                        <button onClick={addOrderFuel}>
                             <img src={addIcon} alt="add" />
                         </button>
                     </div>

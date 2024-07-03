@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
-import { IFuel } from 'types/fuel';
+import { IFuel, IOrderFuel } from 'types/fuel';
 
 import FuelItem from './fuelItem/FuelItem';
 
@@ -45,11 +45,26 @@ const fuelList: IFuel[] = [
     },
 ];
 
-const FuelList: FC = () => {
+interface FuelListProps {
+    onAddOrderFuel: (orderFuel: IOrderFuel) => void;
+}
+
+const FuelList: FC<FuelListProps> = ({ onAddOrderFuel }) => {
+    const [literQuantity, setLiterQuantity] = useState(1);
+
+    const onChangeLiterQuantity = (e: ChangeEvent<HTMLInputElement>) => {
+        setLiterQuantity(parseInt(e.target.value, 10));
+    };
     return (
         <div className={styles.list}>
-            {fuelList.map((item) => (
-                <FuelItem fuel={item} />
+            {fuelList.map((item, index) => (
+                <FuelItem
+                    key={index}
+                    fuel={item}
+                    literQuantity={literQuantity}
+                    onChangeLiterQuantity={onChangeLiterQuantity}
+                    onAddOrderFuel={onAddOrderFuel}
+                />
             ))}
         </div>
     );

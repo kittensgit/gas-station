@@ -12,3 +12,11 @@ export interface IFuel {
     price: number;
     color: string;
 }
+
+export interface IOrderFuel {
+    name: string;
+    price: number | null;
+    color: string;
+    literQuantity: number | null;
+    discount?: number;
+}
