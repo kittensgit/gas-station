@@ -10,10 +10,6 @@ import styles from './StationInfo.module.css';
 
 const StationInfo: FC = () => {
     const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
-    console.log({
-        ...orderFuel,
-        totalCost,
-    });
 
     const [stationInfo, setStationInfo] = useState({
         stationName: '',
@@ -52,11 +48,35 @@ const StationInfo: FC = () => {
                     />
                 </div>
             </div>
-            <div className={styles.fuel}>
-                <img src={fuelIcon} alt="fuel" />
-                <p>Add refuel to the cart</p>
-            </div>
-            <button className={styles.disabledPay}>Pay</button>
+            {orderFuel.name ? (
+                <div>
+                    <h4>{orderFuel.name}</h4>
+                    <b>${orderFuel.price}</b>
+                </div>
+            ) : (
+                <div className={styles.fuelIcon}>
+                    <img src={fuelIcon} alt="fuel" />
+                    <p>Add refuel to the cart</p>
+                </div>
+            )}
+
+            {totalCost && (
+                <div>
+                    <p>Total cost: </p>
+                    <b>${totalCost}</b>
+                </div>
+            )}
+
+            <button
+                disabled={!orderFuel.name}
+                className={
+                    !!orderFuel.name
+                        ? `${styles.activePay} ${styles.pay}`
+                        : `${styles.disabledPay} ${styles.pay}`
+                }
+            >
+                Pay
+            </button>
         </div>
     );
 };

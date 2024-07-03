@@ -51,10 +51,23 @@ interface FuelListProps {
 
 const FuelList: FC<FuelListProps> = ({ onAddOrderFuel }) => {
     const [literQuantity, setLiterQuantity] = useState(1);
+    const [activeFuel, setActiveFuel] = useState<string | null>(null);
+    const [isAddFuel, setIsAddFuel] = useState<boolean>(false);
 
     const onChangeLiterQuantity = (e: ChangeEvent<HTMLInputElement>) => {
         setLiterQuantity(parseInt(e.target.value, 10));
     };
+
+    const toggleEdit = (name: string) => {
+        setActiveFuel(activeFuel === name ? null : name);
+    };
+
+    const handleAddOrderFuel = (fuel: IOrderFuel) => {
+        onAddOrderFuel(fuel);
+        setActiveFuel(null);
+        setIsAddFuel(true);
+    };
+
     return (
         <div className={styles.list}>
             {fuelList.map((item, index) => (
@@ -62,8 +75,11 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel }) => {
                     key={index}
                     fuel={item}
                     literQuantity={literQuantity}
+                    isEditActive={activeFuel === item.name}
+                    isAddFuel={isAddFuel}
                     onChangeLiterQuantity={onChangeLiterQuantity}
-                    onAddOrderFuel={onAddOrderFuel}
+                    onAddOrderFuel={handleAddOrderFuel}
+                    toggleEdit={toggleEdit}
                 />
             ))}
         </div>

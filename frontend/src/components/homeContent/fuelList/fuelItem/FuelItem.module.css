@@ -9,6 +9,7 @@
     padding: 10px;
     border-radius: 30px;
     overflow: hidden;
+    width: 180px;
 }
 
 .fuelIcon span {
@@ -51,6 +52,11 @@
 
 .btn:hover {
     background-color: #2c4260;
+}
+
+.btn:disabled {
+    background-color: #2c4260;
+    cursor: auto;
 }
 
 .edit {
@@ -106,7 +112,7 @@ input::-webkit-inner-spin-button {
 }
 
 @media (max-width: 1200px) {
-    .fuel {
+    .fuelIcon {
         width: 150px;
     }
     .fuelIcon span {

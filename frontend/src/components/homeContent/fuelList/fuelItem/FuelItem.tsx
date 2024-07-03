@@ -9,20 +9,22 @@ import styles from './FuelItem.module.css';
 interface FuelItemProps {
     fuel: IFuel;
     literQuantity: number;
+    isEditActive: boolean;
+    isAddFuel: boolean;
     onChangeLiterQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
-    onAddOrderFuel: (orderfuel: IOrderFuel) => void;
+    onAddOrderFuel: (fuel: IOrderFuel) => void;
+    toggleEdit: (name: string) => void;
 }
 
 const FuelItem: FC<FuelItemProps> = ({
     fuel,
     literQuantity,
+    isEditActive,
+    isAddFuel,
     onChangeLiterQuantity,
     onAddOrderFuel,
+    toggleEdit,
 }) => {
-    const [isEdit, setIsEdit] = useState<boolean>(false);
-
-    const toggleEdit = () => setIsEdit(!isEdit);
-
     const { color, logo, name, price } = fuel;
 
     const addOrderFuel = () => {
@@ -33,7 +35,6 @@ const FuelItem: FC<FuelItemProps> = ({
             literQuantity,
         };
         onAddOrderFuel(newOrderFuel);
-        toggleEdit();
     };
 
     return (
@@ -44,7 +45,7 @@ const FuelItem: FC<FuelItemProps> = ({
             <h3 className={styles.title}>{name}</h3>
             <div className={styles.price}>
                 <p>${price}</p>
-                {isEdit ? (
+                {isEditActive ? (
                     <div className={styles.edit}>
                         <p>L:</p>
                         <input
@@ -59,7 +60,11 @@ const FuelItem: FC<FuelItemProps> = ({
                         </button>
                     </div>
                 ) : (
-                    <button onClick={toggleEdit} className={styles.btn}>
+                    <button
+                        onClick={() => toggleEdit(name)}
+                        className={styles.btn}
+                        disabled={isAddFuel}
+                    >
                         +
                     </button>
                 )}

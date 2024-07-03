@@ -53,29 +53,38 @@
     border-bottom: 2px solid #fff;
 }
 
-.fuel {
+.fuelIcon {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 20px;
 }
 
-.fuel p {
+.fuelIcon p {
     font-weight: 700;
     color: #415a7b;
 }
 
-.disabledPay {
+.pay {
     font-family: 'Work Sans', sans-serif;
     padding: 10px;
     border-radius: 25px;
-    cursor: pointer;
     font-weight: 800;
-    color: #4d6280;
-    background-color: #2c4260;
     border: none;
     font-size: 18px;
+    transition: all 0.3s ease-in;
+}
+
+.disabledPay {
+    color: #4d6280;
+    background-color: #2c4260;
     cursor: auto;
+}
+
+.activePay {
+    background-color: #ea4646;
+    cursor: pointer;
+    color: #fff;
 }
 
 @media (max-width: 1200px) {
