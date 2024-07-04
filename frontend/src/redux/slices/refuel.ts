@@ -26,14 +26,14 @@ const refuelSlice = createSlice({
             state.orderFuel.name = payload.payload.name;
             state.orderFuel.color = payload.payload.color;
             state.orderFuel.literQuantity = payload.payload.literQuantity;
+            state.totalCost =
+                payload.payload.literQuantity * payload.payload.price;
             if (payload.payload.discount) {
-                state.totalCost =
-                    payload.payload.literQuantity *
-                    payload.payload.price *
-                    (payload.payload.discount / 100);
-            } else {
-                state.totalCost =
+                const discount = payload.payload.discount;
+                const totalCost =
                     payload.payload.literQuantity * payload.payload.price;
+                state.orderFuel.discount =
+                    totalCost - totalCost * (discount / 100);
             }
         },
     },

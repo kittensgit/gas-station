@@ -25,7 +25,7 @@ const FuelItem: FC<FuelItemProps> = ({
     onAddOrderFuel,
     toggleEdit,
 }) => {
-    const { color, logo, name, price } = fuel;
+    const { color, logo, name, price, discount } = fuel;
 
     const addOrderFuel = () => {
         const newOrderFuel: IOrderFuel = {
@@ -33,6 +33,7 @@ const FuelItem: FC<FuelItemProps> = ({
             name,
             price,
             literQuantity,
+            discount,
         };
         onAddOrderFuel(newOrderFuel);
     };

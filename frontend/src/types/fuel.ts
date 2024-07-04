@@ -11,6 +11,7 @@ export interface IFuel {
     name: string;
     price: number;
     color: string;
+    discount?: number;
 }
 
 export interface IOrderFuel {

@@ -12,6 +12,7 @@ const fuelList: IFuel[] = [
         name: 'Gasoline AI-95',
         price: 1.22,
         color: '#82C19B',
+        discount: 20,
     },
     {
         logo: 'DF',
@@ -59,7 +60,7 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel }) => {
     };
 
     const toggleEdit = (name: string) => {
-        setActiveFuel(activeFuel === name ? null : name);
+        setActiveFuel(name);
     };
 
     const handleAddOrderFuel = (fuel: IOrderFuel) => {
