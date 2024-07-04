@@ -40,6 +40,13 @@ const FuelItem: FC<FuelItemProps> = ({
 
     return (
         <div className={styles.fuel}>
+            {discount && (
+                <div className={styles.discount}>
+                    <div className={styles.discount_procent}>
+                        <span>-{discount}%</span>
+                    </div>
+                </div>
+            )}
             <div className={styles.fuelIcon} style={{ backgroundColor: color }}>
                 <span>{logo}</span>
             </div>
