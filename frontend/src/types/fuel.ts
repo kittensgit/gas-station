@@ -4,6 +4,8 @@ export interface IRefuelHistory {
     litersFilled: string;
     cost: number;
     refuelDate: Date;
+    fuelName: string;
+    _id: string;
 }
 
 export interface IFuel {
@@ -25,6 +27,7 @@ export interface IOrderFuel {
 }
 
 export interface IRefuelData {
+    fuelName: string;
     stationName: string;
     location: string;
     litersFilled: number;

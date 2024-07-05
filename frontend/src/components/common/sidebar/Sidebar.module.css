@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-width: 180px;
+    min-width: 210px;
 }
 
 .sidebar_wrapper {

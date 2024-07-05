@@ -44,6 +44,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
             cost: total!,
             scores: orderFuel.scores!,
             litersFilled: orderFuel.literQuantity!,
+            fuelName: orderFuel.name,
         });
     };
 

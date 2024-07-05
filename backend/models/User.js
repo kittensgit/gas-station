@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
                     type: String,
                     required: true,
                 },
+                fuelName: {
+                    type: String,
+                    required: true,
+                },
                 litersFilled: {
                     type: Number,
                     required: true,

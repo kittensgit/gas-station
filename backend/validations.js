@@ -18,6 +18,9 @@ export const registerValidation = [
 ];
 
 export const refuelValidation = [
+    body('fuelName', 'The fuel name must be more than 3 characters').isLength({
+        min: 5,
+    }),
     body('stationName', 'The name must be more than 3 characters').isLength({
         min: 3,
     }),
