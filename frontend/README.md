@@ -14,6 +14,8 @@
 
 `react-redux`
 
+`axios`
+
 ### Start application
 
 `npm start`

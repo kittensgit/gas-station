@@ -90,10 +90,9 @@ export const getMe = async (req, res) => {
 
 export const refuel = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const { stationName, litersFilled, cost, location } = req.body;
+        const { stationName, litersFilled, cost, location, scores } = req.body;
 
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(req.userId);
 
         if (!user) {
             return res.status(404).json({
@@ -110,12 +109,12 @@ export const refuel = async (req, res) => {
             cost,
         });
 
-        user.scores += 200;
+        user.scores += scores;
 
         await user.save();
 
         res.json({
-            message: 'Refueling record added successfully and you got 3 points',
+            message: `Refueling record added successfully and you got ${scores} points`,
         });
     } catch (error) {
         console.log(error);

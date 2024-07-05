@@ -1,6 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IOrderFuel } from 'types/fuel';
+import { IOrderFuel, IRefuelData } from 'types/fuel';
+
+import axios from '../../axios';
+
+export const fetchRefuel = createAsyncThunk(
+    'auth/fetchRefuel',
+    async (params: IRefuelData) => {
+        const { data } = await axios.post('/refuel', params);
+        return data;
+    }
+);
 
 interface IInitialState {
     orderFuel: IOrderFuel;
@@ -13,6 +23,7 @@ const initialState: IInitialState = {
         color: '',
         price: null,
         literQuantity: null,
+        scores: null,
     },
     totalCost: null,
 };
@@ -21,24 +32,36 @@ const refuelSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        addOrderFuel: (state, payload) => {
-            state.orderFuel.price = payload.payload.price;
-            state.orderFuel.name = payload.payload.name;
-            state.orderFuel.color = payload.payload.color;
-            state.orderFuel.literQuantity = payload.payload.literQuantity;
+        addOrderFuel: (state, action) => {
+            state.orderFuel.price = action.payload.price;
+            state.orderFuel.name = action.payload.name;
+            state.orderFuel.color = action.payload.color;
+            state.orderFuel.literQuantity = action.payload.literQuantity;
+            state.orderFuel.scores = action.payload.scores;
             state.totalCost =
-                payload.payload.literQuantity * payload.payload.price;
-            if (payload.payload.discount) {
-                const discount = payload.payload.discount;
+                action.payload.literQuantity * action.payload.price;
+            if (action.payload.discount) {
+                const discount = action.payload.discount;
                 const totalCost =
-                    payload.payload.literQuantity * payload.payload.price;
-                state.orderFuel.discount =
-                    totalCost - totalCost * (discount / 100);
+                    action.payload.literQuantity * action.payload.price;
+                state.orderFuel.discount = +(
+                    totalCost *
+                    (discount / 100)
+                ).toFixed(2);
             }
+        },
+        removeOrderFuel: (state) => {
+            state.orderFuel.price = null;
+            state.orderFuel.name = '';
+            state.orderFuel.color = '';
+            state.orderFuel.literQuantity = null;
+            state.orderFuel.scores = null;
+            state.orderFuel.discount = null;
+            state.totalCost = null;
         },
     },
 });
 
-export const { addOrderFuel } = refuelSlice.actions;
+export const { addOrderFuel, removeOrderFuel } = refuelSlice.actions;
 
 export const refuelReducer = refuelSlice.reducer;

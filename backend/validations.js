@@ -33,6 +33,9 @@ export const refuelValidation = [
     body('cost', 'Cost must be a number and greater than 0')
         .isNumeric()
         .isFloat({ gt: 0 }),
+    body('scores', 'Scores must be a number and greater than 0')
+        .isNumeric()
+        .isFloat({ gt: 0 }),
 ];
 
 export const quantityValidation = [

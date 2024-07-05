@@ -11,6 +11,7 @@ export interface IFuel {
     name: string;
     price: number;
     color: string;
+    scores: number;
     discount?: number;
 }
 
@@ -19,5 +20,14 @@ export interface IOrderFuel {
     price: number | null;
     color: string;
     literQuantity: number | null;
-    discount?: number;
+    scores: number | null;
+    discount?: number | null;
+}
+
+export interface IRefuelData {
+    stationName: string;
+    location: string;
+    litersFilled: number;
+    cost: number;
+    scores: number;
 }

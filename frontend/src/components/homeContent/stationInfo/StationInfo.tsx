@@ -7,12 +7,23 @@ import stationIcon from 'assets/icons/station.png';
 import fuelLgIcon from 'assets/icons/fuelLg.png';
 import fuelSmIcon from 'assets/icons/fuelSm.png';
 
+import { IRefuelData } from 'types/fuel';
+
 import styles from './StationInfo.module.css';
 
-const StationInfo: FC = () => {
+interface StationInfoProps {
+    onRefuel: (refuelData: IRefuelData) => void;
+}
+
+const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
     const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
 
     const subTotal = totalCost && +totalCost.toFixed(2);
+
+    const total =
+        orderFuel.discount && subTotal
+            ? +(subTotal - orderFuel.discount).toFixed(2)
+            : subTotal;
 
     const [stationInfo, setStationInfo] = useState({
         stationName: '',
@@ -26,6 +37,16 @@ const StationInfo: FC = () => {
             [name]: value,
         }));
     };
+
+    const handleRefuel = () => {
+        onRefuel({
+            ...stationInfo,
+            cost: total!,
+            scores: orderFuel.scores!,
+            litersFilled: orderFuel.literQuantity!,
+        });
+    };
+
     return (
         <div className={styles.info}>
             <div className={styles.about}>
@@ -91,7 +112,7 @@ const StationInfo: FC = () => {
                     </div>
                     <div className={styles.calc_item}>
                         <p>Bonus(points)</p>
-                        <b>{200}</b>
+                        <b>{orderFuel.scores}</b>
                     </div>
                 </div>
             )}
@@ -99,16 +120,12 @@ const StationInfo: FC = () => {
             {subTotal && (
                 <div className={styles.totalCost}>
                     <p>Total cost: </p>
-                    <b>
-                        $
-                        {orderFuel.discount
-                            ? +(subTotal - orderFuel.discount).toFixed(2)
-                            : subTotal}
-                    </b>
+                    <b>${total}</b>
                 </div>
             )}
 
             <button
+                onClick={handleRefuel}
                 disabled={!orderFuel.name}
                 className={
                     !!orderFuel.name

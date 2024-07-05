@@ -59,7 +59,7 @@ app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.get('/users', checkAuth, checkAdmin, UserController.getUsers);
 app.post(
-    '/users/:userId/refuel',
+    '/refuel',
     checkAuth,
     refuelValidation,
     handleValidationErrors,

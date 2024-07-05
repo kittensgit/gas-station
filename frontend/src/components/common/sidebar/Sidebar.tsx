@@ -17,6 +17,10 @@ const Sidebar: FC = () => {
 
     const logOut = () => {
         dispatch(logout());
+        if (window.confirm('You really want to log out?')) {
+            dispatch(logout());
+            window.localStorage.removeItem('token');
+        }
     };
     return (
         <div className={styles.sidebar}>

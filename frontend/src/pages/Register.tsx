@@ -15,7 +15,13 @@ const Register: FC = () => {
     const dispatch = useAppDispatch();
 
     const signUp = async (values: ISignUpData) => {
-        await dispatch(fetchRegister(values));
+        const data = await dispatch(fetchRegister(values));
+        if (!data.payload) {
+            return alert('Failed to register');
+        }
+        if ('token' in data.payload) {
+            window.localStorage.setItem('token', data.payload.token);
+        }
     };
 
     if (isAuth) {

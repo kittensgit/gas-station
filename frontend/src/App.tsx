@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Sidebar from 'components/common/sidebar/Sidebar';
@@ -14,7 +14,17 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import RefuelHistory from 'pages/RefuelHistory';
 
+import { useAppDispatch } from 'hooks/useAppDispatch';
+
+import { fetchAuthMe } from './redux/slices/auth';
+
 const App: FC = () => {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchAuthMe());
+    }, [dispatch]);
+
     return (
         <div className="wrapper">
             <div className="container">

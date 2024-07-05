@@ -13,7 +13,13 @@ const Login: FC = () => {
     const { isAuth } = useAuth();
     const dispatch = useAppDispatch();
     const signIn = async (values: ISignInData) => {
-        await dispatch(fetchAuth(values));
+        const data = await dispatch(fetchAuth(values));
+        if (!data.payload) {
+            return alert('Failed to login');
+        }
+        if ('token' in data.payload) {
+            window.localStorage.setItem('token', data.payload.token);
+        }
     };
     if (isAuth) {
         return <Navigate to={'/'} />;

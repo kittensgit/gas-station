@@ -1,4 +1,5 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { IFuel, IOrderFuel } from 'types/fuel';
 
@@ -11,6 +12,7 @@ interface FuelItemProps {
     literQuantity: number;
     isEditActive: boolean;
     isAddFuel: boolean;
+    isAuth: boolean;
     onChangeLiterQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
     onAddOrderFuel: (fuel: IOrderFuel) => void;
     toggleEdit: (name: string) => void;
@@ -21,11 +23,13 @@ const FuelItem: FC<FuelItemProps> = ({
     literQuantity,
     isEditActive,
     isAddFuel,
+    isAuth,
     onChangeLiterQuantity,
     onAddOrderFuel,
     toggleEdit,
 }) => {
-    const { color, logo, name, price, discount } = fuel;
+    const navigate = useNavigate();
+    const { color, logo, name, price, discount, scores } = fuel;
 
     const addOrderFuel = () => {
         const newOrderFuel: IOrderFuel = {
@@ -34,8 +38,17 @@ const FuelItem: FC<FuelItemProps> = ({
             price,
             literQuantity,
             discount,
+            scores,
         };
         onAddOrderFuel(newOrderFuel);
+    };
+
+    const handleEdit = () => {
+        if (isAuth) {
+            toggleEdit(name);
+        } else {
+            navigate('/login');
+        }
     };
 
     return (
@@ -69,7 +82,7 @@ const FuelItem: FC<FuelItemProps> = ({
                     </div>
                 ) : (
                     <button
-                        onClick={() => toggleEdit(name)}
+                        onClick={handleEdit}
                         className={styles.btn}
                         disabled={isAddFuel}
                     >
