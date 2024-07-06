@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import logoutIcon from 'assets/icons/logout.png';
+import pointsIcon from 'assets/icons/points_violet.png';
 
 import styles from './Profile.module.css';
 
@@ -27,7 +28,10 @@ const Profile: FC<ProfileProps> = ({ isAuth, fullName, scores, logOut }) => {
                         <div className={styles.info}>
                             <div className={styles.about}>
                                 <h2>{fullName}</h2>
-                                <p>Scores: {scores}</p>
+                                <p>
+                                    {scores}
+                                    <img src={pointsIcon} alt="points" />
+                                </p>
                             </div>
                             <button className={styles.btn} onClick={onLogOut}>
                                 <img src={logoutIcon} alt="logout" />

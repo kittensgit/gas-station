@@ -40,7 +40,10 @@ const App: FC = () => {
                         />
                         <Route path="/laundry" element={<Laundry />} />
                         <Route path="/showers" element={<Showers />} />
-                        <Route path="/products" element={<Products />} />
+                        <Route
+                            path="/products/:typeFilter"
+                            element={<Products />}
+                        />
                         {/* Admin Routes */}
                         <Route path="/users" element={<Products />} />
                         <Route path="/orders" element={<Orders />} />

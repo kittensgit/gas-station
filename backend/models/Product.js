@@ -10,6 +10,11 @@ const ProductSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        type: {
+            type: String,
+            enum: ['dessert', 'main', 'drinks'],
+            required: true,
+        },
     },
     {
         timestamps: true,

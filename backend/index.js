@@ -118,7 +118,7 @@ app.delete(
     ShowerController.deleteShower
 );
 
-app.get('/products', ProductController.getProducts);
+app.get('/products/:filterType', ProductController.getProducts);
 app.get('/products/:productId', ProductController.getProduct);
 app.post(
     '/products/:productId/order',

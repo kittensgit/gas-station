@@ -1,0 +1,44 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.links {
+    align-self: flex-start;
+    display: flex;
+    background-color: #445a79;
+    color: #1e2b40;
+    border-radius: 30px;
+    gap: 3px;
+}
+
+.links li {
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 30px;
+    transition: all 0.3s ease-in;
+}
+
+.links li:hover {
+    background-color: #6582aa;
+}
+
+.active {
+    background-color: #6582aa;
+}
+
+.links li img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}

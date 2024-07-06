@@ -16,7 +16,7 @@ const linkList = [
         img: fuelIcon,
     },
     {
-        path: 'products',
+        path: 'products/all',
         naming: 'Products',
         img: productsIcon,
     },
@@ -45,7 +45,9 @@ const Menu: FC<MenuProps> = ({ isAuth }) => {
                     <Link key={index} to={`/${item.path}`}>
                         <li
                             className={
-                                pathname === `/${item.path}`
+                                pathname === `/${item.path}` ||
+                                pathname.includes('products') ===
+                                    item.path.includes('products')
                                     ? `${styles.link} ${styles.active}`
                                     : styles.link
                             }

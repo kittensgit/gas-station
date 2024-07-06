@@ -6,6 +6,7 @@ import locationIcon from 'assets/icons/location.png';
 import stationIcon from 'assets/icons/station.png';
 import fuelLgIcon from 'assets/icons/fuelLg.png';
 import fuelSmIcon from 'assets/icons/fuelSm.png';
+import pointsIcon from 'assets/icons/points_green.png';
 
 import { IRefuelData } from 'types/fuel';
 
@@ -113,7 +114,10 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
                     </div>
                     <div className={styles.calc_item}>
                         <p>Bonus(points)</p>
-                        <b>{orderFuel.scores}</b>
+                        <b>
+                            {orderFuel.scores}
+                            <img src={pointsIcon} alt="points" />
+                        </b>
                     </div>
                 </div>
             )}

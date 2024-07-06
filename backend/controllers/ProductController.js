@@ -1,8 +1,14 @@
 import ProductModel from '../models/Product.js';
 
-export const getProducts = async (_, res) => {
+export const getProducts = async (req, res) => {
     try {
-        const products = await ProductModel.find();
+        const { filterType } = req.params;
+        const products =
+            filterType === 'all'
+                ? await ProductModel.find()
+                : await ProductModel.find({
+                      type: filterType,
+                  });
 
         if (!products)
             return res.status(404).json({
@@ -37,10 +43,11 @@ export const getProduct = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
-        const { name, scoresCount } = req.body;
+        const { name, scoresCount, type } = req.body;
         const product = new ProductModel({
             name,
             scoresCount,
+            type,
         });
         await product.save();
         res.json({
