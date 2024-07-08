@@ -4,3 +4,8 @@ export interface IProduct {
     scoresCount: number | null;
     type: 'main' | 'dessert' | 'drinks';
 }
+
+export interface IOrderProduct {
+    productId: string;
+    quantity: number;
+}

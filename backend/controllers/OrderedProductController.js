@@ -41,27 +41,13 @@ export const orderProduct = async (req, res) => {
         };
 
         if (userOrder) {
-            // if product exist in order
-            let userOrderProducts = userOrder.order.products;
-            const existingProductIndex = userOrderProducts.findIndex((item) =>
-                item.product.equals(productId)
-            );
-
-            if (existingProductIndex >= 0) {
-                userOrderProducts[existingProductIndex].quantity += +quantity;
-                userOrderProducts[existingProductIndex].totalScores +=
-                    totalScores;
-            } else {
-                userOrderProducts.push(newProduct);
-            }
+            userOrder.orders.push(newProduct);
 
             await userOrder.save();
         } else {
             const newOrderedProduct = new OrderedProductModel({
                 user: userId,
-                order: {
-                    products: [newProduct],
-                },
+                orders: [newProduct],
             });
 
             await newOrderedProduct.save();
@@ -74,6 +60,26 @@ export const orderProduct = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to get product',
+        });
+    }
+};
+
+export const getUserOrders = async (req, res) => {
+    try {
+        const userOrder = await OrderedProductModel.findOne({
+            user: req.params.userId,
+        });
+
+        if (!userOrder)
+            return res.status(404).json({
+                message: 'User orders not found',
+            });
+
+        res.json(userOrder.orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get user orders',
         });
     }
 };
@@ -100,27 +106,7 @@ export const getAllOrders = async (_, res) => {
     }
 };
 
-export const getOrder = async (req, res) => {
-    try {
-        const order = await OrderedProductModel.findById(req.params.orderId)
-            .populate('user')
-            .populate('order.products.product')
-            .exec();
-
-        if (!order)
-            return res.status(404).json({
-                message: 'User order not found',
-            });
-
-        res.json(order);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: 'Failed to get user order',
-        });
-    }
-};
-
+// надо изменить логику изменения статуса заказа
 export const changeStatusReady = async (req, res) => {
     try {
         const orderedProducts = await OrderedProductModel.findById(

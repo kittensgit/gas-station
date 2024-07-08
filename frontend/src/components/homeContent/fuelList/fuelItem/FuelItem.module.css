@@ -4,6 +4,7 @@
     gap: 10px;
     position: relative;
     overflow: hidden;
+    width: 180px;
 }
 
 .discount {
@@ -34,7 +35,7 @@
     padding: 10px;
     border-radius: 30px;
     overflow: hidden;
-    width: 180px;
+    width: 100%;
 }
 
 .fuelIcon span {
@@ -137,7 +138,7 @@ input::-webkit-inner-spin-button {
 }
 
 @media (max-width: 1200px) {
-    .fuelIcon {
+    .fuel {
         width: 150px;
     }
     .fuelIcon span {

@@ -57,15 +57,14 @@
 }
 
 .info {
-    transform: translateY(-40%);
+    position: relative;
+    transform: translateY(-35%);
     background-color: #1e2b40;
     padding: 15px;
     border-radius: 25px;
-    position: relative;
     display: flex;
-    gap: 10px;
     justify-content: space-between;
-    align-items: center;
+    gap: 10px;
 }
 
 .info_item {
@@ -76,10 +75,11 @@
 
 .info_item:last-child {
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .fuel {
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -93,6 +93,9 @@
 }
 
 .date {
+    position: absolute;
+    top: 10px;
+    right: 8px;
     color: #415a7b;
     font-size: 14px;
     border-radius: 30px;
@@ -108,7 +111,7 @@
 .info::after {
     content: ' ';
     position: absolute;
-    bottom: 100%; /* At the top of the tooltip */
+    bottom: 100%;
     left: 50%;
     margin-left: -8px;
     border-width: 8px;

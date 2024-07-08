@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IProduct } from 'types/product';
+import { IOrderProduct, IProduct } from 'types/product';
 
 import axios from '../../axios';
 
@@ -9,6 +9,20 @@ export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
     async (params: string) => {
         const { data } = await axios.get(`/products/${params}`);
+        return data;
+    }
+);
+
+// params -> productId and product quantity
+export const fetchOrderProduct = createAsyncThunk(
+    'products/fetchOrderProduct',
+    async (params: IOrderProduct) => {
+        const { data } = await axios.post(
+            `/products/${params.productId}/order`,
+            {
+                quantity: params.quantity,
+            }
+        );
         return data;
     }
 );

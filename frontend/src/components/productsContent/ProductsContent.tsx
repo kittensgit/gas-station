@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { IProduct } from 'types/product';
+import { IOrderProduct, IProduct } from 'types/product';
 
 import foodIcon from 'assets/icons/meal.png';
 import mainIcon from 'assets/icons/mainSm.png';
@@ -13,10 +13,32 @@ import Product from './product/Product';
 import styles from './ProductsContent.module.css';
 
 interface ProductsContentProps {
+    isAuth: boolean;
     products: IProduct[];
+    onAddOrderProduct: (product: IOrderProduct) => void;
 }
 
-const ProductsContent: FC<ProductsContentProps> = ({ products }) => {
+const ProductsContent: FC<ProductsContentProps> = ({
+    products,
+    isAuth,
+    onAddOrderProduct,
+}) => {
+    const [productQuantity, setProductQuantity] = useState(1);
+    const [activeProduct, setActiveProduct] = useState<string | null>(null);
+
+    const onChangeProductQuantity = (e: ChangeEvent<HTMLInputElement>) => {
+        setProductQuantity(parseInt(e.target.value, 10));
+    };
+
+    const toggleEdit = (name: string) => {
+        setActiveProduct(name);
+    };
+
+    const handleAddOrderProduct = (product: IOrderProduct) => {
+        onAddOrderProduct(product);
+        setActiveProduct(null);
+    };
+
     const { pathname } = useLocation();
     return (
         <div className={styles.wrapper}>
@@ -62,7 +84,16 @@ const ProductsContent: FC<ProductsContentProps> = ({ products }) => {
             </ul>
             <div className={styles.products}>
                 {products.map((product) => (
-                    <Product key={product._id} product={product} />
+                    <Product
+                        key={product._id}
+                        product={product}
+                        isAuth={isAuth}
+                        productQuantity={productQuantity}
+                        isEditActive={activeProduct === product.name}
+                        toggleEdit={toggleEdit}
+                        handleAddOrderProduct={handleAddOrderProduct}
+                        onChangeProductQuantity={onChangeProductQuantity}
+                    />
                 ))}
             </div>
         </div>

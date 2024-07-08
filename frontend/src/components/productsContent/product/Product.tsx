@@ -1,19 +1,52 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { IProduct } from 'types/product';
+import { IOrderProduct, IProduct } from 'types/product';
 
 import mainIcon from 'assets/icons/mainLg.png';
 import dessertIcon from 'assets/icons/dessertLg.png';
 import drinksIcon from 'assets/icons/drinksLg.png';
 import pointsIcon from 'assets/icons/points.png';
+import addIcon from 'assets/icons/add.png';
 
 import styles from './Product.module.css';
 
 interface ProductProps {
     product: IProduct;
+    productQuantity: number;
+    isEditActive: boolean;
+    isAuth: boolean;
+    onChangeProductQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
+    handleAddOrderProduct: (product: IOrderProduct) => void;
+    toggleEdit: (name: string) => void;
 }
 
-const Product: FC<ProductProps> = ({ product }) => {
+const Product: FC<ProductProps> = ({
+    product,
+    isAuth,
+    isEditActive,
+    productQuantity,
+    toggleEdit,
+    onChangeProductQuantity,
+    handleAddOrderProduct,
+}) => {
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        if (isAuth) {
+            toggleEdit(product.name);
+        } else {
+            navigate('/login');
+        }
+    };
+
+    const addOrderFuel = () => {
+        handleAddOrderProduct({
+            productId: product._id,
+            quantity: productQuantity,
+        });
+    };
+
     return (
         <div className={styles.product}>
             <div
@@ -44,7 +77,25 @@ const Product: FC<ProductProps> = ({ product }) => {
                     {product.scoresCount}
                     <img src={pointsIcon} alt="points" />
                 </b>
-                <button>Order</button>
+                {isEditActive ? (
+                    <div className={styles.edit}>
+                        <p>Q:</p>
+                        <input
+                            value={productQuantity}
+                            type="number"
+                            placeholder="0"
+                            name={product.name}
+                            onChange={onChangeProductQuantity}
+                        />
+                        <button onClick={addOrderFuel}>
+                            <img src={addIcon} alt="add" />
+                        </button>
+                    </div>
+                ) : (
+                    <button onClick={handleEdit} className={styles.btn}>
+                        Order
+                    </button>
+                )}
             </div>
         </div>
     );

@@ -119,7 +119,6 @@ app.delete(
 );
 
 app.get('/products/:filterType', ProductController.getProducts);
-app.get('/products/:productId', ProductController.getProduct);
 app.post(
     '/products/:productId/order',
     checkAuth,
@@ -149,10 +148,9 @@ app.get(
     OrderedProductController.getAllOrders
 );
 app.get(
-    '/orders/:orderId',
+    '/userOrders/:userId',
     checkAuth,
-    checkAdmin,
-    OrderedProductController.getOrder
+    OrderedProductController.getUserOrders
 );
 app.get(
     '/orders/:orderId/changeStatusReady',

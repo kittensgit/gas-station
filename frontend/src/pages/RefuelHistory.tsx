@@ -10,13 +10,15 @@ import { fetchAuthMe } from '../redux/slices/auth';
 const RefuelHistory: FC = () => {
     const dispatch = useAppDispatch();
     const [refuelList, setRefuelList] = useState<IRefuelHistory[]>([]);
+
     useEffect(() => {
         const getRefuelHistory = async () => {
             const { payload } = await dispatch(fetchAuthMe());
             setRefuelList(payload.refuelingHistory);
         };
         getRefuelHistory();
-    }, []);
+    }, [dispatch]);
+
     return <History refuelingHistory={refuelList} />;
 };
 

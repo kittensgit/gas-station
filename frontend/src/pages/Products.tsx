@@ -1,16 +1,20 @@
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ProductsContent from 'components/productsContent/ProductsContent';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IProduct } from 'types/product';
+import { useAuth } from 'hooks/useAuth';
+import { IOrderProduct, IProduct } from 'types/product';
 
-import { fetchProducts } from '../redux/slices/products';
+import { fetchOrderProduct, fetchProducts } from '../redux/slices/products';
 
 const Products: FC = () => {
-    const dispatch = useAppDispatch();
     const { typeFilter } = useParams();
+    const { isAuth } = useAuth();
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     const [products, setProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
@@ -25,7 +29,22 @@ const Products: FC = () => {
         getProducts();
     }, [dispatch, typeFilter]);
 
-    return <ProductsContent products={products} />;
+    const onAddOrderProduct = async (product: IOrderProduct) => {
+        const { payload } = await dispatch(fetchOrderProduct(product));
+        if (!payload) {
+            alert('Failed to order product');
+        } else {
+            navigate('/userOrders');
+        }
+    };
+
+    return (
+        <ProductsContent
+            products={products}
+            isAuth={isAuth}
+            onAddOrderProduct={onAddOrderProduct}
+        />
+    );
 };
 
 export default Products;

@@ -6,6 +6,7 @@ import showerIcon from 'assets/icons/shower.png';
 import productsIcon from 'assets/icons/products.png';
 import laundryIcon from 'assets/icons/laundry.png';
 import historyIcon from 'assets/icons/history.png';
+import orderIcon from 'assets/icons/order.png';
 
 import styles from './Menu.module.css';
 
@@ -45,9 +46,7 @@ const Menu: FC<MenuProps> = ({ isAuth }) => {
                     <Link key={index} to={`/${item.path}`}>
                         <li
                             className={
-                                pathname === `/${item.path}` ||
-                                pathname.includes('products') ===
-                                    item.path.includes('products')
+                                pathname === `/${item.path}`
                                     ? `${styles.link} ${styles.active}`
                                     : styles.link
                             }
@@ -68,6 +67,20 @@ const Menu: FC<MenuProps> = ({ isAuth }) => {
                         >
                             <img src={historyIcon} alt="history" />
                             Refuel history
+                        </li>
+                    </Link>
+                )}
+                {isAuth && (
+                    <Link to={'/userOrders'}>
+                        <li
+                            className={
+                                pathname === '/userOrders'
+                                    ? `${styles.link} ${styles.active}`
+                                    : styles.link
+                            }
+                        >
+                            <img src={orderIcon} alt="order" />
+                            Orders
                         </li>
                     </Link>
                 )}
