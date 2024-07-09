@@ -142,15 +142,20 @@ app.delete(
 );
 
 app.get(
+    '/userOrders/:userId',
+    checkAuth,
+    OrderedProductController.getUserOrders
+);
+app.delete(
+    '/userOrders/:userId/:orderId',
+    checkAuth,
+    OrderedProductController.deleteUserOrder
+);
+app.get(
     '/orders',
     checkAuth,
     checkAdmin,
     OrderedProductController.getAllOrders
-);
-app.get(
-    '/userOrders/:userId',
-    checkAuth,
-    OrderedProductController.getUserOrders
 );
 app.get(
     '/orders/:orderId/changeStatusReady',

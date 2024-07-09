@@ -86,6 +86,33 @@ export const getUserOrders = async (req, res) => {
     }
 };
 
+export const deleteUserOrder = async (req, res) => {
+    try {
+        const userOrder = await OrderedProductModel.findOne({
+            user: req.params.userId,
+        });
+
+        if (!userOrder)
+            return res.status(404).json({
+                message: 'User order not found',
+            });
+
+        userOrder.orders = userOrder.orders.filter(
+            (item) => !item._id.equals(req.params.orderId)
+        );
+        await userOrder.save();
+
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to delete user order',
+        });
+    }
+};
+
 // admin
 
 export const getAllOrders = async (_, res) => {

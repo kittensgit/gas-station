@@ -1,25 +1,37 @@
 import { FC } from 'react';
 
-import { IUserOrder } from 'types/order';
+import { IUserOrder, IUserOrderData } from 'types/order';
 import { formatOrderDate } from 'helpers';
 
 import pointsIcon from 'assets/icons/points.png';
 import cartIcon from 'assets/icons/cart.png';
 import parcelIcon from 'assets/icons/parcel.png';
+import addIcon from 'assets/icons/add1.png';
 
 import styles from './UserOrder.module.css';
 
 interface UserOrderProps {
     order: IUserOrder;
+    onRemoveUserOrder: (orderId: IUserOrderData['orderId']) => void;
 }
 
-const UserOrder: FC<UserOrderProps> = ({ order }) => {
-    const { orderDate, product, quantity, statusReady, totalScores } = order;
+const UserOrder: FC<UserOrderProps> = ({ order, onRemoveUserOrder }) => {
+    const { orderDate, product, quantity, statusReady, totalScores, _id } =
+        order;
     return (
         <div className={styles.order}>
             <div
                 className={statusReady ? styles.parcel_icon : styles.cart_icon}
             >
+                {statusReady && (
+                    <button
+                        onClick={() => onRemoveUserOrder(_id)}
+                        className={styles.tooltip}
+                    >
+                        <p>I received the order</p>
+                        <img src={addIcon} alt="add" />
+                    </button>
+                )}
                 <img src={statusReady ? parcelIcon : cartIcon} alt="order" />
             </div>
             <div className={styles.order_content}>

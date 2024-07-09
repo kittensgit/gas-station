@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IUserOrder } from 'types/order';
+import { IUserOrder, IUserOrderData } from 'types/order';
 
 import axios from '../../axios';
 
@@ -9,6 +9,16 @@ export const fetchUserOrders = createAsyncThunk(
     'orders/fetchUserOrders',
     async (params: string) => {
         const { data } = await axios.get(`/userOrders/${params}`);
+        return data;
+    }
+);
+
+export const removeUserOrder = createAsyncThunk(
+    'orders/removeUserOrder',
+    async (params: IUserOrderData) => {
+        const { data } = await axios.delete(
+            `/userOrders/${params.userId}/${params.orderId}`
+        );
         return data;
     }
 );

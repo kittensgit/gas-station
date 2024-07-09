@@ -3,16 +3,17 @@ import { Navigate } from 'react-router-dom';
 
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IUserOrder } from 'types/order';
+import { IUserOrder, IUserOrderData } from 'types/order';
 
 import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
 
-import { fetchUserOrders } from '../redux/slices/orders';
+import { fetchUserOrders, removeUserOrder } from '../redux/slices/orders';
 
 const UserOrders: FC = () => {
     const { userId, isAuth } = useAuth();
     const dispatch = useAppDispatch();
 
+    const [isRemoveOrder, setIsRemoveOrder] = useState<boolean>(false);
     const [ordersList, setOrdersList] = useState<IUserOrder[]>([]);
     useEffect(() => {
         const getOrders = async () => {
@@ -22,13 +23,32 @@ const UserOrders: FC = () => {
             }
         };
         getOrders();
-    }, [dispatch, userId]);
+    }, [dispatch, userId, isRemoveOrder]);
 
     if (!isAuth) {
         return <Navigate to={'/login'} />;
     }
 
-    return <UserOrdersContent orders={ordersList} />;
+    const onRemoveUserOrder = async (orderId: IUserOrderData['orderId']) => {
+        const { payload } = await dispatch(
+            removeUserOrder({
+                userId,
+                orderId,
+            })
+        );
+        if (payload) {
+            setIsRemoveOrder(true);
+        } else {
+            alert('Failed to delete order');
+        }
+    };
+
+    return (
+        <UserOrdersContent
+            onRemoveUserOrder={onRemoveUserOrder}
+            orders={ordersList}
+        />
+    );
 };
 
 export default UserOrders;
