@@ -7,8 +7,6 @@ import Home from 'pages/Home';
 import Laundry from 'pages/Laundry';
 import Showers from 'pages/Showers';
 import Products from 'pages/Products';
-import Orders from 'pages/Orders';
-import Order from 'pages/Order';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
 import RefuelHistory from 'pages/RefuelHistory';
@@ -48,7 +46,6 @@ const App: FC = () => {
                         <Route path="/userOrders" element={<UserOrders />} />
                         {/* Admin Routes */}
                         <Route path="/users" element={<Products />} />
-                        <Route path="/orders" element={<Orders />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>

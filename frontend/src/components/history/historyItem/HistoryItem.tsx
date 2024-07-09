@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { IRefuelHistory } from 'types/fuel';
-import { formatDate } from 'helpers';
+import { formatHistoryDate } from 'helpers';
 
 import styles from './HistoryItem.module.css';
 
@@ -26,7 +26,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ historyInfo }) => {
                 </div>
                 <div className={styles.info_item}>
                     <span className={styles.date}>
-                        {formatDate(historyInfo.refuelDate)}
+                        {formatHistoryDate(historyInfo.refuelDate)}
                     </span>
                     <b className={styles.cost}>${historyInfo.cost}</b>
                 </div>

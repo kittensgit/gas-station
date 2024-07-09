@@ -163,11 +163,11 @@ body {
 
 .container {
     max-width: 1200px;
-    /* min-height: 500px; */
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 20px;
+    width: 100%;
 }
 
 .content {

@@ -68,7 +68,9 @@ export const getUserOrders = async (req, res) => {
     try {
         const userOrder = await OrderedProductModel.findOne({
             user: req.params.userId,
-        });
+        })
+            .populate('orders.product')
+            .exec();
 
         if (!userOrder)
             return res.status(404).json({
@@ -90,7 +92,7 @@ export const getAllOrders = async (_, res) => {
     try {
         const orders = await OrderedProductModel.find()
             .populate('user')
-            .populate('order.products.product')
+            .populate('orders.product')
             .exec();
         if (!orders)
             return res.status(404).json({
