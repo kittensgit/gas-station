@@ -15,7 +15,7 @@ const UserOrdersContent: FC<UserOrdersContentProps> = ({
     onRemoveUserOrder,
 }) => {
     return (
-        <div className={styles.orders}>
+        <ul className={styles.orders}>
             {orders.map((item) => (
                 <UserOrder
                     key={item._id}
@@ -23,7 +23,7 @@ const UserOrdersContent: FC<UserOrdersContentProps> = ({
                     onRemoveUserOrder={onRemoveUserOrder}
                 />
             ))}
-        </div>
+        </ul>
     );
 };
 

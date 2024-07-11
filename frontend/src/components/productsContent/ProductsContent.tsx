@@ -82,7 +82,7 @@ const ProductsContent: FC<ProductsContentProps> = ({
                     </li>
                 </Link>
             </ul>
-            <div className={styles.products}>
+            <ul className={styles.products}>
                 {products.map((product) => (
                     <Product
                         key={product._id}
@@ -95,7 +95,7 @@ const ProductsContent: FC<ProductsContentProps> = ({
                         onChangeProductQuantity={onChangeProductQuantity}
                     />
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };

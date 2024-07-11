@@ -11,7 +11,7 @@ interface HistoryItemProps {
 
 const HistoryItem: FC<HistoryItemProps> = ({ historyInfo }) => {
     return (
-        <div className={styles.wrapper}>
+        <li className={styles.wrapper}>
             <div className={styles.line_container}>
                 <div className={styles.circle + ' ' + styles.start}></div>
                 <p className={styles.location}>{historyInfo.location}</p>
@@ -31,7 +31,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ historyInfo }) => {
                     <b className={styles.cost}>${historyInfo.cost}</b>
                 </div>
             </div>
-        </div>
+        </li>
     );
 };
 

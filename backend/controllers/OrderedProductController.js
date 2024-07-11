@@ -77,7 +77,11 @@ export const getUserOrders = async (req, res) => {
                 message: 'User orders not found',
             });
 
-        res.json(userOrder.orders);
+        const sortedOrders = userOrder.orders.sort(
+            (a, b) => b.orderDate - a.orderDate
+        );
+
+        res.json(sortedOrders);
     } catch (error) {
         console.log(error);
         res.status(500).json({

@@ -12,11 +12,11 @@ interface HistoryProps {
 
 const History: FC<HistoryProps> = ({ refuelingHistory }) => {
     return (
-        <div className={styles.wrapper}>
+        <ul className={styles.wrapper}>
             {refuelingHistory.map((item) => (
                 <HistoryItem key={item._id} historyInfo={item} />
             ))}
-        </div>
+        </ul>
     );
 };
 

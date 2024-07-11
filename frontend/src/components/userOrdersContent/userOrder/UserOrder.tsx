@@ -19,7 +19,7 @@ const UserOrder: FC<UserOrderProps> = ({ order, onRemoveUserOrder }) => {
     const { orderDate, product, quantity, statusReady, totalScores, _id } =
         order;
     return (
-        <div className={styles.order}>
+        <li className={styles.order}>
             <div
                 className={statusReady ? styles.parcel_icon : styles.cart_icon}
             >
@@ -53,7 +53,7 @@ const UserOrder: FC<UserOrderProps> = ({ order, onRemoveUserOrder }) => {
                     <p>{statusReady ? 'Ready' : 'Preparing'}</p>
                 </div>
             </div>
-        </div>
+        </li>
     );
 };
 

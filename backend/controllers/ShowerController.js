@@ -1,3 +1,5 @@
+import cron from 'node-cron';
+
 import UserModel from '../models/User.js';
 import ShowerModel from '../models/Shower.js';
 
@@ -26,27 +28,30 @@ export const bookShower = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (user.scores >= 6) {
+        if (user.scores >= 1200) {
             const shower = await ShowerModel.findById(req.params.showerId);
 
             if (!shower)
                 return res.status(404).json({
                     message: 'Shower not found',
                 });
-
             if (shower.occupied.user)
                 return res.status(400).json({
                     message: `Shower is already occupied by user`,
                 });
 
+            const bookedAt = new Date();
+            const bookedUntil = new Date(bookedAt.getTime() + 2 * 60 * 1000); // 2 минуты
+
             shower.occupied = {
                 user: userId,
+                bookedAt,
+                bookedUntil,
             };
 
             await shower.save();
 
-            user.scores = user.scores - 3;
-
+            user.scores -= 1200;
             await user.save();
         } else {
             return res
@@ -54,7 +59,7 @@ export const bookShower = async (req, res) => {
                 .json({ message: "You don't have enough points" });
         }
         res.json({
-            message: 'Shower booked successfully and you spent 6 points',
+            message: 'Shower booked successfully and you spent 1200 points',
         });
     } catch (error) {
         console.log(error);
@@ -64,36 +69,26 @@ export const bookShower = async (req, res) => {
     }
 };
 
-export const releaseShower = async (req, res) => {
+cron.schedule('* * * * * *', async () => {
+    // Задача запускается каждую минуту
     try {
-        const shower = await ShowerModel.findById(req.params.showerId);
+        const now = new Date();
+        const showers = await ShowerModel.find({
+            'occupied.bookedUntil': { $lte: now },
+        });
 
-        if (!shower)
-            return res.status(404).json({
-                message: 'shower not found',
-            });
-
-        if (shower.occupied.user.equals(req.userId)) {
+        for (const shower of showers) {
             shower.occupied = {
                 user: null,
+                bookedAt: null,
+                bookedUntil: null,
             };
             await shower.save();
-        } else {
-            return res.status(400).json({
-                message: "You can't release shower",
-            });
         }
-
-        res.json({
-            message: 'Shower released successfully',
-        });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: 'Failed to release shower',
-        });
+        console.error('Failed to execute task:', error);
     }
-};
+});
 
 // admin
 

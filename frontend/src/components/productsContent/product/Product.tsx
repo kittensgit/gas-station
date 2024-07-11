@@ -48,7 +48,7 @@ const Product: FC<ProductProps> = ({
     };
 
     return (
-        <div className={styles.product}>
+        <li className={styles.product}>
             <div
                 className={styles.productIcon}
                 style={{
@@ -97,7 +97,7 @@ const Product: FC<ProductProps> = ({
                     </button>
                 )}
             </div>
-        </div>
+        </li>
     );
 };
 

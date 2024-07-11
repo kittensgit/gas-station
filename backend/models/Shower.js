@@ -8,6 +8,8 @@ const ShowerSchema = new mongoose.Schema(
                 ref: 'User',
                 default: null,
             },
+            bookedAt: { type: Date, default: null },
+            bookedUntil: { type: Date, default: null },
         },
     },
     {

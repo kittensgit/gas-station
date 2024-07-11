@@ -5,5 +5,5 @@ export const formatHistoryDate = (date: Date) => {
 };
 
 export const formatOrderDate = (date: Date) => {
-    return format(date, 'MMMM dd, yyyy');
+    return format(date, 'MMMM dd, kk:mm');
 };

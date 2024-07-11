@@ -98,11 +98,6 @@ app.delete(
 
 app.get('/showers', ShowerController.getShowers);
 app.get('/showers/:showerId/book', checkAuth, ShowerController.bookShower);
-app.get(
-    '/showers/:showerId/release',
-    checkAuth,
-    ShowerController.releaseShower
-);
 app.post(
     '/showers/add',
     checkAuth,

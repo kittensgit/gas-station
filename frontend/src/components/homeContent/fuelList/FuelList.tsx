@@ -79,7 +79,7 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth }) => {
     };
 
     return (
-        <div className={styles.list}>
+        <ul className={styles.list}>
             {fuelList.map((item, index) => (
                 <FuelItem
                     key={index}
@@ -93,7 +93,7 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth }) => {
                     toggleEdit={toggleEdit}
                 />
             ))}
-        </div>
+        </ul>
     );
 };
 

@@ -52,7 +52,7 @@ const FuelItem: FC<FuelItemProps> = ({
     };
 
     return (
-        <div className={styles.fuel}>
+        <li className={styles.fuel}>
             {discount && (
                 <div className={styles.discount}>
                     <div className={styles.discount_procent}>
@@ -90,7 +90,7 @@ const FuelItem: FC<FuelItemProps> = ({
                     </button>
                 )}
             </div>
-        </div>
+        </li>
     );
 };
 
