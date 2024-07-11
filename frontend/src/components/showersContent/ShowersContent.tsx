@@ -12,12 +12,14 @@ import styles from './ShowersContent.module.css';
 interface ShowersContentProps {
     userId: IUser['_id'];
     showers: IShower[];
+    onReleaseShower: (showerId: IShower['_id']) => void;
     onBookShower: (showerId: IShower['_id']) => void;
 }
 
 const ShowersContent: FC<ShowersContentProps> = ({
     showers,
     userId,
+    onReleaseShower,
     onBookShower,
 }) => {
     const userShower = showers.find(
@@ -37,9 +39,9 @@ const ShowersContent: FC<ShowersContentProps> = ({
                     <Shower
                         userShower={userShower!}
                         key={item._id}
-                        userId={userId}
                         shower={item}
                         showerNum={index + 1}
+                        onReleaseShower={onReleaseShower}
                         onBookShower={onBookShower}
                     />
                 ))}

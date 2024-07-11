@@ -1,11 +1,11 @@
+import cron from 'node-cron';
+
 import UserModel from '../models/User.js';
 import MachineModel from '../models/Machine.js';
 
 export const getMachines = async (req, res) => {
     try {
-        const machines = await MachineModel.find()
-            .populate('occupied.user')
-            .exec();
+        const machines = await MachineModel.find().populate('occupied.user');
 
         if (!machines)
             return res.status(404).json({
@@ -29,7 +29,7 @@ export const bookMachine = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (user.scores >= 3) {
+        if (user.scores >= 1000) {
             const machine = await MachineModel.findById(req.params.machineId);
 
             if (!machine)
@@ -42,13 +42,18 @@ export const bookMachine = async (req, res) => {
                     message: `Machine is already occupied by user`,
                 });
 
+            const bookedAt = new Date();
+            const bookedUntil = new Date(bookedAt.getTime() + 1 * 60 * 1000); // 1 минута
+
             machine.occupied = {
                 user: userId,
+                bookedAt,
+                bookedUntil,
             };
 
             await machine.save();
 
-            user.scores = user.scores - 3;
+            user.scores = user.scores - 1000;
 
             await user.save();
         } else {
@@ -57,7 +62,7 @@ export const bookMachine = async (req, res) => {
                 .json({ message: "You don't have enough points" });
         }
         res.json({
-            message: 'Machine booked successfully and you spent 3 points',
+            message: 'Machine booked successfully and you spent 1000 points',
         });
     } catch (error) {
         console.log(error);
@@ -66,6 +71,27 @@ export const bookMachine = async (req, res) => {
         });
     }
 };
+
+cron.schedule('* * * * * *', async () => {
+    // Задача запускается каждую минуту
+    try {
+        const now = new Date();
+        const machines = await MachineModel.find({
+            'occupied.bookedUntil': { $lte: now },
+        });
+
+        for (const machine of machines) {
+            machine.occupied = {
+                user: null,
+                bookedAt: null,
+                bookedUntil: null,
+            };
+            await machine.save();
+        }
+    } catch (error) {
+        console.error('Failed to execute task:', error);
+    }
+});
 
 export const releaseMachine = async (req, res) => {
     try {
@@ -76,16 +102,13 @@ export const releaseMachine = async (req, res) => {
                 message: 'Machine not found',
             });
 
-        if (machine.occupied.user.equals(req.body.userId)) {
-            machine.occupied = {
-                user: null,
-            };
-            await machine.save();
-        } else {
-            return res.status(400).json({
-                message: "You can't release machine",
-            });
-        }
+        machine.occupied = {
+            user: null,
+            bookedAt: null,
+            bookedUntil: null,
+        };
+
+        await machine.save();
 
         res.json({
             message: 'Machine released successfully',

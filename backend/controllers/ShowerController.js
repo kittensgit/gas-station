@@ -6,6 +6,7 @@ import ShowerModel from '../models/Shower.js';
 export const getShowers = async (req, res) => {
     try {
         const showers = await ShowerModel.find().populate('occupied.user');
+
         if (!showers)
             return res.status(404).json({
                 message: 'Showers not found',
@@ -41,7 +42,9 @@ export const bookShower = async (req, res) => {
                 });
 
             const bookedAt = new Date();
-            const bookedUntil = new Date(bookedAt.getTime() + 2 * 60 * 1000); // 2 минуты
+            const bookedUntil = new Date(
+                bookedAt.getTime() + 12 * 60 * 60 * 1000
+            ); // 12 часов
 
             shower.occupied = {
                 user: userId,
@@ -89,6 +92,34 @@ cron.schedule('* * * * * *', async () => {
         console.error('Failed to execute task:', error);
     }
 });
+
+export const releaseShower = async (req, res) => {
+    try {
+        const shower = await ShowerModel.findById(req.params.showerId);
+
+        if (!shower)
+            return res.status(404).json({
+                message: 'shower not found',
+            });
+
+        shower.occupied = {
+            user: null,
+            bookedAt: null,
+            bookedUntil: null,
+        };
+
+        await shower.save();
+
+        res.json({
+            message: 'Shower released successfully',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to release shower',
+        });
+    }
+};
 
 // admin
 

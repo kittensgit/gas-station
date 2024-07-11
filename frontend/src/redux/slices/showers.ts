@@ -19,6 +19,13 @@ export const bookShower = createAsyncThunk(
         return data;
     }
 );
+export const releaseShower = createAsyncThunk(
+    'showers/releaseShower',
+    async (params: IShower['_id']) => {
+        const { data } = await axios.get(`/showers/${params}/release`);
+        return data;
+    }
+);
 
 interface IInitialState {
     showers: IShower[];

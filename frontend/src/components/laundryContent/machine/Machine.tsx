@@ -1,43 +1,45 @@
 import { FC, useEffect, useState } from 'react';
 
-import showerIcon from 'assets/icons/showerLg.png';
+import { IMachine } from 'types/machine';
+
+import machineIcon from 'assets/icons/washing_machine.png';
 import bookingIcon from 'assets/icons/book.png';
 
-import { IShower } from 'types/shower';
+import styles from './Machine.module.css';
 
-import styles from './Shower.module.css';
-
-interface ShowerProps {
-    showerNum: number;
-    shower: IShower;
-    userShower: IShower;
-    onBookShower: (showerId: IShower['_id']) => void;
-    onReleaseShower: (showerId: IShower['_id']) => void;
+interface MachineProps {
+    machine: IMachine;
+    machineNum: number;
+    userMachine: IMachine;
+    onReleaseMachine: (machineId: IMachine['_id']) => void;
+    onBookMachine: (machineId: IMachine['_id']) => void;
 }
 
-const Shower: FC<ShowerProps> = ({
-    shower,
-    showerNum,
-    userShower,
-    onBookShower,
-    onReleaseShower,
+const Machine: FC<MachineProps> = ({
+    machine,
+    machineNum,
+    userMachine,
+    onBookMachine,
+    onReleaseMachine,
 }) => {
     const [remainingTime, setRemainingTime] = useState<string | null>(null);
 
-    const showerStatus = shower.occupied.user;
+    const machineStatus = machine.occupied.user;
+
+    console.log(!userMachine, !machineStatus);
 
     useEffect(() => {
-        if (shower.occupied.bookedUntil) {
+        if (machine.occupied.bookedUntil) {
             const interval = setInterval(() => {
                 const now = new Date();
-                const bookedUntil = new Date(shower.occupied.bookedUntil);
+                const bookedUntil = new Date(machine.occupied.bookedUntil);
 
                 const timeDiff = bookedUntil.getTime() - now.getTime();
 
                 if (timeDiff <= 0) {
                     setRemainingTime(null);
                     clearInterval(interval);
-                    onReleaseShower(shower._id);
+                    onReleaseMachine(machine._id);
                 } else {
                     const hours = Math.floor(
                         (timeDiff / (1000 * 60 * 60)) % 24
@@ -56,32 +58,34 @@ const Shower: FC<ShowerProps> = ({
 
             return () => clearInterval(interval);
         }
-    }, [shower.occupied.bookedUntil]);
+    }, [machine.occupied.bookedUntil]);
 
     return (
-        <li className={styles.shower}>
-            <img src={showerIcon} alt="shower" />
-            <div className={styles.shower_info}>
+        <li className={styles.machine}>
+            <img src={machineIcon} alt="machine" />
+            <div className={styles.machine_info}>
                 <h4>
-                    Shower <span>#{showerNum}</span>
+                    Washing Machine <span>#{machineNum}</span>
                 </h4>
                 <p className={styles.status}>
                     Status:
                     <span
-                        className={showerStatus ? styles.occupied : styles.free}
+                        className={
+                            machineStatus ? styles.occupied : styles.free
+                        }
                     >
-                        {showerStatus ? 'Occupied' : 'Free'}
-                        {!showerStatus && !userShower && (
+                        {machineStatus ? 'Occupied' : 'Free'}
+                        {!machineStatus && !userMachine && (
                             <button
                                 className={styles.booking}
-                                onClick={() => onBookShower(shower._id)}
+                                onClick={() => onBookMachine(machine._id)}
                             >
                                 <img src={bookingIcon} alt="booking" />
                             </button>
                         )}
                     </span>
                 </p>
-                {userShower === shower && remainingTime && (
+                {userMachine === machine && remainingTime && (
                     <p className={styles.time}>{remainingTime}</p>
                 )}
             </div>
@@ -89,4 +93,4 @@ const Shower: FC<ShowerProps> = ({
     );
 };
 
-export default Shower;
+export default Machine;
