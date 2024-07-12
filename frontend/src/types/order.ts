@@ -7,6 +7,8 @@ export interface IUserOrder {
     totalScores: number;
     statusReady: boolean;
     orderDate: Date;
+    readyTime: Date;
+    endReadyTime: Date;
 }
 
 export interface IUserOrderData {

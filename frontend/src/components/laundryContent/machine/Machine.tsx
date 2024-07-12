@@ -26,8 +26,6 @@ const Machine: FC<MachineProps> = ({
 
     const machineStatus = machine.occupied.user;
 
-    console.log(!userMachine, !machineStatus);
-
     useEffect(() => {
         if (machine.occupied.bookedUntil) {
             const interval = setInterval(() => {

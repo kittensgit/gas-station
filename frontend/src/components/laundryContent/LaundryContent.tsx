@@ -28,7 +28,9 @@ const LaundryContent: FC<LaundryContentProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.title}>
-                <h1>Washing Machine - 1000</h1>
+                <h1>
+                    Washing Machine - <span>1000</span>
+                </h1>
                 <img src={pointsIcon} alt="points" />
             </div>
             <ul className={styles.machines}>

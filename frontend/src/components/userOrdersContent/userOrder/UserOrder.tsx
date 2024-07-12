@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { IUserOrder, IUserOrderData } from 'types/order';
 import { formatOrderDate } from 'helpers';
@@ -16,19 +16,61 @@ interface UserOrderProps {
 }
 
 const UserOrder: FC<UserOrderProps> = ({ order, onRemoveUserOrder }) => {
-    const { orderDate, product, quantity, statusReady, totalScores, _id } =
-        order;
+    const {
+        orderDate,
+        product,
+        quantity,
+        statusReady,
+        totalScores,
+        _id,
+        endReadyTime,
+    } = order;
+
+    const [remainingTime, setRemainingTime] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (endReadyTime) {
+            const interval = setInterval(() => {
+                const now = new Date();
+                const bookedUntil = new Date(endReadyTime);
+
+                const timeDiff = bookedUntil.getTime() - now.getTime();
+
+                if (timeDiff <= 0) {
+                    setRemainingTime(null);
+                    clearInterval(interval);
+                    onRemoveUserOrder(_id);
+                } else {
+                    const hours = Math.floor(
+                        (timeDiff / (1000 * 60 * 60)) % 24
+                    );
+                    const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+                    const seconds = Math.floor((timeDiff / 1000) % 60);
+                    setRemainingTime(
+                        `${hours.toString().padStart(2, '0')}:${minutes
+                            .toString()
+                            .padStart(2, '0')}:${seconds
+                            .toString()
+                            .padStart(2, '0')}`
+                    );
+                }
+            }, 1000);
+
+            return () => clearInterval(interval);
+        }
+    }, [endReadyTime]);
+
     return (
         <li className={styles.order}>
             <div
                 className={statusReady ? styles.parcel_icon : styles.cart_icon}
             >
-                {statusReady && (
+                {statusReady && remainingTime && (
                     <button
                         onClick={() => onRemoveUserOrder(_id)}
                         className={styles.tooltip}
                     >
-                        <p>I received the order</p>
+                        <p>{remainingTime}</p>
                         <img src={addIcon} alt="add" />
                     </button>
                 )}

@@ -158,7 +158,7 @@ app.get(
     OrderedProductController.getAllOrders
 );
 app.get(
-    '/orders/:orderId/changeStatusReady',
+    '/orders/:userId/:orderId/changeStatusReady',
     checkAuth,
     checkAdmin,
     OrderedProductController.changeStatusReady

@@ -43,7 +43,9 @@ export const bookMachine = async (req, res) => {
                 });
 
             const bookedAt = new Date();
-            const bookedUntil = new Date(bookedAt.getTime() + 1 * 60 * 1000); // 1 минута
+            const bookedUntil = new Date(
+                bookedAt.getTime() + 3 * 60 * 60 * 1000
+            ); // 3 часа
 
             machine.occupied = {
                 user: userId,

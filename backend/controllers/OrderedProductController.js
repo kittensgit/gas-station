@@ -1,3 +1,5 @@
+import cron from 'node-cron';
+
 import UserModel from '../models/User.js';
 import ProductModel from '../models/Product.js';
 import OrderedProductModel from '../models/OrderedProduct.js';
@@ -139,20 +141,26 @@ export const getAllOrders = async (_, res) => {
     }
 };
 
-// надо изменить логику изменения статуса заказа
 export const changeStatusReady = async (req, res) => {
     try {
-        const orderedProducts = await OrderedProductModel.findById(
-            req.params.orderId
-        );
+        const userId = req.params.userId;
+        const orderId = req.params.orderId;
+        const orderedProducts = await OrderedProductModel.findOne({
+            user: userId,
+        });
         if (!orderedProducts)
             return res.json({
                 message: 'Order not found',
             });
 
-        const isReady = orderedProducts.order.statusReady;
+        const order = orderedProducts.orders.find((item) =>
+            item._id.equals(orderId)
+        );
 
-        orderedProducts.order.statusReady = !isReady;
+        order.statusReady = true;
+        order.readyTime = new Date();
+        order.endReadyTime = new Date(Date.now() + 2 * 60 * 60 * 1000);
+
         orderedProducts.save();
 
         res.json({
@@ -165,3 +173,22 @@ export const changeStatusReady = async (req, res) => {
         });
     }
 };
+
+cron.schedule('* * * * * *', async () => {
+    // Задача запускается каждую минуту
+    try {
+        const now = new Date();
+        const expiredOrders = await OrderedProductModel.find({
+            'orders.endReadyTime': { $lt: now },
+        });
+
+        for (const orderedProduct of expiredOrders) {
+            orderedProduct.orders = orderedProduct.orders.filter(
+                (order) => order.endReadyTime >= now
+            );
+            await orderedProduct.save();
+        }
+    } catch (error) {
+        console.error('Failed to execute task:', error);
+    }
+});

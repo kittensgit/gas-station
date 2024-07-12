@@ -26,6 +26,14 @@ const OrderedProductSchema = new mongoose.Schema(
                     type: Boolean,
                     default: false,
                 },
+                readyTime: {
+                    type: Date,
+                    default: null,
+                },
+                endReadyTime: {
+                    type: Date,
+                    default: null,
+                },
                 orderDate: {
                     type: Date,
                     default: Date.now(),
