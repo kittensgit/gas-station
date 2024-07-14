@@ -8,7 +8,7 @@ import mainIcon from 'assets/icons/mainSm.png';
 import dessertIcon from 'assets/icons/dessertSm.png';
 import drinksIcon from 'assets/icons/drinksSm.png';
 
-import Product from './product/Product';
+import ProductList from './productList/ProductList';
 
 import styles from './ProductsContent.module.css';
 
@@ -23,22 +23,6 @@ const ProductsContent: FC<ProductsContentProps> = ({
     isAuth,
     onAddOrderProduct,
 }) => {
-    const [productQuantity, setProductQuantity] = useState(1);
-    const [activeProduct, setActiveProduct] = useState<string | null>(null);
-
-    const onChangeProductQuantity = (e: ChangeEvent<HTMLInputElement>) => {
-        setProductQuantity(parseInt(e.target.value, 10));
-    };
-
-    const toggleEdit = (name: string) => {
-        setActiveProduct(name);
-    };
-
-    const handleAddOrderProduct = (product: IOrderProduct) => {
-        onAddOrderProduct(product);
-        setActiveProduct(null);
-    };
-
     const { pathname } = useLocation();
     return (
         <div className={styles.wrapper}>
@@ -82,20 +66,11 @@ const ProductsContent: FC<ProductsContentProps> = ({
                     </li>
                 </Link>
             </ul>
-            <ul className={styles.products}>
-                {products.map((product) => (
-                    <Product
-                        key={product._id}
-                        product={product}
-                        isAuth={isAuth}
-                        productQuantity={productQuantity}
-                        isEditActive={activeProduct === product.name}
-                        toggleEdit={toggleEdit}
-                        handleAddOrderProduct={handleAddOrderProduct}
-                        onChangeProductQuantity={onChangeProductQuantity}
-                    />
-                ))}
-            </ul>
+            <ProductList
+                isAuth={isAuth}
+                products={products}
+                onAddOrderProduct={onAddOrderProduct}
+            />
         </div>
     );
 };

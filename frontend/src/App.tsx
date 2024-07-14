@@ -11,7 +11,12 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import RefuelHistory from 'pages/RefuelHistory';
 import UserOrders from 'pages/UserOrders';
+import Users from 'pages/Users';
 import NotFound from 'pages/NotFound';
+import Orders from 'pages/Orders';
+import ProductsCatalog from 'pages/ProductsCatalog';
+import WashMachinesCatalog from 'pages/WashMachinesCatalog';
+import ShowersCatalog from 'pages/ShowersCatalog';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 
@@ -45,7 +50,21 @@ const App: FC = () => {
                         />
                         <Route path="/userOrders" element={<UserOrders />} />
                         {/* Admin Routes */}
-                        <Route path="/users" element={<Products />} />
+                        <Route path="/users" element={<Users />} />
+                        <Route path="/orders" element={<Orders />} />
+                        <Route
+                            path="/products/catalog"
+                            element={<ProductsCatalog />}
+                        />
+                        <Route
+                            path="/showers/catalog"
+                            element={<ShowersCatalog />}
+                        />
+                        <Route
+                            path="/washMachines/catalog"
+                            element={<WashMachinesCatalog />}
+                        />
+
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>

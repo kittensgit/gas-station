@@ -36,9 +36,3 @@
     height: 20px;
     object-fit: cover;
 }
-
-.products {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}

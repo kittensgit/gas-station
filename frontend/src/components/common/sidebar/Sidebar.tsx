@@ -12,7 +12,7 @@ import Profile from './profile/Profile';
 import styles from './Sidebar.module.css';
 
 const Sidebar: FC = () => {
-    const { isAuth, fullName, scores } = useAuth();
+    const { isAuth, fullName, scores, role } = useAuth();
     const dispatch = useAppDispatch();
 
     const logOut = () => {
@@ -28,7 +28,7 @@ const Sidebar: FC = () => {
                 <Link to={'/'} className={styles.logo}>
                     G<span>A</span>S<span>I</span>K
                 </Link>
-                <Menu isAuth={isAuth} />
+                <Menu userRole={role} isAuth={isAuth} />
             </div>
             <Profile
                 isAuth={isAuth}
