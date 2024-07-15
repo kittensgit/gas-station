@@ -25,7 +25,10 @@ const Sidebar: FC = () => {
     return (
         <div className={styles.sidebar}>
             <div className={styles.sidebar_wrapper}>
-                <Link to={'/'} className={styles.logo}>
+                <Link
+                    to={role === 'admin' ? '/users' : ''}
+                    className={styles.logo}
+                >
                     G<span>A</span>S<span>I</span>K
                 </Link>
                 <Menu userRole={role} isAuth={isAuth} />

@@ -1,0 +1,57 @@
+.user th {
+    padding: 15px;
+}
+
+.email {
+    color: #6582aa;
+}
+
+.scores {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+}
+
+.scores span {
+    font-weight: 700;
+}
+
+.scores img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
+
+.role {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.role:hover .triangle {
+    transform: translateX(3px) rotate(90deg);
+}
+
+.triangle {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 0 4px 7px 4px;
+    border-color: transparent transparent #fff transparent;
+    transform: rotate(90deg);
+    transition: all 0.3s ease-in;
+}
+
+.triangle_admin {
+    border-color: transparent transparent #0b803a transparent;
+}
+
+.admin {
+    font-weight: 600;
+    color: #0b803a;
+    background-color: #c1f2b6;
+    padding: 5px 8px;
+    border-radius: 5px;
+}

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IUser } from 'types/user';
+import { IUser, IUserRoleData } from 'types/user';
 import { ISignInData, ISignUpData } from 'types/auth';
 
 import axios from '../../axios';
@@ -26,6 +26,21 @@ export const fetchRegister = createAsyncThunk(
     }
 );
 
+export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
+    const { data } = await axios.get('/users');
+    return data;
+});
+
+// params => userId and role
+export const setUserRole = createAsyncThunk(
+    'auth/setUserRole',
+    async (params: IUserRoleData) => {
+        const { data } = await axios.post(`/users/${params.userId}/setRole`, {
+            role: params.role,
+        });
+        return data;
+    }
+);
 interface IInitialState {
     data: IUser | null;
     status: 'loading' | 'loaded' | 'error';

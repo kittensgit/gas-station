@@ -27,6 +27,7 @@ const Register: FC = () => {
     if (isAuth) {
         return <Navigate to={'/'} />;
     }
+
     return <SignUp signUp={signUp} />;
 };
 

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -10,7 +9,7 @@ import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
 import { fetchUserOrders, removeUserOrder } from '../redux/slices/orders';
 
 const UserOrders: FC = () => {
-    const { userId, isAuth } = useAuth();
+    const { userId } = useAuth();
     const dispatch = useAppDispatch();
 
     const [isRemoveOrder, setIsRemoveOrder] = useState<boolean>(false);
@@ -24,10 +23,6 @@ const UserOrders: FC = () => {
         };
         getOrders();
     }, [dispatch, userId, isRemoveOrder]);
-
-    if (!isAuth) {
-        return <Navigate to={'/login'} />;
-    }
 
     const onRemoveUserOrder = async (orderId: IUserOrderData['orderId']) => {
         const { payload } = await dispatch(

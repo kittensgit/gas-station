@@ -8,3 +8,8 @@ export interface IUser {
     role: string;
     refuelingHistory: IRefuelHistory[];
 }
+
+export interface IUserRoleData {
+    userId: IUser['_id'];
+    role: IUser['role'];
+}

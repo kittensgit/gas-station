@@ -10,7 +10,7 @@ import { ISignInData } from 'types/auth';
 import { fetchAuth } from '../redux/slices/auth';
 
 const Login: FC = () => {
-    const { isAuth } = useAuth();
+    const { isAuth, role } = useAuth();
     const dispatch = useAppDispatch();
     const signIn = async (values: ISignInData) => {
         const data = await dispatch(fetchAuth(values));
@@ -22,7 +22,11 @@ const Login: FC = () => {
         }
     };
     if (isAuth) {
-        return <Navigate to={'/'} />;
+        return role === 'admin' ? (
+            <Navigate to={'/users'} />
+        ) : (
+            <Navigate to={'/'} />
+        );
     }
     return <SignIn signIn={signIn} />;
 };

@@ -9,7 +9,6 @@ import {
     registerValidation,
     quantityValidation,
     addProductValidation,
-    setUserRoleValidation,
 } from './validations.js';
 
 import {
@@ -69,8 +68,6 @@ app.post(
     '/users/:userId/setRole',
     checkAuth,
     checkAdmin,
-    setUserRoleValidation,
-    handleValidationErrors,
     UserController.setUserRole
 );
 

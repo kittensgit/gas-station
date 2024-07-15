@@ -1,5 +1,5 @@
-import { FC, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { ComponentType, FC, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Sidebar from 'components/common/sidebar/Sidebar';
 
@@ -18,6 +18,7 @@ import ProductsCatalog from 'pages/ProductsCatalog';
 import WashMachinesCatalog from 'pages/WashMachinesCatalog';
 import ShowersCatalog from 'pages/ShowersCatalog';
 
+import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 
 import { fetchAuthMe } from './redux/slices/auth';
@@ -38,39 +39,66 @@ const App: FC = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route
-                            path="/refuelHistory"
-                            element={<RefuelHistory />}
-                        />
                         <Route path="/laundry" element={<Laundry />} />
                         <Route path="/showers" element={<Showers />} />
                         <Route
                             path="/products/:typeFilter"
                             element={<Products />}
                         />
-                        <Route path="/userOrders" element={<UserOrders />} />
+                        {/* Auth Routes */}
+                        <Route
+                            path="/refuelHistory"
+                            element={<AuthRoute element={RefuelHistory} />}
+                        />
+                        <Route
+                            path="/userOrders"
+                            element={<AuthRoute element={UserOrders} />}
+                        />
                         {/* Admin Routes */}
-                        <Route path="/users" element={<Users />} />
-                        <Route path="/orders" element={<Orders />} />
+                        <Route
+                            path="/users"
+                            element={<AdminRoute element={Users} />}
+                        />
+                        <Route
+                            path="/orders"
+                            element={<AdminRoute element={Orders} />}
+                        />
                         <Route
                             path="/products/catalog"
-                            element={<ProductsCatalog />}
+                            element={<AdminRoute element={ProductsCatalog} />}
                         />
                         <Route
                             path="/showers/catalog"
-                            element={<ShowersCatalog />}
+                            element={<AdminRoute element={ShowersCatalog} />}
                         />
                         <Route
                             path="/washMachines/catalog"
-                            element={<WashMachinesCatalog />}
+                            element={
+                                <AdminRoute element={WashMachinesCatalog} />
+                            }
                         />
-
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>
             </div>
         </div>
     );
+};
+
+interface ProtectedRouteProps {
+    element: ComponentType<any>;
+}
+
+const AuthRoute: FC<ProtectedRouteProps> = ({ element: Element }) => {
+    const { isAuth } = useAuth();
+
+    return isAuth ? <Element /> : <Navigate to="/login" />;
+};
+
+const AdminRoute: FC<ProtectedRouteProps> = ({ element: Element }) => {
+    const { role } = useAuth();
+
+    return role === 'admin' ? <Element /> : <Navigate to="/" />;
 };
 
 export default App;
