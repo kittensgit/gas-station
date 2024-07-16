@@ -2,10 +2,11 @@
     width: 100%;
     background-color: #1e2b40;
     border-radius: 30px;
+    overflow: hidden;
 }
 
 .table thead tr {
-    border-bottom: 3px solid #0c121d;
+    border-bottom: 3px solid #141f30;
 }
 
 .table thead th {
@@ -16,5 +17,5 @@
 }
 
 .table tbody tr:nth-child(even) {
-    background-color: #0c121d;
+    background-color: #141f30;
 }

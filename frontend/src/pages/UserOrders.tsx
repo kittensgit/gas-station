@@ -20,6 +20,7 @@ const UserOrders: FC = () => {
             if (payload) {
                 setOrdersList(payload);
             }
+            setIsRemoveOrder(false);
         };
         getOrders();
     }, [dispatch, userId, isRemoveOrder]);

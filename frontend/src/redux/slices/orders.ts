@@ -13,6 +13,14 @@ export const fetchUserOrders = createAsyncThunk(
     }
 );
 
+export const fetchAllOrders = createAsyncThunk(
+    'orders/fetchAllOrders',
+    async () => {
+        const { data } = await axios.get(`/orders`);
+        return data;
+    }
+);
+
 export const removeUserOrder = createAsyncThunk(
     'orders/removeUserOrder',
     async (params: IUserOrderData) => {

@@ -1,4 +1,5 @@
 import { IProduct } from './product';
+import { IUser } from './user';
 
 export interface IUserOrder {
     _id: string;
@@ -14,4 +15,10 @@ export interface IUserOrder {
 export interface IUserOrderData {
     userId: string;
     orderId: string;
+}
+
+export interface IOrder {
+    _id: string;
+    user: IUser;
+    orders: IUserOrder[];
 }

@@ -106,7 +106,12 @@ export const deleteUserOrder = async (req, res) => {
         userOrder.orders = userOrder.orders.filter(
             (item) => !item._id.equals(req.params.orderId)
         );
-        await userOrder.save();
+
+        if (userOrder.orders.length === 0) {
+            await OrderedProductModel.findByIdAndDelete(userOrder._id);
+        } else {
+            await userOrder.save();
+        }
 
         res.json({
             success: true,
@@ -125,8 +130,8 @@ export const getAllOrders = async (_, res) => {
     try {
         const orders = await OrderedProductModel.find()
             .populate('user')
-            .populate('orders.product')
-            .exec();
+            .populate('orders.product');
+
         if (!orders)
             return res.status(404).json({
                 message: 'Orders not found',
@@ -159,7 +164,7 @@ export const changeStatusReady = async (req, res) => {
 
         order.statusReady = true;
         order.readyTime = new Date();
-        order.endReadyTime = new Date(Date.now() + 2 * 60 * 60 * 1000);
+        order.endReadyTime = new Date(Date.now() + 1 * 60 * 1000);
 
         orderedProducts.save();
 
@@ -186,7 +191,12 @@ cron.schedule('* * * * * *', async () => {
             orderedProduct.orders = orderedProduct.orders.filter(
                 (order) => order.endReadyTime >= now
             );
-            await orderedProduct.save();
+
+            if (orderedProduct.orders.length === 0) {
+                await OrderedProductModel.findByIdAndDelete(orderedProduct._id);
+            } else {
+                await orderedProduct.save();
+            }
         }
     } catch (error) {
         console.error('Failed to execute task:', error);

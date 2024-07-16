@@ -24,7 +24,6 @@ import {
     checkAuth,
     handleValidationErrors,
 } from './utils/index.js';
-import multer from 'multer';
 
 dotenv.config();
 

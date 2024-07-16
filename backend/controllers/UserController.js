@@ -153,8 +153,6 @@ export const setUserRole = async (req, res) => {
                 message: 'User not found',
             });
 
-        console.log(req.body.role);
-
         user.role = req.body.role;
         await user.save();
 
