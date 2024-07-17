@@ -50,30 +50,22 @@
     color: #65ff4d;
 }
 
-.booking {
+.remove {
+    position: absolute;
+    top: 5%;
+    right: 3%;
     background-color: transparent;
     border: none;
-    display: inline-flex;
     cursor: pointer;
     transition: all 0.3s ease-in;
 }
 
-.booking img {
-    width: 20px;
-    height: 20px;
+.remove img {
+    width: 30px;
+    height: 30px;
     object-fit: cover;
 }
 
-.booking:hover {
-    transform: scale(1.2);
-}
-
-.time {
-    background-color: #ff4d4d;
-    font-weight: 600;
-    padding: 2px 5px;
-    border-radius: 10px;
-    position: absolute;
-    top: 5%;
-    right: 6%;
+.remove:hover {
+    transform: scale(1.1);
 }

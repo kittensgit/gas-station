@@ -19,10 +19,31 @@ export const bookMachine = createAsyncThunk(
         return data;
     }
 );
+
 export const releaseMachine = createAsyncThunk(
     'machines/releaseMachine',
     async (params: IMachine['_id']) => {
         const { data } = await axios.get(`/machines/${params}/release`);
+        return data;
+    }
+);
+
+// params -> quantity
+export const addMachine = createAsyncThunk(
+    'machines/addMachine',
+    async (params: number) => {
+        const { data } = await axios.post(`/machines/add`, {
+            quantity: params,
+        });
+        return data;
+    }
+);
+
+// params -> machineId
+export const deleteMachine = createAsyncThunk(
+    'machines/deleteMachine',
+    async (params: IMachine['_id']) => {
+        const { data } = await axios.delete(`/machines/${params}`);
         return data;
     }
 );

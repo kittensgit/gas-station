@@ -1,25 +1,25 @@
 import { ChangeEvent, FC, useState } from 'react';
 
-import { IShower } from 'types/shower';
+import { IMachine } from 'types/machine';
 
-import plusIcon from 'assets/icons/plus.png';
-import showerIcon from 'assets/icons/showerLg.png';
+import machineIcon from 'assets/icons/washing_machine.png';
 import addIcon from 'assets/icons/add.png';
+import plusIcon from 'assets/icons/plus.png';
 
-import Shower from './shower/Shower';
+import Machine from './machine/Machine';
 
-import styles from './ShowersCatalogContent.module.css';
+import styles from './WashMachinesContent.module.css';
 
-interface ShowersCatalogContentProps {
-    showers: IShower[];
-    onAddShower: (quantity: number) => void;
-    onRemoveShower: (showerId: IShower['_id']) => void;
+interface WashMachinesCatalogProps {
+    machines: IMachine[];
+    onAddMachine: (quantity: number) => void;
+    onRemoveMachine: (machineId: IMachine['_id']) => void;
 }
 
-const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
-    showers,
-    onAddShower,
-    onRemoveShower,
+const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
+    machines,
+    onAddMachine,
+    onRemoveMachine,
 }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(1);
@@ -32,23 +32,18 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
         setIsEdit(!isEdit);
     };
 
-    const handleAddShower = () => {
-        if (quantity) {
-            onAddShower(quantity);
-            toggleEdit();
-            setQuantity(1);
-        } else {
-            alert('Quantity will be greater than 0');
-        }
+    const handleAddMachine = () => {
+        onAddMachine(quantity);
+        toggleEdit();
+        setQuantity(1);
     };
-
     return (
         <div>
-            <ul className={styles.showers}>
-                <li className={styles.add_shower}>
+            <ul className={styles.machines}>
+                <li className={styles.add_machine}>
                     {isEdit ? (
                         <div className={styles.edit}>
-                            <img src={showerIcon} alt="shower" />
+                            <img src={machineIcon} alt="shower" />
                             <div className={styles.edit_info}>
                                 <p>Quantity:</p>
                                 <input
@@ -58,7 +53,7 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                                     placeholder="0"
                                 />
                                 <button
-                                    onClick={handleAddShower}
+                                    onClick={handleAddMachine}
                                     className={styles.add}
                                 >
                                     <img src={addIcon} alt="add" />
@@ -71,12 +66,12 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                         </button>
                     )}
                 </li>
-                {showers.map((item, index) => (
-                    <Shower
+                {machines.map((item, index) => (
+                    <Machine
                         key={item._id}
-                        shower={item}
-                        showerNum={index + 1}
-                        onRemoveShower={onRemoveShower}
+                        machine={item}
+                        machineNum={index + 1}
+                        onRemoveMachine={onRemoveMachine}
                     />
                 ))}
             </ul>
@@ -84,4 +79,4 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
     );
 };
 
-export default ShowersCatalogContent;
+export default WashMachinesContent;
