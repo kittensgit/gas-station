@@ -13,11 +13,13 @@ import styles from './ShowersCatalogContent.module.css';
 interface ShowersCatalogContentProps {
     showers: IShower[];
     onAddShower: (quantity: number) => void;
+    onRemoveShower: (showerId: IShower['_id']) => void;
 }
 
 const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
     showers,
     onAddShower,
+    onRemoveShower,
 }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(1);
@@ -70,7 +72,12 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                     )}
                 </li>
                 {showers.map((item, index) => (
-                    <Shower key={index} shower={item} showerNum={index + 1} />
+                    <Shower
+                        key={item._id}
+                        shower={item}
+                        showerNum={index + 1}
+                        onRemoveShower={onRemoveShower}
+                    />
                 ))}
             </ul>
         </div>

@@ -5,13 +5,14 @@ import { IShower } from 'types/shower';
 
 import ShowersCatalogContent from 'components/showersCatalogContent/ShowersCatalogContent';
 
-import { addShower, fetchShowers } from '../redux/slices/showers';
+import { addShower, deleteShower, fetchShowers } from '../redux/slices/showers';
 
 const ShowersCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
     const [showerList, setShowerList] = useState<IShower[]>([]);
     const [isAdd, setIsAdd] = useState<boolean>(false);
+    const [isRemove, setIsRemove] = useState<boolean>(false);
 
     useEffect(() => {
         const getShowers = async () => {
@@ -20,9 +21,10 @@ const ShowersCatalog: FC = () => {
                 setShowerList(payload);
             }
             setIsAdd(false);
+            setIsRemove(false);
         };
         getShowers();
-    }, [dispatch, isAdd]);
+    }, [dispatch, isAdd, isRemove]);
 
     const onAddShower = async (quantity: number) => {
         const { payload } = await dispatch(addShower(quantity));
@@ -31,8 +33,19 @@ const ShowersCatalog: FC = () => {
         }
     };
 
+    const onRemoveShower = async (showerId: IShower['_id']) => {
+        const { payload } = await dispatch(deleteShower(showerId));
+        if (payload) {
+            setIsRemove(true);
+        }
+    };
+
     return (
-        <ShowersCatalogContent showers={showerList} onAddShower={onAddShower} />
+        <ShowersCatalogContent
+            showers={showerList}
+            onAddShower={onAddShower}
+            onRemoveShower={onRemoveShower}
+        />
     );
 };
 

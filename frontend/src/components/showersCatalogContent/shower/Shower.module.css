@@ -9,6 +9,7 @@
     background-color: #253550;
     border-radius: 30px;
     border: 4px solid #415a7b;
+    position: relative;
 }
 
 .shower_info {
@@ -47,4 +48,24 @@
 
 .free {
     color: #65ff4d;
+}
+
+.remove {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.remove img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.remove:hover {
+    transform: scale(1.1);
 }

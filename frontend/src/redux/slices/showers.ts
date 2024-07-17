@@ -39,6 +39,15 @@ export const addShower = createAsyncThunk(
     }
 );
 
+// params -> showerId
+export const deleteShower = createAsyncThunk(
+    'showers/deleteShower',
+    async (params: IShower['_id']) => {
+        const { data } = await axios.delete(`/showers/${params}`);
+        return data;
+    }
+);
+
 interface IInitialState {
     showers: IShower[];
     status: 'loading' | 'loaded' | 'error';

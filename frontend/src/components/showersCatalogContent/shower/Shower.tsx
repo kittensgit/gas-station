@@ -3,15 +3,17 @@ import { FC } from 'react';
 import { IShower } from 'types/shower';
 
 import showerIcon from 'assets/icons/showerLg.png';
+import removeIcon from 'assets/icons/remove.png';
 
 import styles from './Shower.module.css';
 
 interface ShowerProps {
     shower: IShower;
     showerNum: number;
+    onRemoveShower: (showerId: IShower['_id']) => void;
 }
 
-const Shower: FC<ShowerProps> = ({ shower, showerNum }) => {
+const Shower: FC<ShowerProps> = ({ shower, showerNum, onRemoveShower }) => {
     const showerStatus = shower.occupied.user;
 
     return (
@@ -30,6 +32,12 @@ const Shower: FC<ShowerProps> = ({ shower, showerNum }) => {
                     </span>
                 </p>
             </div>
+            <button
+                onClick={() => onRemoveShower(shower._id)}
+                className={styles.remove}
+            >
+                <img src={removeIcon} alt="remove" />
+            </button>
         </li>
     );
 };
