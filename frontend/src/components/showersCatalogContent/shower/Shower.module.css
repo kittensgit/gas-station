@@ -9,7 +9,6 @@
     background-color: #253550;
     border-radius: 30px;
     border: 4px solid #415a7b;
-    position: relative;
 }
 
 .shower_info {
@@ -48,32 +47,4 @@
 
 .free {
     color: #65ff4d;
-}
-
-.booking {
-    background-color: transparent;
-    border: none;
-    display: inline-flex;
-    cursor: pointer;
-    transition: all 0.3s ease-in;
-}
-
-.booking img {
-    width: 20px;
-    height: 20px;
-    object-fit: cover;
-}
-
-.booking:hover {
-    transform: scale(1.2);
-}
-
-.time {
-    background-color: #ff4d4d;
-    font-weight: 600;
-    padding: 2px 5px;
-    border-radius: 10px;
-    position: absolute;
-    top: 5%;
-    right: 6%;
 }

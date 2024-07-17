@@ -19,10 +19,22 @@ export const bookShower = createAsyncThunk(
         return data;
     }
 );
+
 export const releaseShower = createAsyncThunk(
     'showers/releaseShower',
     async (params: IShower['_id']) => {
         const { data } = await axios.get(`/showers/${params}/release`);
+        return data;
+    }
+);
+
+// params => quantity
+export const addShower = createAsyncThunk(
+    'showers/addShower',
+    async (params: number) => {
+        const { data } = await axios.post(`/showers/add`, {
+            quantity: params,
+        });
         return data;
     }
 );
