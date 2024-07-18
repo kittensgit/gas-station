@@ -6,6 +6,7 @@
     background-color: #1e2b40;
     border-radius: 25px;
     width: 250px;
+    position: relative;
 }
 
 .productIcon {
@@ -61,4 +62,24 @@
 
 .main {
     background-color: #ffd770;
+}
+
+.remove {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.remove:hover {
+    transform: scale(1.1);
+}
+
+.remove img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
 }

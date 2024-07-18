@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import { IProduct } from 'types/product';
 
@@ -11,12 +11,18 @@ import styles from './ProductsCatalogContent.module.css';
 
 interface ProductsCatalogContentProps {
     products: IProduct[];
+    onAddProduct: (product: Omit<IProduct, '_id'>) => void;
+    onRemoveProduct: (productId: IProduct['_id']) => void;
 }
 
 const ProductsCatalogContent: FC<ProductsCatalogContentProps> = ({
     products,
+    onAddProduct,
+    onRemoveProduct,
 }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [name, setName] = useState<string>('');
+    const [scoresCount, setScoresCount] = useState<number>(1);
     const [type, setType] = useState<IProduct['type']>('main');
 
     const toggleEdit = () => {
@@ -27,9 +33,23 @@ const ProductsCatalogContent: FC<ProductsCatalogContentProps> = ({
         setType(type);
     };
 
+    const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
+    const onChangeScoresCount = (e: ChangeEvent<HTMLInputElement>) => {
+        setScoresCount(parseInt(e.target.value, 10));
+    };
+
     const handleAddProduct = () => {
-        toggleEdit();
-        setType('main');
+        if (type && scoresCount > 0 && name) {
+            onAddProduct({
+                name,
+                scoresCount,
+                type,
+            });
+            toggleEdit();
+            setType('main');
+        }
     };
 
     return (
@@ -39,14 +59,18 @@ const ProductsCatalogContent: FC<ProductsCatalogContentProps> = ({
                     <div className={styles.edit}>
                         <div className={styles.inputs}>
                             <input
+                                value={name}
                                 className={styles.name}
                                 type="text"
                                 placeholder="Name"
+                                onChange={onChangeName}
                             />
                             <input
+                                value={scoresCount}
                                 className={styles.cost}
                                 type="number"
                                 placeholder="Price"
+                                onChange={onChangeScoresCount}
                             />
                         </div>
                         <div className={styles.edit_info}>
@@ -91,7 +115,11 @@ const ProductsCatalogContent: FC<ProductsCatalogContentProps> = ({
                 )}
             </li>
             {products.map((item) => (
-                <Product key={item._id} product={item} />
+                <Product
+                    key={item._id}
+                    product={item}
+                    onRemoveProduct={onRemoveProduct}
+                />
             ))}
         </ul>
     );

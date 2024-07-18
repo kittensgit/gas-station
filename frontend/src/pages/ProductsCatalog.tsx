@@ -5,12 +5,18 @@ import ProductsCatalogContent from 'components/productsCatalogContent/ProductsCa
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { IProduct } from 'types/product';
 
-import { fetchProducts } from '../redux/slices/products';
+import {
+    addProduct,
+    deleteProduct,
+    fetchProducts,
+} from '../redux/slices/products';
 
 const ProductsCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
     const [productsList, setProductsList] = useState<IProduct[]>([]);
+    const [isAdd, setIsAdd] = useState<boolean>();
+    const [isRemove, setIsRemove] = useState<boolean>();
 
     useEffect(() => {
         const getProducts = async () => {
@@ -18,11 +24,33 @@ const ProductsCatalog: FC = () => {
             if (payload) {
                 setProductsList(payload);
             }
+            setIsAdd(false);
+            setIsRemove(false);
         };
         getProducts();
-    }, [dispatch]);
+    }, [dispatch, isAdd, isRemove]);
 
-    return <ProductsCatalogContent products={productsList} />;
+    const onAddProduct = async (product: Omit<IProduct, '_id'>) => {
+        const { payload } = await dispatch(addProduct(product));
+        if (payload) {
+            setIsAdd(true);
+        }
+    };
+
+    const onRemoveProduct = async (productId: IProduct['_id']) => {
+        const { payload } = await dispatch(deleteProduct(productId));
+        if (payload) {
+            setIsRemove(true);
+        }
+    };
+
+    return (
+        <ProductsCatalogContent
+            products={productsList}
+            onAddProduct={onAddProduct}
+            onRemoveProduct={onRemoveProduct}
+        />
+    );
 };
 
 export default ProductsCatalog;

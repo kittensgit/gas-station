@@ -27,6 +27,27 @@ export const fetchOrderProduct = createAsyncThunk(
     }
 );
 
+export const addProduct = createAsyncThunk(
+    'products/addProduct',
+    async (params: Omit<IProduct, '_id'>) => {
+        const { name, scoresCount, type } = params;
+        const { data } = await axios.post(`/products/add`, {
+            name,
+            scoresCount,
+            type,
+        });
+        return data;
+    }
+);
+
+export const deleteProduct = createAsyncThunk(
+    'products/deleteProduct',
+    async (params: IProduct['_id']) => {
+        const { data } = await axios.delete(`/products/${params}`);
+        return data;
+    }
+);
+
 interface IInitialState {
     products: IProduct[];
     status: 'loading' | 'loaded' | 'error';
