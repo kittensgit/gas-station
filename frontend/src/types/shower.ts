@@ -8,3 +8,8 @@ export interface IShower {
         bookedUntil: Date;
     };
 }
+
+export interface IShowers {
+    showers: IShower[];
+    price: number;
+}

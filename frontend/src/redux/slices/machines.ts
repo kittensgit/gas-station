@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IMachine } from 'types/machine';
+import { IMachine, IMachines } from 'types/machine';
 
 import axios from '../../axios';
 
@@ -48,17 +48,9 @@ export const deleteMachine = createAsyncThunk(
     }
 );
 
-export const fetchMachinesPrice = createAsyncThunk(
-    'machines/fetchMachinesPrice',
-    async () => {
-        const { data } = await axios.get('/machines/price');
-        return data;
-    }
-);
-
 // params -> updatedPrice
-export const updateMachinesPrice = createAsyncThunk(
-    'machines/updateMachinesPrice',
+export const updateMachinePrice = createAsyncThunk(
+    'machines/updateMachinePrice',
     async (params: number) => {
         const { data } = await axios.put('/machines/price/update', {
             price: params,
@@ -68,12 +60,15 @@ export const updateMachinesPrice = createAsyncThunk(
 );
 
 interface IInitialState {
-    machines: IMachine[];
+    machines: IMachines;
     status: 'loading' | 'loaded' | 'error';
 }
 
 const initialState: IInitialState = {
-    machines: [],
+    machines: {
+        machines: [],
+        price: 0,
+    },
     status: 'loading',
 };
 
@@ -84,7 +79,10 @@ const machinesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchMachines.pending, (state) => {
-                state.machines = [];
+                state.machines = {
+                    machines: [],
+                    price: 0,
+                };
                 state.status = 'loading';
             })
             .addCase(fetchMachines.fulfilled, (state, action) => {
@@ -92,7 +90,10 @@ const machinesSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchMachines.rejected, (state) => {
-                state.machines = [];
+                state.machines = {
+                    machines: [],
+                    price: 0,
+                };
                 state.status = 'error';
             });
     },

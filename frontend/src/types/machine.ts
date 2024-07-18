@@ -8,3 +8,8 @@ export interface IMachine {
         bookedUntil: Date;
     };
 }
+
+export interface IMachines {
+    machines: IMachine[];
+    price: number;
+}

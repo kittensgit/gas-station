@@ -3,21 +3,22 @@ import { FC, useEffect, useState } from 'react';
 import WashMachinesContent from 'components/washMachinesContent/WashMachinesContent';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IMachine } from 'types/machine';
+import { IMachine, IMachines } from 'types/machine';
 
 import {
     addMachine,
     deleteMachine,
     fetchMachines,
-    fetchMachinesPrice,
-    updateMachinesPrice,
+    updateMachinePrice,
 } from '../redux/slices/machines';
 
 const WashMachinesCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
-    const [machinesList, setMachinesList] = useState<IMachine[]>([]);
-    const [machinesPrice, setMachinesPrice] = useState<number>(0);
+    const [machinesList, setMachinesList] = useState<IMachines>({
+        machines: [],
+        price: 0,
+    });
     const [isAdd, setIsAdd] = useState<boolean>(false);
     const [isRemove, setIsRemove] = useState<boolean>(false);
     const [isUpdatePrice, setIsUpdatePrice] = useState<boolean>(false);
@@ -30,20 +31,10 @@ const WashMachinesCatalog: FC = () => {
             }
             setIsAdd(false);
             setIsRemove(false);
-        };
-        getMachines();
-    }, [dispatch, isAdd, isRemove]);
-
-    useEffect(() => {
-        const getMachinesPrice = async () => {
-            const { payload } = await dispatch(fetchMachinesPrice());
-            if (payload) {
-                setMachinesPrice(payload);
-            }
             setIsUpdatePrice(false);
         };
-        getMachinesPrice();
-    }, [dispatch, isUpdatePrice]);
+        getMachines();
+    }, [dispatch, isAdd, isRemove, isUpdatePrice]);
 
     const onAddMachine = async (quantity: number) => {
         const { payload } = await dispatch(addMachine(quantity));
@@ -59,8 +50,8 @@ const WashMachinesCatalog: FC = () => {
         }
     };
 
-    const onUpdateMachinesPrice = async (updatedPrice: number) => {
-        const { payload } = await dispatch(updateMachinesPrice(updatedPrice));
+    const onUpdateMachinePrice = async (updatedPrice: number) => {
+        const { payload } = await dispatch(updateMachinePrice(updatedPrice));
         if (payload) {
             setIsUpdatePrice(true);
         }
@@ -69,10 +60,9 @@ const WashMachinesCatalog: FC = () => {
     return (
         <WashMachinesContent
             machines={machinesList}
-            machinesPrice={machinesPrice}
             onAddMachine={onAddMachine}
             onRemoveMachine={onRemoveMachine}
-            onUpdateMachinesPrice={onUpdateMachinesPrice}
+            onUpdateMachinePrice={onUpdateMachinePrice}
         />
     );
 };

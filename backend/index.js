@@ -91,12 +91,11 @@ app.delete(
     checkAdmin,
     MachineController.deleteMachine
 );
-app.get('/machines/price', checkAuth, MachineController.getMachinesPrice);
 app.put(
     '/machines/price/update',
     checkAuth,
     checkAdmin,
-    MachineController.updateMachinesPrice
+    MachineController.updateMachinePrice
 );
 
 app.get('/showers', ShowerController.getShowers);
@@ -119,6 +118,12 @@ app.delete(
     checkAuth,
     checkAdmin,
     ShowerController.deleteShower
+);
+app.put(
+    '/showers/price/update',
+    checkAuth,
+    checkAdmin,
+    ShowerController.updateShowerPrice
 );
 
 app.get('/products/:filterType', ProductController.getProducts);

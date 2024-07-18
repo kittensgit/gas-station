@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 
-import { IMachine } from 'types/machine';
+import { IMachine, IMachines } from 'types/machine';
 
 import machineIcon from 'assets/icons/washing_machine.png';
 import addIcon from 'assets/icons/add.png';
@@ -13,28 +13,26 @@ import Machine from './machine/Machine';
 import styles from './WashMachinesContent.module.css';
 
 interface WashMachinesCatalogProps {
-    machines: IMachine[];
-    machinesPrice: number;
+    machines: IMachines;
     onAddMachine: (quantity: number) => void;
     onRemoveMachine: (machineId: IMachine['_id']) => void;
-    onUpdateMachinesPrice: (updatedPrice: number) => void;
+    onUpdateMachinePrice: (updatedPrice: number) => void;
 }
 
 const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
     machines,
-    machinesPrice,
     onAddMachine,
     onRemoveMachine,
-    onUpdateMachinesPrice,
+    onUpdateMachinePrice,
 }) => {
-    const [isEditProduct, setIsEditProduct] = useState<boolean>(false);
+    const [isEditMachine, setIsEditMachine] = useState<boolean>(false);
     const [isEditPrice, setIsEditPrice] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(1);
-    const [updatedPrice, setUpdatedPrice] = useState<number>(machinesPrice);
+    const [updatedPrice, setUpdatedPrice] = useState<number>(machines.price);
 
     useEffect(() => {
-        setUpdatedPrice(machinesPrice);
-    }, [machinesPrice]);
+        setUpdatedPrice(machines.price);
+    }, [machines.price]);
 
     const onChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
         setQuantity(parseInt(e.target.value, 10));
@@ -44,8 +42,8 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
         setUpdatedPrice(parseInt(e.target.value, 10));
     };
 
-    const toggleEditProduct = () => {
-        setIsEditProduct(!isEditProduct);
+    const toggleEditMachine = () => {
+        setIsEditMachine(!isEditMachine);
     };
     const toggleEditPrice = () => {
         setIsEditPrice(!isEditPrice);
@@ -53,13 +51,13 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
 
     const handleAddMachine = () => {
         onAddMachine(quantity);
-        toggleEditProduct();
+        toggleEditMachine();
         setQuantity(1);
     };
 
     const handleUpdateMachinesPrice = () => {
         if (updatedPrice) {
-            onUpdateMachinesPrice(updatedPrice);
+            onUpdateMachinePrice(updatedPrice);
             toggleEditPrice();
         }
     };
@@ -67,7 +65,7 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
         <div className={styles.machines_content}>
             <div className={styles.title}>
                 <h1>
-                    Machines price -{' '}
+                    Machine price -{' '}
                     {isEditPrice ? (
                         <input
                             className={styles.price_input}
@@ -78,7 +76,7 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
                             onChange={onChangeUpdatedPrice}
                         />
                     ) : (
-                        <span>{machinesPrice}</span>
+                        <span>{machines.price}</span>
                     )}
                 </h1>
                 {isEditPrice ? (
@@ -103,7 +101,7 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
             </div>
             <ul className={styles.machines}>
                 <li className={styles.add_machine}>
-                    {isEditProduct ? (
+                    {isEditMachine ? (
                         <div className={styles.edit}>
                             <img src={machineIcon} alt="shower" />
                             <div className={styles.edit_info}>
@@ -124,14 +122,14 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
                         </div>
                     ) : (
                         <button
-                            onClick={toggleEditProduct}
+                            onClick={toggleEditMachine}
                             className={styles.plus}
                         >
                             <img src={plusIcon} alt="plus" />
                         </button>
                     )}
                 </li>
-                {machines.map((item, index) => (
+                {machines.machines.map((item, index) => (
                     <Machine
                         key={item._id}
                         machine={item}

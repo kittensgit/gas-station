@@ -5,7 +5,12 @@ const SettingsSchema = new mongoose.Schema(
         machinePrice: {
             type: Number,
             required: true,
-            default: 1000, // Установите начальную цену
+            default: 1000,
+        },
+        showerPrice: {
+            type: Number,
+            required: true,
+            default: 1000,
         },
     },
     {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { IShower } from 'types/shower';
+import { IShower, IShowers } from 'types/shower';
 
 import axios from '../../axios';
 
@@ -48,13 +48,27 @@ export const deleteShower = createAsyncThunk(
     }
 );
 
+// params showerPrice
+export const updateShowerPrice = createAsyncThunk(
+    'showers/updateShowerPrice',
+    async (params: number) => {
+        const { data } = await axios.put('/showers/price/update', {
+            price: params,
+        });
+        return data;
+    }
+);
+
 interface IInitialState {
-    showers: IShower[];
+    showers: IShowers;
     status: 'loading' | 'loaded' | 'error';
 }
 
 const initialState: IInitialState = {
-    showers: [],
+    showers: {
+        showers: [],
+        price: 0,
+    },
     status: 'loading',
 };
 
@@ -65,7 +79,10 @@ const showersSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchShowers.pending, (state) => {
-                state.showers = [];
+                state.showers = {
+                    showers: [],
+                    price: 0,
+                };
                 state.status = 'loading';
             })
             .addCase(fetchShowers.fulfilled, (state, action) => {
@@ -73,7 +90,10 @@ const showersSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchShowers.rejected, (state) => {
-                state.showers = [];
+                state.showers = {
+                    showers: [],
+                    price: 0,
+                };
                 state.status = 'error';
             });
     },

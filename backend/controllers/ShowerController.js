@@ -2,6 +2,7 @@ import cron from 'node-cron';
 
 import UserModel from '../models/User.js';
 import ShowerModel from '../models/Shower.js';
+import SettingsModel from '../models/Settings.js';
 
 export const getShowers = async (req, res) => {
     try {
@@ -12,7 +13,17 @@ export const getShowers = async (req, res) => {
                 message: 'Showers not found',
             });
 
-        res.json(showers);
+        const settings = await SettingsModel.findOne();
+
+        if (!settings)
+            return res.status(404).json({
+                message: 'Settings not found',
+            });
+
+        res.json({
+            showers,
+            price: settings.showerPrice,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -29,18 +40,20 @@ export const bookShower = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (user.scores >= 1200) {
-            const shower = await ShowerModel.findById(req.params.showerId);
+        const shower = await ShowerModel.findById(req.params.showerId);
 
-            if (!shower)
-                return res.status(404).json({
-                    message: 'Shower not found',
-                });
-            if (shower.occupied.user)
-                return res.status(400).json({
-                    message: `Shower is already occupied by user`,
-                });
+        if (!shower)
+            return res.status(404).json({
+                message: 'Shower not found',
+            });
+        if (shower.occupied.user)
+            return res.status(400).json({
+                message: `Shower is already occupied by user`,
+            });
 
+        const settings = await SettingsModel.findOne();
+
+        if (user.scores >= settings.showerPrice) {
             const bookedAt = new Date();
             const bookedUntil = new Date(
                 bookedAt.getTime() + 12 * 60 * 60 * 1000
@@ -54,7 +67,7 @@ export const bookShower = async (req, res) => {
 
             await shower.save();
 
-            user.scores -= 1200;
+            user.scores -= settings.showerPrice;
             await user.save();
         } else {
             return res
@@ -62,7 +75,7 @@ export const bookShower = async (req, res) => {
                 .json({ message: "You don't have enough points" });
         }
         res.json({
-            message: 'Shower booked successfully and you spent 1200 points',
+            message: `Shower booked successfully and you spent ${settings.showerPrice} points`,
         });
     } catch (error) {
         console.log(error);
@@ -147,6 +160,12 @@ export const addShower = async (req, res) => {
             const newShower = new ShowerModel();
             await newShower.save();
         }
+        const settings = await SettingsModel.findOne();
+        if (!settings) {
+            const showerSettings = new SettingsModel();
+            showerSettings.save();
+        }
+
         res.json({
             success: true,
         });
@@ -154,6 +173,28 @@ export const addShower = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to add shower',
+        });
+    }
+};
+
+export const updateShowerPrice = async (req, res) => {
+    try {
+        const { price } = req.body;
+        const settings = await SettingsModel.findOne();
+
+        if (!settings)
+            return res.status(404).json({
+                message: 'Settings not found',
+            });
+
+        settings.showerPrice = price;
+        settings.save();
+
+        res.json({ message: 'The price successfully updated' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get shower price',
         });
     }
 };

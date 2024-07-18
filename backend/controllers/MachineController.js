@@ -13,7 +13,17 @@ export const getMachines = async (req, res) => {
                 message: 'Machines not found',
             });
 
-        res.json(machines);
+        const settings = await SettingsModel.findOne();
+
+        if (!settings)
+            return res.status(404).json({
+                message: 'Settings not found',
+            });
+
+        res.json({
+            machines,
+            price: settings.machinePrice,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -58,7 +68,7 @@ export const bookMachine = async (req, res) => {
 
             await machine.save();
 
-            user.scores = user.scores - 1000;
+            user.scores = user.scores - settings.machinePrice;
 
             await user.save();
         } else {
@@ -171,25 +181,7 @@ export const addMachine = async (req, res) => {
     }
 };
 
-export const getMachinesPrice = async (req, res) => {
-    try {
-        const settings = await SettingsModel.findOne();
-
-        if (!settings)
-            return res.status(404).json({
-                message: 'Settings not found',
-            });
-
-        res.json(settings.machinePrice);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: 'Failed to get machine price',
-        });
-    }
-};
-
-export const updateMachinesPrice = async (req, res) => {
+export const updateMachinePrice = async (req, res) => {
     try {
         const { price } = req.body;
         const settings = await SettingsModel.findOne();
