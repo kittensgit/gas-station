@@ -91,6 +91,13 @@ app.delete(
     checkAdmin,
     MachineController.deleteMachine
 );
+app.get('/machines/price', checkAuth, MachineController.getMachinesPrice);
+app.put(
+    '/machines/price/update',
+    checkAuth,
+    checkAdmin,
+    MachineController.updateMachinesPrice
+);
 
 app.get('/showers', ShowerController.getShowers);
 app.get('/showers/:showerId/book', checkAuth, ShowerController.bookShower);

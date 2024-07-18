@@ -2,6 +2,7 @@ import cron from 'node-cron';
 
 import UserModel from '../models/User.js';
 import MachineModel from '../models/Machine.js';
+import SettingsModel from '../models/Settings.js';
 
 export const getMachines = async (req, res) => {
     try {
@@ -29,19 +30,21 @@ export const bookMachine = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (user.scores >= 1000) {
-            const machine = await MachineModel.findById(req.params.machineId);
+        const machine = await MachineModel.findById(req.params.machineId);
 
-            if (!machine)
-                return res.status(404).json({
-                    message: 'Machine not found',
-                });
+        if (!machine)
+            return res.status(404).json({
+                message: 'Machine not found',
+            });
 
-            if (machine.occupied.user)
-                return res.status(400).json({
-                    message: `Machine is already occupied by user`,
-                });
+        if (machine.occupied.user)
+            return res.status(400).json({
+                message: `Machine is already occupied by user`,
+            });
 
+        const settings = await SettingsModel.findOne();
+
+        if (user.scores >= settings.machinePrice) {
             const bookedAt = new Date();
             const bookedUntil = new Date(
                 bookedAt.getTime() + 3 * 60 * 60 * 1000
@@ -64,7 +67,7 @@ export const bookMachine = async (req, res) => {
                 .json({ message: "You don't have enough points" });
         }
         res.json({
-            message: 'Machine booked successfully and you spent 1000 points',
+            message: `Machine booked successfully and you spent ${settings.machinePrice} points`,
         });
     } catch (error) {
         console.log(error);
@@ -151,6 +154,12 @@ export const addMachine = async (req, res) => {
             const newMachine = new MachineModel();
             await newMachine.save();
         }
+        const settings = await SettingsModel.findOne();
+        if (!settings) {
+            const machineSettings = new SettingsModel();
+            machineSettings.save();
+        }
+
         res.json({
             success: true,
         });
@@ -158,6 +167,46 @@ export const addMachine = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to add machine',
+        });
+    }
+};
+
+export const getMachinesPrice = async (req, res) => {
+    try {
+        const settings = await SettingsModel.findOne();
+
+        if (!settings)
+            return res.status(404).json({
+                message: 'Settings not found',
+            });
+
+        res.json(settings.machinePrice);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get machine price',
+        });
+    }
+};
+
+export const updateMachinesPrice = async (req, res) => {
+    try {
+        const { price } = req.body;
+        const settings = await SettingsModel.findOne();
+
+        if (!settings)
+            return res.status(404).json({
+                message: 'Settings not found',
+            });
+
+        settings.machinePrice = price;
+        settings.save();
+
+        res.json({ message: 'The price successfully updated' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to get machine price',
         });
     }
 };

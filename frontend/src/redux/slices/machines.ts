@@ -48,6 +48,25 @@ export const deleteMachine = createAsyncThunk(
     }
 );
 
+export const fetchMachinesPrice = createAsyncThunk(
+    'machines/fetchMachinesPrice',
+    async () => {
+        const { data } = await axios.get('/machines/price');
+        return data;
+    }
+);
+
+// params -> updatedPrice
+export const updateMachinesPrice = createAsyncThunk(
+    'machines/updateMachinesPrice',
+    async (params: number) => {
+        const { data } = await axios.put('/machines/price/update', {
+            price: params,
+        });
+        return data;
+    }
+);
+
 interface IInitialState {
     machines: IMachine[];
     status: 'loading' | 'loaded' | 'error';

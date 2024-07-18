@@ -9,14 +9,18 @@ import {
     addMachine,
     deleteMachine,
     fetchMachines,
+    fetchMachinesPrice,
+    updateMachinesPrice,
 } from '../redux/slices/machines';
 
 const WashMachinesCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
     const [machinesList, setMachinesList] = useState<IMachine[]>([]);
+    const [machinesPrice, setMachinesPrice] = useState<number>(0);
     const [isAdd, setIsAdd] = useState<boolean>(false);
     const [isRemove, setIsRemove] = useState<boolean>(false);
+    const [isUpdatePrice, setIsUpdatePrice] = useState<boolean>(false);
 
     useEffect(() => {
         const getMachines = async () => {
@@ -29,6 +33,17 @@ const WashMachinesCatalog: FC = () => {
         };
         getMachines();
     }, [dispatch, isAdd, isRemove]);
+
+    useEffect(() => {
+        const getMachinesPrice = async () => {
+            const { payload } = await dispatch(fetchMachinesPrice());
+            if (payload) {
+                setMachinesPrice(payload);
+            }
+            setIsUpdatePrice(false);
+        };
+        getMachinesPrice();
+    }, [dispatch, isUpdatePrice]);
 
     const onAddMachine = async (quantity: number) => {
         const { payload } = await dispatch(addMachine(quantity));
@@ -44,11 +59,20 @@ const WashMachinesCatalog: FC = () => {
         }
     };
 
+    const onUpdateMachinesPrice = async (updatedPrice: number) => {
+        const { payload } = await dispatch(updateMachinesPrice(updatedPrice));
+        if (payload) {
+            setIsUpdatePrice(true);
+        }
+    };
+
     return (
         <WashMachinesContent
             machines={machinesList}
+            machinesPrice={machinesPrice}
             onAddMachine={onAddMachine}
             onRemoveMachine={onRemoveMachine}
+            onUpdateMachinesPrice={onUpdateMachinesPrice}
         />
     );
 };

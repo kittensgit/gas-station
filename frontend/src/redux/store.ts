@@ -5,6 +5,7 @@ import { refuelReducer } from './slices/refuel';
 import { productsReducer } from './slices/products';
 import { ordersReducer } from './slices/orders';
 import { machinesReducer } from './slices/machines';
+import { showersReducer } from './slices/showers';
 
 export const store = configureStore({
     reducer: {
@@ -13,5 +14,6 @@ export const store = configureStore({
         products: productsReducer,
         orders: ordersReducer,
         machines: machinesReducer,
+        showers: showersReducer,
     },
 });

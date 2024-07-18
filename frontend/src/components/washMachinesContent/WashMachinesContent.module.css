@@ -1,3 +1,76 @@
+.machines_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.title h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.title span {
+    font-weight: 800;
+}
+
+.title img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
+.edit_price {
+    background-color: transparent;
+    border: none;
+    padding: 0 5px;
+    border-bottom: 2px solid #6582aa;
+    cursor: pointer;
+}
+
+.edit_price:hover img {
+    transform: scale(1.1);
+}
+
+.edit_price img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    transition: all 0.3s ease-in;
+}
+
+.price_input {
+    font-size: 26px;
+    font-weight: 800;
+    max-width: 80px;
+    text-align: center;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid #6582aa;
+    color: #6582aa;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.price_input::placeholder,
+.edit input::placeholder {
+    font-weight: 600;
+    color: #415a7b;
+}
+
+.price_input,
+.edit input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .machines {
     display: flex;
     flex-wrap: wrap;
@@ -81,16 +154,6 @@
     border-bottom: 1px solid #6582aa;
     color: #fff;
     font-family: 'Work Sans', sans-serif;
-}
-
-.edit input::placeholder {
-    color: #6582aa;
-}
-
-.edit input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
 }
 
 .add {

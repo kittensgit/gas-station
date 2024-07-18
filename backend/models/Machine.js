@@ -11,6 +11,10 @@ const MachineSchema = new mongoose.Schema(
             bookedAt: { type: Date, default: null },
             bookedUntil: { type: Date, default: null },
         },
+        cost: {
+            type: Number,
+            default: 1000,
+        },
     },
     {
         timestamps: true,
