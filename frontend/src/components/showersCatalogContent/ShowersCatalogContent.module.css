@@ -80,6 +80,7 @@ input::-webkit-inner-spin-button {
 
 .add_shower {
     width: 200px;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;

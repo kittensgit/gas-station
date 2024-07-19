@@ -5,7 +5,8 @@ import ProductsContent from 'components/productsContent/ProductsContent';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAuth } from 'hooks/useAuth';
-import { IOrderProduct, IProduct } from 'types/product';
+import { IOrderProduct } from 'types/product';
+import { useAppSelector } from 'hooks/useAppSelector';
 
 import { fetchOrderProduct, fetchProducts } from '../redux/slices/products';
 
@@ -15,15 +16,12 @@ const Products: FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [products, setProducts] = useState<IProduct[]>([]);
+    const { products } = useAppSelector((state) => state.products);
 
     useEffect(() => {
         const getProducts = async () => {
-            const { payload } = await dispatch(fetchProducts(typeFilter!));
-            if (payload) {
-                setProducts(payload);
-            } else {
-                alert('Failed to get products');
+            if (typeFilter) {
+                dispatch(fetchProducts(typeFilter));
             }
         };
         getProducts();

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { IMachine } from 'types/machine';
+import { IMachine, IMachines } from 'types/machine';
 import { IUser } from 'types/user';
 import pointsIcon from 'assets/icons/points.png';
 
@@ -10,7 +10,7 @@ import styles from './LaundryContent.module.css';
 
 interface LaundryContentProps {
     userId: IUser['_id'];
-    machines: IMachine[];
+    machines: Omit<IMachines, 'price'>;
     onReleaseMachine: (machineId: IMachine['_id']) => void;
     onBookMachine: (machineId: IMachine['_id']) => void;
 }
@@ -21,7 +21,7 @@ const LaundryContent: FC<LaundryContentProps> = ({
     onBookMachine,
     onReleaseMachine,
 }) => {
-    const userMachine = machines.find(
+    const userMachine = machines.machines.find(
         (item) => item.occupied?.user?._id === userId
     );
 
@@ -34,7 +34,7 @@ const LaundryContent: FC<LaundryContentProps> = ({
                 <img src={pointsIcon} alt="points" />
             </div>
             <ul className={styles.machines}>
-                {machines.map((item, index) => (
+                {machines.machines.map((item, index) => (
                     <Machine
                         key={index}
                         machine={item}

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAuth } from 'hooks/useAuth';
-import { IShower } from 'types/shower';
+import { IShower, IShowers } from 'types/shower';
 
 import ShowersContent from 'components/showersContent/ShowersContent';
 
@@ -18,7 +18,9 @@ const Showers: FC = () => {
 
     const [isBook, setIsBook] = useState<boolean>(false);
     const [isRelease, setIsRelease] = useState<boolean>(false);
-    const [showerList, setShowerList] = useState<IShower[]>([]);
+    const [showerList, setShowerList] = useState<Omit<IShowers, 'price'>>({
+        showers: [],
+    });
 
     useEffect(() => {
         const getShowers = async () => {

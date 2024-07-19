@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IOrderProduct, IProduct } from 'types/product';
 
@@ -64,15 +64,53 @@ const productsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // загрузка продуктов
             .addCase(fetchProducts.pending, (state) => {
                 state.products = [];
                 state.status = 'loading';
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
-                state.products = action.payload;
-                state.status = 'loaded';
-            })
+            .addCase(
+                fetchProducts.fulfilled,
+                (state, action: PayloadAction<IProduct[]>) => {
+                    state.products = action.payload;
+                    state.status = 'loaded';
+                }
+            )
             .addCase(fetchProducts.rejected, (state) => {
+                state.products = [];
+                state.status = 'error';
+            })
+            // добавление продукта
+            .addCase(addProduct.pending, (state) => {
+                state.products = [];
+                state.status = 'loading';
+            })
+            .addCase(
+                addProduct.fulfilled,
+                (state, action: PayloadAction<IProduct>) => {
+                    state.products = [...state.products, action.payload];
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(addProduct.rejected, (state) => {
+                state.products = [];
+                state.status = 'error';
+            })
+            // удаление продукта
+            .addCase(deleteProduct.pending, (state) => {
+                state.products = [];
+                state.status = 'loading';
+            })
+            .addCase(
+                deleteProduct.fulfilled,
+                (state, action: PayloadAction<IProduct['_id']>) => {
+                    state.products = state.products.filter(
+                        (item) => item._id !== action.payload
+                    );
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(deleteProduct.rejected, (state) => {
                 state.products = [];
                 state.status = 'error';
             });

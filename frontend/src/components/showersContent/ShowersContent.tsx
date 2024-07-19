@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import pointsIcon from 'assets/icons/points.png';
 
-import { IShower } from 'types/shower';
+import { IShower, IShowers } from 'types/shower';
 import { IUser } from 'types/user';
 
 import Shower from './shower/Shower';
@@ -11,7 +11,7 @@ import styles from './ShowersContent.module.css';
 
 interface ShowersContentProps {
     userId: IUser['_id'];
-    showers: IShower[];
+    showers: Omit<IShowers, 'price'>;
     onReleaseShower: (showerId: IShower['_id']) => void;
     onBookShower: (showerId: IShower['_id']) => void;
 }
@@ -22,7 +22,7 @@ const ShowersContent: FC<ShowersContentProps> = ({
     onReleaseShower,
     onBookShower,
 }) => {
-    const userShower = showers.find(
+    const userShower = showers.showers.find(
         (item) => item.occupied?.user?._id === userId
     );
 
@@ -35,7 +35,7 @@ const ShowersContent: FC<ShowersContentProps> = ({
                 <img src={pointsIcon} alt="points" />
             </div>
             <ul className={styles.showers}>
-                {showers.map((item, index) => (
+                {showers.showers.map((item, index) => (
                     <Shower
                         userShower={userShower!}
                         key={item._id}

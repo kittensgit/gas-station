@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAuth } from 'hooks/useAuth';
-import { IMachine } from 'types/machine';
+import { IMachine, IMachines } from 'types/machine';
 
 import LaundryContent from 'components/laundryContent/LaundryContent';
 
@@ -18,7 +18,9 @@ const Laundry: FC = () => {
 
     const [isBook, setIsBook] = useState<boolean>(false);
     const [isRelease, setIsRelease] = useState<boolean>(false);
-    const [machinesList, setMachinesList] = useState<IMachine[]>([]);
+    const [machinesList, setMachinesList] = useState<Omit<IMachines, 'price'>>({
+        machines: [],
+    });
 
     useEffect(() => {
         const getMachines = async () => {
