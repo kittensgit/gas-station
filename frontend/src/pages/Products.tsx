@@ -1,12 +1,13 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ProductsContent from 'components/productsContent/ProductsContent';
+import Loading from 'components/common/loading/Loading';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { useAuth } from 'hooks/useAuth';
 import { IOrderProduct } from 'types/product';
-import { useAppSelector } from 'hooks/useAppSelector';
 
 import { fetchOrderProduct, fetchProducts } from '../redux/slices/products';
 
@@ -16,10 +17,10 @@ const Products: FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const { products } = useAppSelector((state) => state.products);
+    const { products, status } = useAppSelector((state) => state.products);
 
     useEffect(() => {
-        const getProducts = async () => {
+        const getProducts = () => {
             if (typeFilter) {
                 dispatch(fetchProducts(typeFilter));
             }
@@ -35,6 +36,14 @@ const Products: FC = () => {
             navigate('/userOrders');
         }
     };
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
 
     return (
         <ProductsContent

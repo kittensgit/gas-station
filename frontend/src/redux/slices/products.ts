@@ -82,36 +82,29 @@ const productsSlice = createSlice({
             })
             // добавление продукта
             .addCase(addProduct.pending, (state) => {
-                state.products = [];
                 state.status = 'loading';
             })
             .addCase(
                 addProduct.fulfilled,
                 (state, action: PayloadAction<IProduct>) => {
-                    state.products = [...state.products, action.payload];
+                    state.products.push(action.payload);
                     state.status = 'loaded';
                 }
             )
             .addCase(addProduct.rejected, (state) => {
-                state.products = [];
                 state.status = 'error';
             })
             // удаление продукта
             .addCase(deleteProduct.pending, (state) => {
-                state.products = [];
                 state.status = 'loading';
             })
-            .addCase(
-                deleteProduct.fulfilled,
-                (state, action: PayloadAction<IProduct['_id']>) => {
-                    state.products = state.products.filter(
-                        (item) => item._id !== action.payload
-                    );
-                    state.status = 'loaded';
-                }
-            )
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.products = state.products.filter(
+                    (item) => item._id !== action.meta.arg
+                );
+                state.status = 'loaded';
+            })
             .addCase(deleteProduct.rejected, (state) => {
-                state.products = [];
                 state.status = 'error';
             });
     },

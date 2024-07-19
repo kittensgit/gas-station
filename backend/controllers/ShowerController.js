@@ -156,10 +156,13 @@ export const deleteShower = async (req, res) => {
 
 export const addShower = async (req, res) => {
     try {
+        const newShowers = [];
         for (let i = 1; i <= req.body.quantity; i++) {
             const newShower = new ShowerModel();
             await newShower.save();
+            newShowers.push(newShower);
         }
+
         const settings = await SettingsModel.findOne();
         if (!settings) {
             const showerSettings = new SettingsModel();
@@ -167,7 +170,7 @@ export const addShower = async (req, res) => {
         }
 
         res.json({
-            success: true,
+            showers: newShowers,
         });
     } catch (error) {
         console.log(error);

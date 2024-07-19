@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import ProductsCatalogContent from 'components/productsCatalogContent/ProductsCatalogContent';
 import Loading from 'components/common/loading/Loading';
@@ -16,36 +16,29 @@ import {
 const ProductsCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
-    const [isAdd, setIsAdd] = useState<boolean>();
-    const [isRemove, setIsRemove] = useState<boolean>();
-
     const { products, status } = useAppSelector((state) => state.products);
 
     useEffect(() => {
-        const getProducts = async () => {
+        const getProducts = () => {
             dispatch(fetchProducts('all'));
-            setIsAdd(false);
-            setIsRemove(false);
         };
         getProducts();
-    }, [dispatch, isAdd, isRemove]);
+    }, [dispatch]);
 
-    const onAddProduct = async (product: Omit<IProduct, '_id'>) => {
-        const { payload } = await dispatch(addProduct(product));
-        if (payload) {
-            setIsAdd(true);
-        }
+    const onAddProduct = (product: Omit<IProduct, '_id'>) => {
+        dispatch(addProduct(product));
     };
 
-    const onRemoveProduct = async (productId: IProduct['_id']) => {
-        const { payload } = await dispatch(deleteProduct(productId));
-        if (payload) {
-            setIsRemove(true);
-        }
+    const onRemoveProduct = (productId: IProduct['_id']) => {
+        dispatch(deleteProduct(productId));
     };
 
     if (status === 'loading') {
         return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
     }
 
     return (

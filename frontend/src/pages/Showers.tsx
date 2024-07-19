@@ -1,10 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAuth } from 'hooks/useAuth';
-import { IShower, IShowers } from 'types/shower';
-
 import ShowersContent from 'components/showersContent/ShowersContent';
+import Loading from 'components/common/loading/Loading';
+
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAuth } from 'hooks/useAuth';
+import { IShower } from 'types/shower';
 
 import {
     bookShower,
@@ -18,17 +20,12 @@ const Showers: FC = () => {
 
     const [isBook, setIsBook] = useState<boolean>(false);
     const [isRelease, setIsRelease] = useState<boolean>(false);
-    const [showerList, setShowerList] = useState<Omit<IShowers, 'price'>>({
-        showers: [],
-    });
+
+    const { showers, status } = useAppSelector((state) => state.showers);
 
     useEffect(() => {
-        const getShowers = async () => {
-            const { payload } = await dispatch(fetchShowers());
-
-            if (payload) {
-                setShowerList(payload);
-            }
+        const getShowers = () => {
+            dispatch(fetchShowers());
         };
         getShowers();
     }, [dispatch, isRelease, isBook]);
@@ -49,9 +46,17 @@ const Showers: FC = () => {
         }
     };
 
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
+
     return (
         <ShowersContent
-            showers={showerList}
+            showers={showers}
             userId={userId}
             onReleaseShower={onReleaseShower}
             onBookShower={onBookShower}

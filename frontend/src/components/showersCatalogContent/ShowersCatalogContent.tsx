@@ -13,7 +13,8 @@ import Shower from './shower/Shower';
 import styles from './ShowersCatalogContent.module.css';
 
 interface ShowersCatalogContentProps {
-    showers: IShowers;
+    showers: IShower[];
+    showerPrice: IShowers['price'];
     onAddShower: (quantity: number) => void;
     onRemoveShower: (showerId: IShower['_id']) => void;
     onUpdateShowerPrice: (showerPrice: number) => void;
@@ -21,6 +22,7 @@ interface ShowersCatalogContentProps {
 
 const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
     showers,
+    showerPrice,
     onAddShower,
     onRemoveShower,
     onUpdateShowerPrice,
@@ -28,11 +30,11 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
     const [isEditShower, setIsEditShower] = useState<boolean>(false);
     const [isEditPrice, setIsEditPrice] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(1);
-    const [updatedPrice, setUpdatedPrice] = useState<number>(showers.price);
+    const [updatedPrice, setUpdatedPrice] = useState<number>(showerPrice);
 
     useEffect(() => {
-        setUpdatedPrice(showers.price);
-    }, [showers.price]);
+        setUpdatedPrice(showerPrice);
+    }, [showerPrice]);
 
     const onChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
         setQuantity(parseInt(e.target.value, 10));
@@ -82,7 +84,7 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                             onChange={onChangeUpdatedPrice}
                         />
                     ) : (
-                        <span>{showers.price}</span>
+                        <span>{showerPrice}</span>
                     )}
                 </h1>
                 {isEditPrice ? (
@@ -135,7 +137,7 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                         </button>
                     )}
                 </li>
-                {showers.showers.map((item, index) => (
+                {showers.map((item, index) => (
                     <Shower
                         key={item._id}
                         shower={item}

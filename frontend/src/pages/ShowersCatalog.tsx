@@ -1,9 +1,11 @@
-import { FC, useEffect, useState } from 'react';
-
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IShower, IShowers } from 'types/shower';
+import { FC, useEffect } from 'react';
 
 import ShowersCatalogContent from 'components/showersCatalogContent/ShowersCatalogContent';
+import Loading from 'components/common/loading/Loading';
+
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IShower } from 'types/shower';
 
 import {
     addShower,
@@ -15,51 +17,41 @@ import {
 const ShowersCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
-    const [showerList, setShowerList] = useState<IShowers>({
-        showers: [],
-        price: 0,
-    });
-    const [isAdd, setIsAdd] = useState<boolean>(false);
-    const [isRemove, setIsRemove] = useState<boolean>(false);
-    const [isUpdate, setIsUpdate] = useState<boolean>(false);
+    const { showers, showerPrice, status } = useAppSelector(
+        (state) => state.showers
+    );
 
     useEffect(() => {
-        const getShowers = async () => {
-            const { payload } = await dispatch(fetchShowers());
-            if (payload) {
-                setShowerList(payload);
-            }
-            setIsAdd(false);
-            setIsRemove(false);
-            setIsUpdate(false);
+        const getShowers = () => {
+            dispatch(fetchShowers());
         };
         getShowers();
-    }, [dispatch, isAdd, isRemove, isUpdate]);
+    }, [dispatch]);
 
-    const onAddShower = async (quantity: number) => {
-        const { payload } = await dispatch(addShower(quantity));
-        if (payload) {
-            setIsAdd(true);
-        }
+    const onAddShower = (quantity: number) => {
+        dispatch(addShower(quantity));
     };
 
-    const onRemoveShower = async (showerId: IShower['_id']) => {
-        const { payload } = await dispatch(deleteShower(showerId));
-        if (payload) {
-            setIsRemove(true);
-        }
+    const onRemoveShower = (showerId: IShower['_id']) => {
+        dispatch(deleteShower(showerId));
     };
 
-    const onUpdateShowerPrice = async (showerPrice: number) => {
-        const { payload } = await dispatch(updateShowerPrice(showerPrice));
-        if (payload) {
-            setIsUpdate(true);
-        }
+    const onUpdateShowerPrice = (showerPrice: number) => {
+        dispatch(updateShowerPrice(showerPrice));
     };
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
 
     return (
         <ShowersCatalogContent
-            showers={showerList}
+            showers={showers}
+            showerPrice={showerPrice}
             onAddShower={onAddShower}
             onRemoveShower={onRemoveShower}
             onUpdateShowerPrice={onUpdateShowerPrice}

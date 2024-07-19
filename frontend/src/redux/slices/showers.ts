@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IShower, IShowers } from 'types/shower';
 
@@ -60,15 +60,14 @@ export const updateShowerPrice = createAsyncThunk(
 );
 
 interface IInitialState {
-    showers: IShowers;
+    showers: IShower[];
+    showerPrice: number;
     status: 'loading' | 'loaded' | 'error';
 }
 
 const initialState: IInitialState = {
-    showers: {
-        showers: [],
-        price: 0,
-    },
+    showers: [],
+    showerPrice: 0,
     status: 'loading',
 };
 
@@ -78,22 +77,61 @@ const showersSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // получение всех душевых
             .addCase(fetchShowers.pending, (state) => {
-                state.showers = {
-                    showers: [],
-                    price: 0,
-                };
+                state.showers = [];
+                state.showerPrice = 0;
                 state.status = 'loading';
             })
-            .addCase(fetchShowers.fulfilled, (state, action) => {
-                state.showers = action.payload;
+            .addCase(
+                fetchShowers.fulfilled,
+                (state, action: PayloadAction<IShowers>) => {
+                    state.showers = action.payload.showers;
+                    state.showerPrice = action.payload.price;
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(fetchShowers.rejected, (state) => {
+                state.showers = [];
+                state.showerPrice = 0;
+                state.status = 'error';
+            })
+            // добавление душевых
+            .addCase(addShower.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(
+                addShower.fulfilled,
+                (state, action: PayloadAction<Omit<IShowers, 'price'>>) => {
+                    state.showers.push(...action.payload.showers);
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(addShower.rejected, (state) => {
+                state.status = 'error';
+            })
+            // удаление душевой
+            .addCase(deleteShower.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteShower.fulfilled, (state, action) => {
+                state.showers = state.showers.filter(
+                    (item) => item._id !== action.meta.arg
+                );
                 state.status = 'loaded';
             })
-            .addCase(fetchShowers.rejected, (state) => {
-                state.showers = {
-                    showers: [],
-                    price: 0,
-                };
+            .addCase(deleteShower.rejected, (state) => {
+                state.status = 'error';
+            })
+            // обновление прайса душевой
+            .addCase(updateShowerPrice.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateShowerPrice.fulfilled, (state, action) => {
+                state.showerPrice = action.meta.arg;
+                state.status = 'loaded';
+            })
+            .addCase(updateShowerPrice.rejected, (state) => {
                 state.status = 'error';
             });
     },

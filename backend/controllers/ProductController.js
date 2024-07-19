@@ -35,9 +35,7 @@ export const addProduct = async (req, res) => {
             type,
         });
         await product.save();
-        res.json({
-            success: true,
-        });
+        res.json(product);
     } catch (error) {
         console.log(error);
         res.status(500).json({
