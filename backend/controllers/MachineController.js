@@ -160,9 +160,12 @@ export const deleteMachine = async (req, res) => {
 
 export const addMachine = async (req, res) => {
     try {
+        const newMachines = [];
+
         for (let i = 1; i <= req.body.quantity; i++) {
             const newMachine = new MachineModel();
             await newMachine.save();
+            newMachines.push(newMachine);
         }
         const settings = await SettingsModel.findOne();
         if (!settings) {
@@ -170,9 +173,7 @@ export const addMachine = async (req, res) => {
             machineSettings.save();
         }
 
-        res.json({
-            success: true,
-        });
+        res.json({ machines: newMachines });
     } catch (error) {
         console.log(error);
         res.status(500).json({

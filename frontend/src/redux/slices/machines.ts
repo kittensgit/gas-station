@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IMachine, IMachines } from 'types/machine';
 
@@ -60,15 +60,14 @@ export const updateMachinePrice = createAsyncThunk(
 );
 
 interface IInitialState {
-    machines: IMachines;
+    machines: IMachine[];
+    machinePrice: IMachines['price'];
     status: 'loading' | 'loaded' | 'error';
 }
 
 const initialState: IInitialState = {
-    machines: {
-        machines: [],
-        price: 0,
-    },
+    machines: [],
+    machinePrice: 0,
     status: 'loading',
 };
 
@@ -78,22 +77,61 @@ const machinesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // получение всех машин
             .addCase(fetchMachines.pending, (state) => {
-                state.machines = {
-                    machines: [],
-                    price: 0,
-                };
+                state.machines = [];
+                state.machinePrice = 0;
                 state.status = 'loading';
             })
-            .addCase(fetchMachines.fulfilled, (state, action) => {
-                state.machines = action.payload;
+            .addCase(
+                fetchMachines.fulfilled,
+                (state, action: PayloadAction<IMachines>) => {
+                    state.machines = action.payload.machines;
+                    state.machinePrice = action.payload.price;
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(fetchMachines.rejected, (state) => {
+                state.machines = [];
+                state.machinePrice = 0;
+                state.status = 'error';
+            })
+            // добавление машин
+            .addCase(addMachine.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(
+                addMachine.fulfilled,
+                (state, action: PayloadAction<Omit<IMachines, 'price'>>) => {
+                    state.machines.push(...action.payload.machines);
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(addMachine.rejected, (state) => {
+                state.status = 'error';
+            })
+            // удаление машины
+            .addCase(deleteMachine.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteMachine.fulfilled, (state, action) => {
+                state.machines = state.machines.filter(
+                    (item) => item._id !== action.meta.arg
+                );
                 state.status = 'loaded';
             })
-            .addCase(fetchMachines.rejected, (state) => {
-                state.machines = {
-                    machines: [],
-                    price: 0,
-                };
+            .addCase(deleteMachine.rejected, (state) => {
+                state.status = 'error';
+            })
+            // обновление прайса машин
+            .addCase(updateMachinePrice.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateMachinePrice.fulfilled, (state, action) => {
+                state.machinePrice = action.meta.arg;
+                state.status = 'loaded';
+            })
+            .addCase(updateMachinePrice.rejected, (state) => {
                 state.status = 'error';
             });
     },

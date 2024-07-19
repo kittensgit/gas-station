@@ -61,7 +61,7 @@ export const updateShowerPrice = createAsyncThunk(
 
 interface IInitialState {
     showers: IShower[];
-    showerPrice: number;
+    showerPrice: IShowers['price'];
     status: 'loading' | 'loaded' | 'error';
 }
 

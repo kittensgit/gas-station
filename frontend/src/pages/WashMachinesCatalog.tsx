@@ -1,9 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import WashMachinesContent from 'components/washMachinesContent/WashMachinesContent';
+import Loading from 'components/common/loading/Loading';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IMachine, IMachines } from 'types/machine';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IMachine } from 'types/machine';
 
 import {
     addMachine,
@@ -15,51 +17,41 @@ import {
 const WashMachinesCatalog: FC = () => {
     const dispatch = useAppDispatch();
 
-    const [machinesList, setMachinesList] = useState<IMachines>({
-        machines: [],
-        price: 0,
-    });
-    const [isAdd, setIsAdd] = useState<boolean>(false);
-    const [isRemove, setIsRemove] = useState<boolean>(false);
-    const [isUpdatePrice, setIsUpdatePrice] = useState<boolean>(false);
+    const { machines, status, machinePrice } = useAppSelector(
+        (state) => state.machines
+    );
 
     useEffect(() => {
-        const getMachines = async () => {
-            const { payload } = await dispatch(fetchMachines());
-            if (payload) {
-                setMachinesList(payload);
-            }
-            setIsAdd(false);
-            setIsRemove(false);
-            setIsUpdatePrice(false);
+        const getMachines = () => {
+            dispatch(fetchMachines());
         };
         getMachines();
-    }, [dispatch, isAdd, isRemove, isUpdatePrice]);
+    }, [dispatch]);
 
-    const onAddMachine = async (quantity: number) => {
-        const { payload } = await dispatch(addMachine(quantity));
-        if (payload) {
-            setIsAdd(true);
-        }
+    const onAddMachine = (quantity: number) => {
+        dispatch(addMachine(quantity));
     };
 
-    const onRemoveMachine = async (machineId: IMachine['_id']) => {
-        const { payload } = await dispatch(deleteMachine(machineId));
-        if (payload) {
-            setIsRemove(true);
-        }
+    const onRemoveMachine = (machineId: IMachine['_id']) => {
+        dispatch(deleteMachine(machineId));
     };
 
-    const onUpdateMachinePrice = async (updatedPrice: number) => {
-        const { payload } = await dispatch(updateMachinePrice(updatedPrice));
-        if (payload) {
-            setIsUpdatePrice(true);
-        }
+    const onUpdateMachinePrice = (updatedPrice: number) => {
+        dispatch(updateMachinePrice(updatedPrice));
     };
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
 
     return (
         <WashMachinesContent
-            machines={machinesList}
+            machines={machines}
+            machinePrice={machinePrice}
             onAddMachine={onAddMachine}
             onRemoveMachine={onRemoveMachine}
             onUpdateMachinePrice={onUpdateMachinePrice}

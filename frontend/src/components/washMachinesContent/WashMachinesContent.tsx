@@ -13,7 +13,8 @@ import Machine from './machine/Machine';
 import styles from './WashMachinesContent.module.css';
 
 interface WashMachinesCatalogProps {
-    machines: IMachines;
+    machines: IMachine[];
+    machinePrice: IMachines['price'];
     onAddMachine: (quantity: number) => void;
     onRemoveMachine: (machineId: IMachine['_id']) => void;
     onUpdateMachinePrice: (updatedPrice: number) => void;
@@ -21,6 +22,7 @@ interface WashMachinesCatalogProps {
 
 const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
     machines,
+    machinePrice,
     onAddMachine,
     onRemoveMachine,
     onUpdateMachinePrice,
@@ -28,11 +30,11 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
     const [isEditMachine, setIsEditMachine] = useState<boolean>(false);
     const [isEditPrice, setIsEditPrice] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(1);
-    const [updatedPrice, setUpdatedPrice] = useState<number>(machines.price);
+    const [updatedPrice, setUpdatedPrice] = useState<number>(machinePrice);
 
     useEffect(() => {
-        setUpdatedPrice(machines.price);
-    }, [machines.price]);
+        setUpdatedPrice(machinePrice);
+    }, [machinePrice]);
 
     const onChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
         setQuantity(parseInt(e.target.value, 10));
@@ -76,7 +78,7 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
                             onChange={onChangeUpdatedPrice}
                         />
                     ) : (
-                        <span>{machines.price}</span>
+                        <span>{machinePrice}</span>
                     )}
                 </h1>
                 {isEditPrice ? (
@@ -129,7 +131,7 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
                         </button>
                     )}
                 </li>
-                {machines.machines.map((item, index) => (
+                {machines.map((item, index) => (
                     <Machine
                         key={item._id}
                         machine={item}
