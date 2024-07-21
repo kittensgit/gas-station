@@ -1,5 +1,7 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import Loading from 'components/common/loading/Loading';
 
 import { IOrderProduct, IProduct } from 'types/product';
 
@@ -15,12 +17,14 @@ import styles from './ProductsContent.module.css';
 interface ProductsContentProps {
     isAuth: boolean;
     products: IProduct[];
+    status: 'loading' | 'error' | 'loaded';
     onAddOrderProduct: (product: IOrderProduct) => void;
 }
 
 const ProductsContent: FC<ProductsContentProps> = ({
     products,
     isAuth,
+    status,
     onAddOrderProduct,
 }) => {
     const { pathname } = useLocation();
@@ -66,11 +70,15 @@ const ProductsContent: FC<ProductsContentProps> = ({
                     </li>
                 </Link>
             </ul>
-            <ProductList
-                isAuth={isAuth}
-                products={products}
-                onAddOrderProduct={onAddOrderProduct}
-            />
+            {status === 'loading' ? (
+                <Loading />
+            ) : (
+                <ProductList
+                    isAuth={isAuth}
+                    products={products}
+                    onAddOrderProduct={onAddOrderProduct}
+                />
+            )}
         </div>
     );
 };

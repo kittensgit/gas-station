@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IUserOrder, IUserOrderData } from 'types/order';
+import { IOrder, IUserOrder, IUserOrderData } from 'types/order';
 
 import axios from '../../axios';
 
@@ -31,8 +31,10 @@ export const removeUserOrder = createAsyncThunk(
     }
 );
 
+type OrderUnion = IUserOrder | IOrder;
+
 interface IInitialState {
-    orders: IUserOrder[];
+    orders: OrderUnion[];
     status: 'loading' | 'loaded' | 'error';
 }
 
@@ -47,6 +49,7 @@ const ordersSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // загрузка заказов юзера
             .addCase(fetchUserOrders.pending, (state) => {
                 state.orders = [];
                 state.status = 'loading';
@@ -57,6 +60,35 @@ const ordersSlice = createSlice({
             })
             .addCase(fetchUserOrders.rejected, (state) => {
                 state.orders = [];
+                state.status = 'error';
+            })
+            // загрузка всех заказов
+            .addCase(fetchAllOrders.pending, (state) => {
+                state.orders = [];
+                state.status = 'loading';
+            })
+            .addCase(
+                fetchAllOrders.fulfilled,
+                (state, action: PayloadAction<IOrder[]>) => {
+                    state.orders = action.payload;
+                    state.status = 'loaded';
+                }
+            )
+            .addCase(fetchAllOrders.rejected, (state) => {
+                state.orders = [];
+                state.status = 'error';
+            })
+            // удаление заказа
+            .addCase(removeUserOrder.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(removeUserOrder.fulfilled, (state, action) => {
+                state.orders = state.orders.filter(
+                    (item) => item._id !== action.meta.arg.orderId
+                );
+                state.status = 'loaded';
+            })
+            .addCase(removeUserOrder.rejected, (state) => {
                 state.status = 'error';
             });
     },

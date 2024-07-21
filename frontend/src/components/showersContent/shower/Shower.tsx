@@ -30,7 +30,7 @@ const Shower: FC<ShowerProps> = ({
         if (shower.occupied.bookedUntil) {
             const interval = setInterval(() => {
                 const now = new Date();
-                const bookedUntil = new Date(shower.occupied.bookedUntil);
+                const bookedUntil = new Date(shower.occupied.bookedUntil!);
 
                 const timeDiff = bookedUntil.getTime() - now.getTime();
 
@@ -84,6 +84,9 @@ const Shower: FC<ShowerProps> = ({
                 {userShower === shower && remainingTime && (
                     <p className={styles.time}>{remainingTime}</p>
                 )}
+                <button onClick={() => onReleaseShower(shower._id)}>
+                    release
+                </button>
             </div>
         </li>
     );

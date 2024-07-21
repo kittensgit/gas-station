@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAuth } from 'hooks/useAuth';
 
 import { logout } from '../../../redux/slices/auth';
 
@@ -12,16 +12,17 @@ import Profile from './profile/Profile';
 import styles from './Sidebar.module.css';
 
 const Sidebar: FC = () => {
-    const { isAuth, fullName, scores, role } = useAuth();
     const dispatch = useAppDispatch();
 
+    const { isAuth, fullName, scores, role } = useAuth();
+
     const logOut = () => {
-        dispatch(logout());
         if (window.confirm('You really want to log out?')) {
             dispatch(logout());
             window.localStorage.removeItem('token');
         }
     };
+
     return (
         <div className={styles.sidebar}>
             <div className={styles.sidebar_wrapper}>

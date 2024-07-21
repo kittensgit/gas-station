@@ -22,10 +22,7 @@ const WashMachinesCatalog: FC = () => {
     );
 
     useEffect(() => {
-        const getMachines = () => {
-            dispatch(fetchMachines());
-        };
-        getMachines();
+        dispatch(fetchMachines());
     }, [dispatch]);
 
     const onAddMachine = (quantity: number) => {

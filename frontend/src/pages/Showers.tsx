@@ -24,10 +24,7 @@ const Showers: FC = () => {
     const { showers, status } = useAppSelector((state) => state.showers);
 
     useEffect(() => {
-        const getShowers = () => {
-            dispatch(fetchShowers());
-        };
-        getShowers();
+        dispatch(fetchShowers());
     }, [dispatch, isRelease, isBook]);
 
     const onBookShower = async (showerId: IShower['_id']) => {

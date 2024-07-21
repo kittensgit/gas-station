@@ -1,26 +1,32 @@
-import { FC, useEffect, useState } from 'react';
-
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IOrder } from 'types/order';
+import { FC, useEffect } from 'react';
 
 import OrdersContent from 'components/ordersContent/OrdersContent';
+import Loading from 'components/common/loading/Loading';
+
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IOrder } from 'types/order';
 
 import { fetchAllOrders } from '../redux/slices/orders';
 
 const Orders: FC = () => {
     const dispatch = useAppDispatch();
-    const [ordersList, setOrdersList] = useState<IOrder[]>([]);
+
+    const { orders, status } = useAppSelector((state) => state.orders);
 
     useEffect(() => {
-        const getOrders = async () => {
-            const { payload } = await dispatch(fetchAllOrders());
-            if (payload) {
-                setOrdersList(payload);
-            }
-        };
-        getOrders();
+        dispatch(fetchAllOrders());
     }, [dispatch]);
-    return <OrdersContent orders={ordersList} />;
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
+
+    return <OrdersContent orders={orders as IOrder[]} />;
 };
 
 export default Orders;

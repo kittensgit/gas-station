@@ -22,10 +22,7 @@ const ShowersCatalog: FC = () => {
     );
 
     useEffect(() => {
-        const getShowers = () => {
-            dispatch(fetchShowers());
-        };
-        getShowers();
+        dispatch(fetchShowers());
     }, [dispatch]);
 
     const onAddShower = (quantity: number) => {

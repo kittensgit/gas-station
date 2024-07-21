@@ -10,18 +10,20 @@ import styles from './LaundryContent.module.css';
 
 interface LaundryContentProps {
     userId: IUser['_id'];
-    machines: Omit<IMachines, 'price'>;
+    machines: IMachine[];
+    machinePrice: IMachines['price'];
     onReleaseMachine: (machineId: IMachine['_id']) => void;
     onBookMachine: (machineId: IMachine['_id']) => void;
 }
 
 const LaundryContent: FC<LaundryContentProps> = ({
     machines,
+    machinePrice,
     userId,
     onBookMachine,
     onReleaseMachine,
 }) => {
-    const userMachine = machines.machines.find(
+    const userMachine = machines.find(
         (item) => item.occupied?.user?._id === userId
     );
 
@@ -29,12 +31,12 @@ const LaundryContent: FC<LaundryContentProps> = ({
         <div className={styles.wrapper}>
             <div className={styles.title}>
                 <h1>
-                    Washing Machine - <span>1000</span>
+                    Washing Machine - <span>{machinePrice}</span>
                 </h1>
                 <img src={pointsIcon} alt="points" />
             </div>
             <ul className={styles.machines}>
-                {machines.machines.map((item, index) => (
+                {machines.map((item, index) => (
                     <Machine
                         key={index}
                         machine={item}

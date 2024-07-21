@@ -45,11 +45,11 @@ const App: FC = () => {
                             path="/products/:typeFilter"
                             element={<Products />}
                         />
-                        {/* Auth Routes */}
                         <Route
                             path="/refuelHistory"
-                            element={<AuthRoute element={RefuelHistory} />}
+                            element={<RefuelHistory />}
                         />
+                        {/* Auth Routes */}
                         <Route
                             path="/userOrders"
                             element={<AuthRoute element={UserOrders} />}

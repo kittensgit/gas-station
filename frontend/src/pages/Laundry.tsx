@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAuth } from 'hooks/useAuth';
-import { IMachine, IMachines } from 'types/machine';
-
 import LaundryContent from 'components/laundryContent/LaundryContent';
+
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAuth } from 'hooks/useAuth';
+import { IMachine } from 'types/machine';
 
 import {
     bookMachine,
@@ -16,21 +17,15 @@ const Laundry: FC = () => {
     const dispatch = useAppDispatch();
     const { userId } = useAuth();
 
+    const { machines, machinePrice } = useAppSelector(
+        (state) => state.machines
+    );
+
     const [isBook, setIsBook] = useState<boolean>(false);
     const [isRelease, setIsRelease] = useState<boolean>(false);
-    const [machinesList, setMachinesList] = useState<Omit<IMachines, 'price'>>({
-        machines: [],
-    });
 
     useEffect(() => {
-        const getMachines = async () => {
-            const { payload } = await dispatch(fetchMachines());
-
-            if (payload) {
-                setMachinesList(payload);
-            }
-        };
-        getMachines();
+        dispatch(fetchMachines());
     }, [dispatch, isRelease, isBook]);
 
     const onBookMachine = async (machineId: IMachine['_id']) => {
@@ -51,7 +46,8 @@ const Laundry: FC = () => {
     return (
         <LaundryContent
             userId={userId}
-            machines={machinesList}
+            machines={machines}
+            machinePrice={machinePrice}
             onBookMachine={onBookMachine}
             onReleaseMachine={onReleaseMachine}
         />

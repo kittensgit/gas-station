@@ -42,12 +42,19 @@ export const setUserRole = createAsyncThunk(
     }
 );
 interface IInitialState {
-    data: IUser | null;
+    data: IUser;
     status: 'loading' | 'loaded' | 'error';
 }
 
 const initialState: IInitialState = {
-    data: null,
+    data: {
+        _id: '',
+        email: '',
+        fullName: '',
+        refuelingHistory: [],
+        role: '',
+        scores: 0,
+    },
     status: 'loading',
 };
 
@@ -56,13 +63,27 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
-            state.data = null;
+            state.data = {
+                _id: '',
+                email: '',
+                fullName: '',
+                refuelingHistory: [],
+                role: '',
+                scores: 0,
+            };
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuth.pending, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'loading';
             })
             .addCase(fetchAuth.fulfilled, (state, action) => {
@@ -70,11 +91,25 @@ const authSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchAuth.rejected, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'error';
             })
             .addCase(fetchAuthMe.pending, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'loading';
             })
             .addCase(fetchAuthMe.fulfilled, (state, action) => {
@@ -82,11 +117,25 @@ const authSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchAuthMe.rejected, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'error';
             })
             .addCase(fetchRegister.pending, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'loading';
             })
             .addCase(fetchRegister.fulfilled, (state, action) => {
@@ -94,7 +143,14 @@ const authSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(fetchRegister.rejected, (state) => {
-                state.data = null;
+                state.data = {
+                    _id: '',
+                    email: '',
+                    fullName: '',
+                    refuelingHistory: [],
+                    role: '',
+                    scores: 0,
+                };
                 state.status = 'error';
             });
     },

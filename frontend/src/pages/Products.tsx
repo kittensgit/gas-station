@@ -2,7 +2,6 @@ import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ProductsContent from 'components/productsContent/ProductsContent';
-import Loading from 'components/common/loading/Loading';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -20,12 +19,9 @@ const Products: FC = () => {
     const { products, status } = useAppSelector((state) => state.products);
 
     useEffect(() => {
-        const getProducts = () => {
-            if (typeFilter) {
-                dispatch(fetchProducts(typeFilter));
-            }
-        };
-        getProducts();
+        if (typeFilter) {
+            dispatch(fetchProducts(typeFilter));
+        }
     }, [dispatch, typeFilter]);
 
     const onAddOrderProduct = async (product: IOrderProduct) => {
@@ -37,10 +33,6 @@ const Products: FC = () => {
         }
     };
 
-    if (status === 'loading') {
-        return <Loading />;
-    }
-
     if (status === 'error') {
         return <div>Error</div>;
     }
@@ -49,6 +41,7 @@ const Products: FC = () => {
         <ProductsContent
             products={products}
             isAuth={isAuth}
+            status={status}
             onAddOrderProduct={onAddOrderProduct}
         />
     );

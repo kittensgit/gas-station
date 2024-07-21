@@ -19,10 +19,7 @@ const ProductsCatalog: FC = () => {
     const { products, status } = useAppSelector((state) => state.products);
 
     useEffect(() => {
-        const getProducts = () => {
-            dispatch(fetchProducts('all'));
-        };
-        getProducts();
+        dispatch(fetchProducts('all'));
     }, [dispatch]);
 
     const onAddProduct = (product: Omit<IProduct, '_id'>) => {

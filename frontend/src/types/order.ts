@@ -1,6 +1,11 @@
 import { IProduct } from './product';
 import { IUser } from './user';
 
+export interface IUserOrderData {
+    userId: string;
+    orderId: string;
+}
+
 export interface IUserOrder {
     _id: string;
     product: IProduct;
@@ -10,11 +15,6 @@ export interface IUserOrder {
     orderDate: Date;
     readyTime: Date;
     endReadyTime: Date;
-}
-
-export interface IUserOrderData {
-    userId: string;
-    orderId: string;
 }
 
 export interface IOrder {

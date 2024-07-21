@@ -1,48 +1,47 @@
 import { FC, useEffect, useState } from 'react';
 
+import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
+import Loading from 'components/common/loading/Loading';
+
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { IUserOrder, IUserOrderData } from 'types/order';
-
-import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
 
 import { fetchUserOrders, removeUserOrder } from '../redux/slices/orders';
 
 const UserOrders: FC = () => {
-    const { userId } = useAuth();
     const dispatch = useAppDispatch();
 
-    const [isRemoveOrder, setIsRemoveOrder] = useState<boolean>(false);
-    const [ordersList, setOrdersList] = useState<IUserOrder[]>([]);
-    useEffect(() => {
-        const getOrders = async () => {
-            const { payload } = await dispatch(fetchUserOrders(userId));
-            if (payload) {
-                setOrdersList(payload);
-            }
-            setIsRemoveOrder(false);
-        };
-        getOrders();
-    }, [dispatch, userId, isRemoveOrder]);
+    const { userId } = useAuth();
 
-    const onRemoveUserOrder = async (orderId: IUserOrderData['orderId']) => {
-        const { payload } = await dispatch(
+    const { orders, status } = useAppSelector((state) => state.orders);
+
+    useEffect(() => {
+        dispatch(fetchUserOrders(userId));
+    }, [dispatch, userId]);
+
+    const onRemoveUserOrder = (orderId: IUserOrderData['orderId']) => {
+        dispatch(
             removeUserOrder({
                 userId,
                 orderId,
             })
         );
-        if (payload) {
-            setIsRemoveOrder(true);
-        } else {
-            alert('Failed to delete order');
-        }
     };
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
 
     return (
         <UserOrdersContent
+            orders={orders as IUserOrder[]}
             onRemoveUserOrder={onRemoveUserOrder}
-            orders={ordersList}
         />
     );
 };
