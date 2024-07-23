@@ -1,7 +1,13 @@
 import { FC } from 'react';
 
+import styles from './Loading.module.css';
+
 const Loading: FC = () => {
-    return <div>Loading</div>;
+    return (
+        <div className={styles.loading}>
+            <div className={styles.loader}></div>
+        </div>
+    );
 };
 
 export default Loading;

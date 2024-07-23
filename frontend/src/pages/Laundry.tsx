@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import LaundryContent from 'components/laundryContent/LaundryContent';
+import Loading from 'components/common/loading/Loading';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -17,7 +18,7 @@ const Laundry: FC = () => {
     const dispatch = useAppDispatch();
     const { userId } = useAuth();
 
-    const { machines, machinePrice } = useAppSelector(
+    const { machines, machinePrice, status } = useAppSelector(
         (state) => state.machines
     );
 
@@ -48,6 +49,15 @@ const Laundry: FC = () => {
             setIsRelease(true);
         }
     };
+
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <div>Error</div>;
+    }
+
     return (
         <LaundryContent
             userId={userId}
