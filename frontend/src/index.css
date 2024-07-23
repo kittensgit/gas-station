@@ -173,3 +173,29 @@ body {
 .content {
     width: 100%;
 }
+
+.notFound {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.notFound__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.notFound__content img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.notFound__content h3 {
+    font-size: 20px;
+    color: #6582aa;
+    font-weight: 700;
+}
