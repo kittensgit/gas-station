@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { IOrder } from 'types/order';
+import { IUser } from 'types/user';
 import { formatOrderDate } from 'helpers';
 
 import pointsIcon from 'assets/icons/points.png';
@@ -9,9 +10,10 @@ import styles from './Order.module.css';
 
 interface OrderProps {
     order: IOrder;
+    onChangeStatusReady: (userId: IUser['_id'], orderId: IOrder['_id']) => void;
 }
 
-const Order: FC<OrderProps> = ({ order }) => {
+const Order: FC<OrderProps> = ({ order, onChangeStatusReady }) => {
     return (
         <div className={styles.order}>
             <div className={styles.order_top}>
@@ -38,7 +40,12 @@ const Order: FC<OrderProps> = ({ order }) => {
                             <p className={styles.date}>
                                 {formatOrderDate(orderDate)}
                             </p>
-                            <div className={styles.status}>
+                            <button
+                                className={styles.status}
+                                onClick={() =>
+                                    onChangeStatusReady(order.user._id, _id)
+                                }
+                            >
                                 <div
                                     className={
                                         statusReady
@@ -47,7 +54,7 @@ const Order: FC<OrderProps> = ({ order }) => {
                                     }
                                 ></div>
                                 <p>{statusReady ? 'Ready' : 'Preparing'}</p>
-                            </div>
+                            </button>
                         </li>
                     );
                 })}

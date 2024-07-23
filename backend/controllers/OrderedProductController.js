@@ -95,7 +95,7 @@ export const getUserOrders = async (req, res) => {
 export const deleteUserOrder = async (req, res) => {
     try {
         const userOrder = await OrderedProductModel.findOne({
-            user: req.params.userId,
+            user: req.userId,
         });
 
         if (!userOrder)
@@ -162,14 +162,18 @@ export const changeStatusReady = async (req, res) => {
             item._id.equals(orderId)
         );
 
+        const now = new Date();
+        const end = new Date(Date.now() + 1 * 60 * 1000);
+
         order.statusReady = true;
-        order.readyTime = new Date();
-        order.endReadyTime = new Date(Date.now() + 1 * 60 * 1000);
+        order.readyTime = now;
+        order.endReadyTime = end;
 
         orderedProducts.save();
 
         res.json({
-            success: true,
+            readyTime: now,
+            endReadyTime: end,
         });
     } catch (error) {
         console.log(error);

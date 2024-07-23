@@ -5,9 +5,10 @@ import Loading from 'components/common/loading/Loading';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { IUser } from 'types/user';
 import { IOrder } from 'types/order';
 
-import { fetchAllOrders } from '../redux/slices/orders';
+import { changeStatusReady, fetchAllOrders } from '../redux/slices/orders';
 
 const Orders: FC = () => {
     const dispatch = useAppDispatch();
@@ -18,6 +19,18 @@ const Orders: FC = () => {
         dispatch(fetchAllOrders());
     }, [dispatch]);
 
+    const onChangeStatusReady = (
+        userId: IUser['_id'],
+        orderId: IOrder['_id']
+    ) => {
+        dispatch(
+            changeStatusReady({
+                userId,
+                orderId,
+            })
+        );
+    };
+
     if (status === 'loading') {
         return <Loading />;
     }
@@ -26,7 +39,12 @@ const Orders: FC = () => {
         return <div>Error</div>;
     }
 
-    return <OrdersContent orders={orders as IOrder[]} />;
+    return (
+        <OrdersContent
+            orders={orders}
+            onChangeStatusReady={onChangeStatusReady}
+        />
+    );
 };
 
 export default Orders;

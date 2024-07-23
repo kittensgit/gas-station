@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
 import Loading from 'components/common/loading/Loading';
@@ -6,16 +6,16 @@ import Loading from 'components/common/loading/Loading';
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { IUserOrder, IUserOrderData } from 'types/order';
+import { IUserOrderData } from 'types/order';
 
-import { fetchUserOrders, removeUserOrder } from '../redux/slices/orders';
+import { fetchUserOrders, removeUserOrder } from '../redux/slices/userOrders';
 
 const UserOrders: FC = () => {
     const dispatch = useAppDispatch();
 
     const { userId } = useAuth();
 
-    const { orders, status } = useAppSelector((state) => state.orders);
+    const { orders, status } = useAppSelector((state) => state.userOrders);
 
     useEffect(() => {
         dispatch(fetchUserOrders(userId));
@@ -40,7 +40,7 @@ const UserOrders: FC = () => {
 
     return (
         <UserOrdersContent
-            orders={orders as IUserOrder[]}
+            orders={orders}
             onRemoveUserOrder={onRemoveUserOrder}
         />
     );
