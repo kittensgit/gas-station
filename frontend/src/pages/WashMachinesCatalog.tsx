@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 
 import WashMachinesContent from 'components/washMachinesContent/WashMachinesContent';
 import Loading from 'components/common/loading/Loading';
+import Error from 'components/common/error/Error';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -42,7 +43,7 @@ const WashMachinesCatalog: FC = () => {
     }
 
     if (status === 'error') {
-        return <div>Error</div>;
+        return <Error />;
     }
 
     return (

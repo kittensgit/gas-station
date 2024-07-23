@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ProductsContent from 'components/productsContent/ProductsContent';
+import Error from 'components/common/error/Error';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -34,7 +35,7 @@ const Products: FC = () => {
     };
 
     if (status === 'error') {
-        return <div>Error</div>;
+        return <Error />;
     }
 
     return (

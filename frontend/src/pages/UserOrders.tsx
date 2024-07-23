@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 
 import UserOrdersContent from 'components/userOrdersContent/UserOrdersContent';
 import Loading from 'components/common/loading/Loading';
+import Error from 'components/common/error/Error';
 
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -35,7 +36,7 @@ const UserOrders: FC = () => {
     }
 
     if (status === 'error') {
-        return <div>Error</div>;
+        return <Error />;
     }
 
     return (
