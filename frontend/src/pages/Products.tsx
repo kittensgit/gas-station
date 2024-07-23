@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import ProductsContent from 'components/productsContent/ProductsContent';
 import Error from 'components/common/error/Error';
+import EmptyList from 'components/common/emptyList/EmptyList';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -36,6 +37,10 @@ const Products: FC = () => {
 
     if (status === 'error') {
         return <Error />;
+    }
+
+    if (!products.length) {
+        return <EmptyList listName="Products" />;
     }
 
     return (

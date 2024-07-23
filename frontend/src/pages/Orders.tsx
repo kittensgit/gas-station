@@ -3,6 +3,7 @@ import { FC, useEffect } from 'react';
 import OrdersContent from 'components/ordersContent/OrdersContent';
 import Loading from 'components/common/loading/Loading';
 import Error from 'components/common/error/Error';
+import EmptyList from 'components/common/emptyList/EmptyList';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -38,6 +39,10 @@ const Orders: FC = () => {
 
     if (status === 'error') {
         return <Error />;
+    }
+
+    if (!orders.length) {
+        return <EmptyList listName="Orders" />;
     }
 
     return (

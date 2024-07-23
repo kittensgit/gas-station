@@ -74,16 +74,15 @@ export const getUserOrders = async (req, res) => {
             .populate('orders.product')
             .exec();
 
-        if (!userOrder)
-            return res.status(404).json({
-                message: 'User orders not found',
-            });
+        if (userOrder) {
+            const sortedOrders = userOrder.orders.sort(
+                (a, b) => b.orderDate - a.orderDate
+            );
 
-        const sortedOrders = userOrder.orders.sort(
-            (a, b) => b.orderDate - a.orderDate
-        );
+            return res.json(sortedOrders);
+        }
 
-        res.json(sortedOrders);
+        res.json([]);
     } catch (error) {
         console.log(error);
         res.status(500).json({

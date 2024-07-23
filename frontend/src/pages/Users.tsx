@@ -1,27 +1,25 @@
 import { FC, useEffect, useState } from 'react';
 
 import UsersContent from 'components/userContent/UsersContent';
+import Loading from 'components/common/loading/Loading';
+import Error from 'components/common/error/Error';
+import EmptyList from 'components/common/emptyList/EmptyList';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { IUser, IUserRoleData } from 'types/user';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IUserRoleData } from 'types/user';
 
 import { fetchUsers, setUserRole } from '../redux/slices/auth';
 
 const Users: FC = () => {
     const dispatch = useAppDispatch();
 
+    const { users, status } = useAppSelector((state) => state.users);
+
     const [isEditRole, setIsEditRole] = useState<boolean>(false);
-    const [usersList, setUsersList] = useState<IUser[]>([]);
 
     useEffect(() => {
-        const getUsers = async () => {
-            const { payload } = await dispatch(fetchUsers());
-            if (payload) {
-                setUsersList(payload);
-            }
-            setIsEditRole(false);
-        };
-        getUsers();
+        dispatch(fetchUsers());
     }, [dispatch, isEditRole]);
 
     const onSetUserRole = async (userRoleData: IUserRoleData) => {
@@ -31,7 +29,19 @@ const Users: FC = () => {
         }
     };
 
-    return <UsersContent users={usersList} onSetUserRole={onSetUserRole} />;
+    if (status === 'loading') {
+        return <Loading />;
+    }
+
+    if (status === 'error') {
+        return <Error />;
+    }
+
+    if (!users.length) {
+        return <EmptyList listName="Users" />;
+    }
+
+    return <UsersContent users={users} onSetUserRole={onSetUserRole} />;
 };
 
 export default Users;

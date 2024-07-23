@@ -4,7 +4,7 @@ import { IOrderProduct, IProduct } from 'types/product';
 
 import axios from '../../axios';
 
-import { addPoints } from './auth';
+import { deductPoints } from './auth';
 
 // params -> filterType ('all', 'dessert', 'main', 'drinks')
 export const fetchProducts = createAsyncThunk(
@@ -25,7 +25,7 @@ export const fetchOrderProduct = createAsyncThunk(
                 quantity: params.quantity,
             }
         );
-        dispatch(addPoints(params.scoresCount));
+        dispatch(deductPoints(params.scoresCount));
         return data;
     }
 );
