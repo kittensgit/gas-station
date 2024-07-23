@@ -4,7 +4,7 @@ export interface IUser {
     _id: string;
     fullName: string;
     email: string;
-    scores: number | null;
+    scores: number;
     role: string;
     refuelingHistory: IRefuelHistory[];
 }

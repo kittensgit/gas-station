@@ -21,14 +21,18 @@ const Showers: FC = () => {
     const [isBook, setIsBook] = useState<boolean>(false);
     const [isRelease, setIsRelease] = useState<boolean>(false);
 
-    const { showers, status } = useAppSelector((state) => state.showers);
+    const { showers, status, showerPrice } = useAppSelector(
+        (state) => state.showers
+    );
 
     useEffect(() => {
         dispatch(fetchShowers());
     }, [dispatch, isRelease, isBook]);
 
     const onBookShower = async (showerId: IShower['_id']) => {
-        const { payload } = await dispatch(bookShower(showerId));
+        const { payload } = await dispatch(
+            bookShower({ showerId, scoresCount: showerPrice })
+        );
         if (payload) {
             setIsBook(true);
         } else {

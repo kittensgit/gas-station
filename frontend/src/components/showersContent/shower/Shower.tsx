@@ -84,9 +84,6 @@ const Shower: FC<ShowerProps> = ({
                 {userShower === shower && remainingTime && (
                     <p className={styles.time}>{remainingTime}</p>
                 )}
-                <button onClick={() => onReleaseShower(shower._id)}>
-                    release
-                </button>
             </div>
         </li>
     );

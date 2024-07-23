@@ -4,6 +4,8 @@ import { IMachine, IMachines } from 'types/machine';
 
 import axios from '../../axios';
 
+import { deductPoints } from './auth';
+
 export const fetchMachines = createAsyncThunk(
     'machines/fetchMachines',
     async () => {
@@ -14,8 +16,12 @@ export const fetchMachines = createAsyncThunk(
 
 export const bookMachine = createAsyncThunk(
     'machines/bookMachine',
-    async (params: IMachine['_id']) => {
-        const { data } = await axios.get(`/machines/${params}/book`);
+    async (
+        params: { machineId: IMachine['_id']; scoresCount: IMachines['price'] },
+        { dispatch }
+    ) => {
+        const { data } = await axios.get(`/machines/${params.machineId}/book`);
+        dispatch(deductPoints(params.scoresCount));
         return data;
     }
 );

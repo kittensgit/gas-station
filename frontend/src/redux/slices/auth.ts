@@ -72,6 +72,15 @@ const authSlice = createSlice({
                 scores: 0,
             };
         },
+        deductPoints: (state, action) => {
+            state.data.scores -= action.payload;
+        },
+        addPoints: (state, action) => {
+            state.data.scores += action.payload;
+        },
+        addRefuelHistory: (state, action) => {
+            state.data.refuelingHistory.push(action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -158,4 +167,5 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const { logout } = authSlice.actions;
+export const { logout, deductPoints, addPoints, addRefuelHistory } =
+    authSlice.actions;

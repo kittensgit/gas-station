@@ -4,6 +4,8 @@ import { IOrderProduct, IProduct } from 'types/product';
 
 import axios from '../../axios';
 
+import { addPoints } from './auth';
+
 // params -> filterType ('all', 'dessert', 'main', 'drinks')
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
@@ -16,13 +18,14 @@ export const fetchProducts = createAsyncThunk(
 // params -> productId and product quantity
 export const fetchOrderProduct = createAsyncThunk(
     'products/fetchOrderProduct',
-    async (params: IOrderProduct) => {
+    async (params: IOrderProduct, { dispatch }) => {
         const { data } = await axios.post(
             `/products/${params.productId}/order`,
             {
                 quantity: params.quantity,
             }
         );
+        dispatch(addPoints(params.scoresCount));
         return data;
     }
 );

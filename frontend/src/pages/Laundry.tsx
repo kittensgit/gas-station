@@ -29,7 +29,12 @@ const Laundry: FC = () => {
     }, [dispatch, isRelease, isBook]);
 
     const onBookMachine = async (machineId: IMachine['_id']) => {
-        const { payload } = await dispatch(bookMachine(machineId));
+        const { payload } = await dispatch(
+            bookMachine({
+                machineId,
+                scoresCount: machinePrice,
+            })
+        );
         if (payload) {
             setIsBook(true);
         } else {

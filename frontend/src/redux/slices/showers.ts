@@ -4,6 +4,8 @@ import { IShower, IShowers } from 'types/shower';
 
 import axios from '../../axios';
 
+import { deductPoints } from './auth';
+
 export const fetchShowers = createAsyncThunk(
     'showers/fetchShowers',
     async () => {
@@ -12,14 +14,23 @@ export const fetchShowers = createAsyncThunk(
     }
 );
 
+// params -> showerId and scoresCount
 export const bookShower = createAsyncThunk(
     'showers/bookShower',
-    async (params: IShower['_id']) => {
-        const { data } = await axios.get(`/showers/${params}/book`);
+    async (
+        params: {
+            showerId: IShower['_id'];
+            scoresCount: IShowers['price'];
+        },
+        { dispatch }
+    ) => {
+        const { data } = await axios.get(`/showers/${params.showerId}/book`);
+        dispatch(deductPoints(params.scoresCount));
         return data;
     }
 );
 
+// params -> showerId
 export const releaseShower = createAsyncThunk(
     'showers/releaseShower',
     async (params: IShower['_id']) => {

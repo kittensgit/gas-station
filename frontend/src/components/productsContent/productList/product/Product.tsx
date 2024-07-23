@@ -44,6 +44,7 @@ const Product: FC<ProductProps> = ({
         handleAddOrderProduct({
             productId: product._id,
             quantity: productQuantity,
+            scoresCount: product.scoresCount * productQuantity,
         });
     };
 

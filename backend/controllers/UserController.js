@@ -115,9 +115,10 @@ export const refuel = async (req, res) => {
 
         await user.save();
 
-        res.json({
-            message: `Refueling record added successfully and you got ${scores} points`,
-        });
+        const addedRefuelingRecord =
+            user.refuelingHistory[user.refuelingHistory.length - 1];
+
+        res.json(addedRefuelingRecord);
     } catch (error) {
         console.log(error);
         res.status(500).json({

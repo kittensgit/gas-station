@@ -4,10 +4,14 @@ import { IOrderFuel, IRefuelData } from 'types/fuel';
 
 import axios from '../../axios';
 
+import { addPoints, addRefuelHistory } from './auth';
+
 export const fetchRefuel = createAsyncThunk(
     'auth/fetchRefuel',
-    async (params: IRefuelData) => {
+    async (params: IRefuelData, { dispatch }) => {
         const { data } = await axios.post('/refuel', params);
+        dispatch(addPoints(params.scores));
+        dispatch(addRefuelHistory(data));
         return data;
     }
 );
