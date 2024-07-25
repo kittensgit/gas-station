@@ -3,15 +3,17 @@ import { FC } from 'react';
 import { IUser, IUserRoleData } from 'types/user';
 
 import pointsIcon from 'assets/icons/points.png';
+import removeIcon from 'assets/icons/remove.png';
 
 import styles from './User.module.css';
 
 interface UserProps {
     user: IUser;
     onSetUserRole: (userRoleData: IUserRoleData) => void;
+    onRemoveUser: (userId: IUser['_id']) => void;
 }
 
-const User: FC<UserProps> = ({ user, onSetUserRole }) => {
+const User: FC<UserProps> = ({ user, onSetUserRole, onRemoveUser }) => {
     const { email, fullName, role, scores, _id } = user;
 
     const isAdmin = role === 'admin';
@@ -51,6 +53,14 @@ const User: FC<UserProps> = ({ user, onSetUserRole }) => {
             <th className={styles.scores}>
                 <span>{scores}</span>
                 <img src={pointsIcon} alt="points" />
+            </th>
+            <th>
+                <button
+                    onClick={() => onRemoveUser(_id)}
+                    className={styles.remove}
+                >
+                    <img src={removeIcon} alt="remove" />
+                </button>
             </th>
         </tr>
     );

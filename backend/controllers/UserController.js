@@ -4,8 +4,6 @@ import Stripe from 'stripe';
 import UserModel from '../models/User.js';
 import { createToken } from '../helpers.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 export const register = async (req, res) => {
     try {
         const password = req.body.password;
@@ -194,6 +192,26 @@ export const setUserRole = async (req, res) => {
         console.log(error);
         res.status(500).json({
             message: 'Failed to set role',
+        });
+    }
+};
+
+export const deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await UserModel.findByIdAndDelete(userId);
+        if (!user)
+            return res.status(404).json({
+                message: 'User not found',
+            });
+
+        res.json({
+            message: 'User successfully deleted',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to delete user',
         });
     }
 };

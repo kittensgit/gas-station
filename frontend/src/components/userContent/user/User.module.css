@@ -56,3 +56,22 @@
     padding: 5px 8px;
     border-radius: 5px;
 }
+
+.remove {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    text-align: center;
+    vertical-align: middle;
+    transition: all 0.3s ease-in;
+}
+
+.remove:hover {
+    transform: scale(1.15);
+}
+
+.remove img {
+    width: 25px;
+    height: 25px;
+}

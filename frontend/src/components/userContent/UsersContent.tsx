@@ -9,9 +9,14 @@ import styles from './UsersContent.module.css';
 interface UsersContentProps {
     users: IUser[];
     onSetUserRole: (userRoleData: IUserRoleData) => void;
+    onRemoveUser: (userId: IUser['_id']) => void;
 }
 
-const UsersContent: FC<UsersContentProps> = ({ users, onSetUserRole }) => {
+const UsersContent: FC<UsersContentProps> = ({
+    users,
+    onSetUserRole,
+    onRemoveUser,
+}) => {
     return (
         <table className={styles.table}>
             <thead>
@@ -28,6 +33,7 @@ const UsersContent: FC<UsersContentProps> = ({ users, onSetUserRole }) => {
                         key={user._id}
                         user={user}
                         onSetUserRole={onSetUserRole}
+                        onRemoveUser={onRemoveUser}
                     />
                 ))}
             </tbody>

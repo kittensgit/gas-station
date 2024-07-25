@@ -7,9 +7,9 @@ import EmptyList from 'components/common/emptyList/EmptyList';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { IUserRoleData } from 'types/user';
+import { IUser, IUserRoleData } from 'types/user';
 
-import { fetchUsers, setUserRole } from '../redux/slices/auth';
+import { fetchUsers, removeUser, setUserRole } from '../redux/slices/users';
 
 const Users: FC = () => {
     const dispatch = useAppDispatch();
@@ -24,6 +24,10 @@ const Users: FC = () => {
         dispatch(setUserRole(userRoleData));
     };
 
+    const onRemoveUser = (userId: IUser['_id']) => {
+        dispatch(removeUser(userId));
+    };
+
     if (status === 'loading') {
         return <Loading />;
     }
@@ -36,7 +40,13 @@ const Users: FC = () => {
         return <EmptyList listName="Users" />;
     }
 
-    return <UsersContent users={users} onSetUserRole={onSetUserRole} />;
+    return (
+        <UsersContent
+            users={users}
+            onSetUserRole={onSetUserRole}
+            onRemoveUser={onRemoveUser}
+        />
+    );
 };
 
 export default Users;

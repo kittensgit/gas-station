@@ -4,14 +4,14 @@ import { IUser, IUserRoleData } from 'types/user';
 
 import axios from '../../axios';
 
-export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     const { data } = await axios.get('/users');
     return data;
 });
 
 // params => userId and role
 export const setUserRole = createAsyncThunk(
-    'auth/setUserRole',
+    'users/setUserRole',
     async (params: IUserRoleData) => {
         const { data } = await axios.post(`/users/${params.userId}/setRole`, {
             role: params.role,
@@ -19,6 +19,15 @@ export const setUserRole = createAsyncThunk(
         return data;
     }
 );
+
+export const removeUser = createAsyncThunk(
+    'users/removeUser',
+    async (params: IUser['_id']) => {
+        const { data } = await axios.delete(`/users/${params}`);
+        return data;
+    }
+);
+
 interface IInitialState {
     users: IUser[];
     status: 'loading' | 'loaded' | 'error';
@@ -30,7 +39,7 @@ const initialState: IInitialState = {
 };
 
 const usersSlice = createSlice({
-    name: 'auth',
+    name: 'users',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -63,6 +72,18 @@ const usersSlice = createSlice({
                 state.status = 'loaded';
             })
             .addCase(setUserRole.rejected, (state) => {
+                state.status = 'error';
+            })
+            .addCase(removeUser.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(removeUser.fulfilled, (state, action) => {
+                state.users = state.users.filter(
+                    (user) => user._id !== action.meta.arg
+                );
+                state.status = 'loaded';
+            })
+            .addCase(removeUser.rejected, (state) => {
                 state.status = 'error';
             });
     },

@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, StripeError } from '@stripe/stripe-js';
 
 import HomeContent from 'components/homeContent/HomeContent';
+import Error from 'components/common/error/Error';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAuth } from 'hooks/useAuth';
@@ -22,6 +23,7 @@ const Home: FC = () => {
     const dispatch = useAppDispatch();
 
     const { isAuth, role } = useAuth();
+    const [error, setError] = useState<StripeError | null>(null);
 
     const onAddOrderFuel = (orderFuel: IOrderFuel) => {
         dispatch(addOrderFuel(orderFuel));
@@ -36,7 +38,7 @@ const Home: FC = () => {
                 sessionId: payload.sessionId,
             });
             if (error) {
-                console.error('Error:', error);
+                setError(error);
             }
             dispatch(removeOrderFuel());
         }
@@ -44,6 +46,10 @@ const Home: FC = () => {
 
     if (role === 'admin') {
         return <Navigate to={'/users'} />;
+    }
+
+    if (error) {
+        return <Error />;
     }
 
     return (

@@ -69,6 +69,7 @@ app.post(
     checkAdmin,
     UserController.setUserRole
 );
+app.delete('/users/:userId', checkAuth, checkAdmin, UserController.deleteUser);
 
 app.get('/machines', MachineController.getMachines);
 app.get('/machines/:machineId/book', checkAuth, MachineController.bookMachine);
