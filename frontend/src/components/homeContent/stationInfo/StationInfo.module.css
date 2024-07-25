@@ -71,6 +71,11 @@
     color: #fff;
 }
 
+.activePay:hover {
+    background-color: #c93232;
+    transform: scale(1.02);
+}
+
 @media (max-width: 1200px) {
     .input input {
         font-size: 14px;

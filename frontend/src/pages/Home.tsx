@@ -33,7 +33,7 @@ const Home: FC = () => {
         const stripe = await stripePromise;
         if (stripe) {
             const { error } = await stripe.redirectToCheckout({
-                sessionId: payload.id,
+                sessionId: payload.sessionId,
             });
             if (error) {
                 console.error('Error:', error);

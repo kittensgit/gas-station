@@ -18,7 +18,7 @@ interface StationInfoProps {
 const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
     const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
 
-    const discount = totalCost * (orderFuel.discount / 100);
+    const discount = +(totalCost * (orderFuel.discount / 100)).toFixed(2);
 
     const subTotal = +totalCost.toFixed(2);
 
@@ -72,7 +72,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
                 </div>
             )}
 
-            {subTotal && (
+            {subTotal !== 0 && (
                 <Calculations
                     discount={discount}
                     scores={orderFuel.scores}
@@ -80,7 +80,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
                 />
             )}
 
-            {total && (
+            {total !== 0 && (
                 <div className={styles.totalCost}>
                     <p>Total cost: </p>
                     <b>${total}</b>
@@ -89,9 +89,9 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
 
             <button
                 onClick={handleRefuel}
-                disabled={!orderFuel.name}
+                disabled={!stationInfo.stationName && !stationInfo.location}
                 className={
-                    !!orderFuel.name
+                    !!orderFuel.name && !!stationInfo.location
                         ? `${styles.activePay} ${styles.pay}`
                         : `${styles.disabledPay} ${styles.pay}`
                 }

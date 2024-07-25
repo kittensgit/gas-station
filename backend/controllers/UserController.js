@@ -147,7 +147,7 @@ export const refuel = async (req, res) => {
         await user.save();
 
         res.json({
-            id: session.id,
+            sessionId: session.id,
         });
     } catch (error) {
         console.log(error);
