@@ -25,9 +25,10 @@ const initialState: IInitialState = {
     orderFuel: {
         name: '',
         color: '',
-        price: null,
-        literQuantity: null,
-        scores: null,
+        price: 0,
+        literQuantity: 0,
+        scores: 0,
+        discount: 0,
     },
     totalCost: null,
 };
@@ -55,13 +56,13 @@ const refuelSlice = createSlice({
             }
         },
         removeOrderFuel: (state) => {
-            state.orderFuel.price = null;
+            state.orderFuel.price = 0;
             state.orderFuel.name = '';
             state.orderFuel.color = '';
-            state.orderFuel.literQuantity = null;
-            state.orderFuel.scores = null;
-            state.orderFuel.discount = null;
-            state.totalCost = null;
+            state.orderFuel.literQuantity = 0;
+            state.orderFuel.scores = 0;
+            state.orderFuel.discount = 0;
+            state.totalCost = 0;
         },
     },
 });

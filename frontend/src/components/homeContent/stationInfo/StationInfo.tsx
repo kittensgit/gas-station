@@ -1,14 +1,13 @@
 import { ChangeEvent, FC, useState } from 'react';
 
 import { useAppSelector } from 'hooks/useAppSelector';
-
-import locationIcon from 'assets/icons/location.png';
-import stationIcon from 'assets/icons/station.png';
-import fuelLgIcon from 'assets/icons/fuelLg.png';
-import fuelSmIcon from 'assets/icons/fuelSm.png';
-import pointsIcon from 'assets/icons/points_green.png';
-
 import { IRefuelData } from 'types/fuel';
+
+import fuelLgIcon from 'assets/icons/fuelLg.png';
+
+import Calculations from './calculations/Calculations';
+import Inputs from './inputs/Inputs';
+import Fuel from './fuel/Fuel';
 
 import styles from './StationInfo.module.css';
 
@@ -39,7 +38,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
         }));
     };
 
-    const handleRefuel = () => {
+    const handleRefuel = async () => {
         onRefuel({
             ...stationInfo,
             cost: total!,
@@ -53,46 +52,14 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
         <div className={styles.info}>
             <div className={styles.about}>
                 <h2>Gas station</h2>
-                <div className={styles.inputs}></div>
-                <div className={styles.input}>
-                    <img src={stationIcon} alt="station" />
-                    <input
-                        value={stationInfo.stationName}
-                        name="stationName"
-                        type="text"
-                        placeholder="Station name"
-                        onChange={onChangeStationInfo}
-                    />
-                </div>
-                <div className={styles.input}>
-                    <img src={locationIcon} alt="location" />
-                    <input
-                        value={stationInfo.location}
-                        name="location"
-                        type="text"
-                        placeholder="Location"
-                        onChange={onChangeStationInfo}
-                    />
-                </div>
+                <Inputs
+                    location={stationInfo.location}
+                    stationName={stationInfo.stationName}
+                    onChangeStationInfo={onChangeStationInfo}
+                />
             </div>
             {orderFuel.name ? (
-                <div className={styles.fuel}>
-                    <div className={styles.fuel_info}>
-                        <div
-                            className={styles.fuel_image}
-                            style={{
-                                backgroundColor: `${orderFuel.color}`,
-                            }}
-                        >
-                            <img src={fuelSmIcon} alt="fuel sm" />
-                        </div>
-                        <div className={styles.fuel_about}>
-                            <h4>{orderFuel.name}</h4>
-                            <p>{orderFuel.literQuantity}L</p>
-                        </div>
-                    </div>
-                    <b className={styles.fuel_price}>${orderFuel.price}</b>
-                </div>
+                <Fuel orderFuel={orderFuel} />
             ) : (
                 <div className={styles.fuelIcon}>
                     <img src={fuelLgIcon} alt="fuel lg" />
@@ -101,28 +68,14 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
             )}
 
             {subTotal && (
-                <div className={styles.calculations}>
-                    <div className={styles.calc_item}>
-                        <p>Subtotal</p>
-                        <b>${subTotal}</b>
-                    </div>
-                    <div className={styles.calc_item}>
-                        <p>Discount</p>
-                        <b>
-                            -${orderFuel.discount ? orderFuel.discount : '0.00'}
-                        </b>
-                    </div>
-                    <div className={styles.calc_item}>
-                        <p>Bonus(points)</p>
-                        <b>
-                            {orderFuel.scores}
-                            <img src={pointsIcon} alt="points" />
-                        </b>
-                    </div>
-                </div>
+                <Calculations
+                    discount={orderFuel.discount}
+                    scores={orderFuel.scores}
+                    subTotal={subTotal}
+                />
             )}
 
-            {subTotal && (
+            {total && (
                 <div className={styles.totalCost}>
                     <p>Total cost: </p>
                     <b>${total}</b>

@@ -7,7 +7,7 @@ import axios from '../../axios';
 export const fetchAllOrders = createAsyncThunk(
     'orders/fetchAllOrders',
     async () => {
-        const { data } = await axios.get(`/orders`);
+        const { data } = await axios.get<IOrder[]>(`/orders`);
         return data;
     }
 );

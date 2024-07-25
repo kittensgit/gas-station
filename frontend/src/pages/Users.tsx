@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import UsersContent from 'components/userContent/UsersContent';
 import Loading from 'components/common/loading/Loading';
@@ -16,17 +16,12 @@ const Users: FC = () => {
 
     const { users, status } = useAppSelector((state) => state.users);
 
-    const [isEditRole, setIsEditRole] = useState<boolean>(false);
-
     useEffect(() => {
         dispatch(fetchUsers());
-    }, [dispatch, isEditRole]);
+    }, [dispatch]);
 
-    const onSetUserRole = async (userRoleData: IUserRoleData) => {
-        const { payload } = await dispatch(setUserRole(userRoleData));
-        if (payload) {
-            setIsEditRole(true);
-        }
+    const onSetUserRole = (userRoleData: IUserRoleData) => {
+        dispatch(setUserRole(userRoleData));
     };
 
     if (status === 'loading') {

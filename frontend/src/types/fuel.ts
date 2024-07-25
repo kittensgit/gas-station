@@ -19,11 +19,11 @@ export interface IFuel {
 
 export interface IOrderFuel {
     name: string;
-    price: number | null;
+    price: number;
     color: string;
-    literQuantity: number | null;
-    scores: number | null;
-    discount?: number | null;
+    literQuantity: number;
+    scores: number;
+    discount?: number;
 }
 
 export interface IRefuelData {

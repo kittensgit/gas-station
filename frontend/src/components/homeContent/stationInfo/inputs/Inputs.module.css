@@ -1,0 +1,38 @@
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.input input {
+    min-width: 180px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #6582aa;
+    color: #fff;
+    outline: none;
+    padding: 5px 0;
+    font-size: 15px;
+    font-family: 'Work Sans', sans-serif;
+    transition: all 0.3s ease-in;
+}
+
+.input input::placeholder {
+    color: #6582aa;
+}
+
+.input input:hover {
+    border-bottom: 2px solid #fff;
+}

@@ -26,6 +26,8 @@
 
 `node-cron`
 
+`stripe`
+
 ### Start server
 
 `npm run start:dev`

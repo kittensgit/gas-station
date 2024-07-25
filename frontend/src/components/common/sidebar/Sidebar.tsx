@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAuth } from 'hooks/useAuth';
@@ -13,6 +13,7 @@ import styles from './Sidebar.module.css';
 
 const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const { isAuth, fullName, scores, role } = useAuth();
 
@@ -20,6 +21,7 @@ const Sidebar: FC = () => {
         if (window.confirm('You really want to log out?')) {
             dispatch(logout());
             window.localStorage.removeItem('token');
+            navigate('/login');
         }
     };
 

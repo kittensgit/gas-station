@@ -40,6 +40,7 @@ export const orderProduct = async (req, res) => {
             product: productId,
             quantity,
             totalScores,
+            orderDate: new Date(),
         };
 
         if (userOrder) {

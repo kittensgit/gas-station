@@ -8,7 +8,7 @@ import axios from '../../axios';
 export const fetchUserOrders = createAsyncThunk(
     'orders/fetchUserOrders',
     async (params: string) => {
-        const { data } = await axios.get(`/userOrders/${params}`);
+        const { data } = await axios.get<IUserOrder[]>(`/userOrders/${params}`);
         return data;
     }
 );

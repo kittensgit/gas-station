@@ -49,6 +49,21 @@ const usersSlice = createSlice({
             .addCase(fetchUsers.rejected, (state) => {
                 state.users = [];
                 state.status = 'error';
+            })
+            .addCase(setUserRole.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(setUserRole.fulfilled, (state, action) => {
+                const user = state.users.find(
+                    (user) => user._id === action.meta.arg.userId
+                );
+                if (user) {
+                    user.role = action.meta.arg.role;
+                }
+                state.status = 'loaded';
+            })
+            .addCase(setUserRole.rejected, (state) => {
+                state.status = 'error';
             });
     },
 });

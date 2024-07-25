@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import HomeContent from 'components/homeContent/HomeContent';
 
@@ -17,7 +17,7 @@ const Home: FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { isAuth } = useAuth();
+    const { isAuth, role } = useAuth();
 
     const onAddOrderFuel = (orderFuel: IOrderFuel) => {
         dispatch(addOrderFuel(orderFuel));
@@ -32,6 +32,11 @@ const Home: FC = () => {
             alert('Failed to refuel');
         }
     };
+
+    if (role === 'admin') {
+        return <Navigate to={'/users'} />;
+    }
+
     return (
         <HomeContent
             isAuth={isAuth}

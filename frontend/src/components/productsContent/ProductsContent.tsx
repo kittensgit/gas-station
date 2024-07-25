@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import Loading from 'components/common/loading/Loading';
+import EmptyList from 'components/common/emptyList/EmptyList';
 
 import { IOrderProduct, IProduct } from 'types/product';
 
@@ -28,6 +29,7 @@ const ProductsContent: FC<ProductsContentProps> = ({
     onAddOrderProduct,
 }) => {
     const { pathname } = useLocation();
+
     return (
         <div className={styles.wrapper}>
             <ul className={styles.links}>
@@ -72,12 +74,14 @@ const ProductsContent: FC<ProductsContentProps> = ({
             </ul>
             {status === 'loading' ? (
                 <Loading />
-            ) : (
+            ) : products.length ? (
                 <ProductList
                     isAuth={isAuth}
                     products={products}
                     onAddOrderProduct={onAddOrderProduct}
                 />
+            ) : (
+                <EmptyList listName="Products" />
             )}
         </div>
     );
