@@ -18,12 +18,14 @@ interface StationInfoProps {
 const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
     const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
 
-    const subTotal = totalCost && +totalCost.toFixed(2);
+    const discount = totalCost * (orderFuel.discount / 100);
 
-    const total =
-        orderFuel.discount && subTotal
-            ? +(subTotal - orderFuel.discount).toFixed(2)
-            : subTotal;
+    const subTotal = +totalCost.toFixed(2);
+
+    const total = +(subTotal - discount).toFixed(2);
+
+    const costPerLiterWithDiscount =
+        orderFuel.price - orderFuel.price * (orderFuel.discount / 100);
 
     const [stationInfo, setStationInfo] = useState({
         stationName: '',
@@ -41,9 +43,12 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
     const handleRefuel = async () => {
         onRefuel({
             ...stationInfo,
-            cost: total!,
-            scores: orderFuel.scores!,
-            litersFilled: orderFuel.literQuantity!,
+            cost: total,
+            costPerLiter: orderFuel.discount
+                ? costPerLiterWithDiscount
+                : orderFuel.price,
+            scores: orderFuel.scores,
+            litersFilled: orderFuel.literQuantity,
             fuelName: orderFuel.name,
         });
     };
@@ -69,7 +74,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
 
             {subTotal && (
                 <Calculations
-                    discount={orderFuel.discount}
+                    discount={discount}
                     scores={orderFuel.scores}
                     subTotal={subTotal}
                 />

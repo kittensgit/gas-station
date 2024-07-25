@@ -18,7 +18,7 @@ export const fetchRefuel = createAsyncThunk(
 
 interface IInitialState {
     orderFuel: IOrderFuel;
-    totalCost: number | null;
+    totalCost: number;
 }
 
 const initialState: IInitialState = {
@@ -30,7 +30,7 @@ const initialState: IInitialState = {
         scores: 0,
         discount: 0,
     },
-    totalCost: null,
+    totalCost: 0,
 };
 
 const refuelSlice = createSlice({
@@ -45,15 +45,17 @@ const refuelSlice = createSlice({
             state.orderFuel.scores = action.payload.scores;
             state.totalCost =
                 action.payload.literQuantity * action.payload.price;
-            if (action.payload.discount) {
-                const discount = action.payload.discount;
-                const totalCost =
-                    action.payload.literQuantity * action.payload.price;
-                state.orderFuel.discount = +(
-                    totalCost *
-                    (discount / 100)
-                ).toFixed(2);
-            }
+            state.orderFuel.discount = action.payload.discount;
+
+            // if (action.payload.discount) {
+            //     const discount = action.payload.discount;
+            //     const totalCost =
+            //         action.payload.literQuantity * action.payload.price;
+            //     state.orderFuel.discount = +(
+            //         totalCost *
+            //         (discount / 100)
+            //     ).toFixed(2);
+            // }
         },
         removeOrderFuel: (state) => {
             state.orderFuel.price = 0;

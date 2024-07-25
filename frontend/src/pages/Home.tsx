@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
 
 import HomeContent from 'components/homeContent/HomeContent';
 
@@ -13,9 +14,12 @@ import {
     removeOrderFuel,
 } from '../redux/slices/refuel';
 
+const stripePromise = loadStripe(
+    'pk_test_51PWYf402vF6hOY02eEkeJtxfl6OPpJO1DgWyQp4QQ7ZYINWvDVpipn8oL13i0NfK6gyALs0CjS6FXlYVoj9ayVeU00IiLd8XXR'
+);
+
 const Home: FC = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const { isAuth, role } = useAuth();
 
@@ -24,12 +28,17 @@ const Home: FC = () => {
     };
 
     const onRefuel = async (refuelData: IRefuelData) => {
-        const data = await dispatch(fetchRefuel(refuelData));
-        if (data.payload) {
-            navigate('/refuelHistory');
+        const { payload } = await dispatch(fetchRefuel(refuelData));
+
+        const stripe = await stripePromise;
+        if (stripe) {
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: payload.id,
+            });
+            if (error) {
+                console.error('Error:', error);
+            }
             dispatch(removeOrderFuel());
-        } else {
-            alert('Failed to refuel');
         }
     };
 

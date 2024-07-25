@@ -21,6 +21,7 @@ const fuelList: IFuel[] = [
         price: 1.24,
         color: '#78B1FF',
         scores: 200,
+        discount: 0,
     },
     {
         logo: '92',
@@ -36,6 +37,7 @@ const fuelList: IFuel[] = [
         price: 1.89,
         color: '#ECF583',
         scores: 350,
+        discount: 0,
     },
     {
         logo: 'LG',
@@ -43,6 +45,7 @@ const fuelList: IFuel[] = [
         price: 1.5,
         color: '#9B7CC2',
         scores: 250,
+        discount: 0,
     },
     {
         logo: 'EF',

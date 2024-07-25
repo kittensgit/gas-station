@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt';
+import Stripe from 'stripe';
 
 import UserModel from '../models/User.js';
 import { createToken } from '../helpers.js';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const register = async (req, res) => {
     try {
@@ -90,6 +93,8 @@ export const getMe = async (req, res) => {
 
 export const refuel = async (req, res) => {
     try {
+        const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
         const {
             stationName,
             litersFilled,
@@ -97,7 +102,7 @@ export const refuel = async (req, res) => {
             location,
             scores,
             fuelName,
-            paymentMethodId,
+            costPerLiter,
         } = req.body;
 
         const user = await UserModel.findById(req.userId);
@@ -109,6 +114,25 @@ export const refuel = async (req, res) => {
         }
 
         // payments logic
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: fuelName,
+                        },
+                        unit_amount: +(costPerLiter * 100).toFixed(2),
+                    },
+                    quantity: litersFilled,
+                },
+            ],
+            mode: 'payment',
+            success_url: 'http://localhost:3000/refuelHistory',
+            cancel_url: 'http://localhost:3000/',
+        });
 
         user.refuelingHistory.push({
             stationName,
@@ -122,10 +146,9 @@ export const refuel = async (req, res) => {
 
         await user.save();
 
-        const addedRefuelingRecord =
-            user.refuelingHistory[user.refuelingHistory.length - 1];
-
-        res.json(addedRefuelingRecord);
+        res.json({
+            id: session.id,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
