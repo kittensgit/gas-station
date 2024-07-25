@@ -23,10 +23,15 @@ const Home: FC = () => {
     const dispatch = useAppDispatch();
 
     const { isAuth, role } = useAuth();
+
     const [error, setError] = useState<StripeError | null>(null);
 
     const onAddOrderFuel = (orderFuel: IOrderFuel) => {
         dispatch(addOrderFuel(orderFuel));
+    };
+
+    const onResetOrder = () => {
+        dispatch(removeOrderFuel());
     };
 
     const onRefuel = async (refuelData: IRefuelData) => {
@@ -40,7 +45,7 @@ const Home: FC = () => {
             if (error) {
                 setError(error);
             }
-            dispatch(removeOrderFuel());
+            onResetOrder();
         }
     };
 
@@ -57,6 +62,7 @@ const Home: FC = () => {
             isAuth={isAuth}
             onAddOrderFuel={onAddOrderFuel}
             onRefuel={onRefuel}
+            onResetOrder={onResetOrder}
         />
     );
 };

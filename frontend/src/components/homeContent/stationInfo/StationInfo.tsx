@@ -1,9 +1,9 @@
 import { ChangeEvent, FC, useState } from 'react';
 
-import { useAppSelector } from 'hooks/useAppSelector';
-import { IRefuelData } from 'types/fuel';
+import { IOrderFuel, IRefuelData } from 'types/fuel';
 
 import fuelLgIcon from 'assets/icons/fuelLg.png';
+import resetIcon from 'assets/icons/reset.png';
 
 import Calculations from './calculations/Calculations';
 import Inputs from './inputs/Inputs';
@@ -12,20 +12,29 @@ import Fuel from './fuel/Fuel';
 import styles from './StationInfo.module.css';
 
 interface StationInfoProps {
+    orderFuel: IOrderFuel;
+    totalCost: number;
     onRefuel: (refuelData: IRefuelData) => void;
+    onResetOrder: () => void;
 }
 
-const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
-    const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
+const StationInfo: FC<StationInfoProps> = ({
+    orderFuel,
+    totalCost,
+    onRefuel,
+    onResetOrder,
+}) => {
+    const { literQuantity, name, price, scores, discount } = orderFuel;
 
-    const discount = +(totalCost * (orderFuel.discount / 100)).toFixed(2);
+    const totalDiscount = +(totalCost * (discount / 100)).toFixed(2);
+
+    const totalScores = scores * literQuantity;
 
     const subTotal = +totalCost.toFixed(2);
 
-    const total = +(subTotal - discount).toFixed(2);
+    const total = +(subTotal - totalDiscount).toFixed(2);
 
-    const costPerLiterWithDiscount =
-        orderFuel.price - orderFuel.price * (orderFuel.discount / 100);
+    const costPerLiterWithDiscount = price - price * (discount / 100);
 
     const [stationInfo, setStationInfo] = useState({
         stationName: '',
@@ -44,26 +53,39 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
         onRefuel({
             ...stationInfo,
             cost: total,
-            costPerLiter: orderFuel.discount
-                ? costPerLiterWithDiscount
-                : orderFuel.price,
-            scores: orderFuel.scores,
-            litersFilled: orderFuel.literQuantity,
-            fuelName: orderFuel.name,
+            costPerLiter: discount ? costPerLiterWithDiscount : price,
+            scores: totalScores,
+            litersFilled: literQuantity,
+            fuelName: name,
         });
+    };
+
+    const handleReset = () => {
+        setStationInfo({
+            stationName: '',
+            location: '',
+        });
+        onResetOrder();
     };
 
     return (
         <div className={styles.info}>
             <div className={styles.about}>
-                <h2>Gas station</h2>
+                <div className={styles.title}>
+                    <h2>Gas station</h2>
+                    {name && (
+                        <button onClick={handleReset} className={styles.reset}>
+                            <img src={resetIcon} alt="reset" />
+                        </button>
+                    )}
+                </div>
                 <Inputs
                     location={stationInfo.location}
                     stationName={stationInfo.stationName}
                     onChangeStationInfo={onChangeStationInfo}
                 />
             </div>
-            {orderFuel.name ? (
+            {name ? (
                 <Fuel orderFuel={orderFuel} />
             ) : (
                 <div className={styles.fuelIcon}>
@@ -74,8 +96,8 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
 
             {subTotal !== 0 && (
                 <Calculations
-                    discount={discount}
-                    scores={orderFuel.scores}
+                    discount={totalDiscount}
+                    scores={totalScores}
                     subTotal={subTotal}
                 />
             )}
@@ -91,7 +113,7 @@ const StationInfo: FC<StationInfoProps> = ({ onRefuel }) => {
                 onClick={handleRefuel}
                 disabled={!stationInfo.stationName && !stationInfo.location}
                 className={
-                    !!orderFuel.name && !!stationInfo.location
+                    !!name && !!stationInfo.location
                         ? `${styles.activePay} ${styles.pay}`
                         : `${styles.disabledPay} ${styles.pay}`
                 }

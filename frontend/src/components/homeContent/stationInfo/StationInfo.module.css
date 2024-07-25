@@ -14,10 +14,33 @@
     gap: 10px;
 }
 
-.info h2 {
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.title h2 {
     font-size: 22px;
     font-weight: 700;
-    padding: 10px;
+}
+
+.reset {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s ease-in;
+}
+
+.reset:hover {
+    transform: translateX(-2px) rotate(45deg) scale(1.1);
+}
+
+.reset img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
 }
 
 .totalCost {

@@ -7,7 +7,7 @@ import axios from '../../axios';
 import { addPoints, addRefuelHistory } from './auth';
 
 export const fetchRefuel = createAsyncThunk(
-    'auth/fetchRefuel',
+    'refuel/fetchRefuel',
     async (params: IRefuelData, { dispatch }) => {
         const { data } = await axios.post('/refuel', params);
         dispatch(addPoints(params.scores));
@@ -46,16 +46,6 @@ const refuelSlice = createSlice({
             state.totalCost =
                 action.payload.literQuantity * action.payload.price;
             state.orderFuel.discount = action.payload.discount;
-
-            // if (action.payload.discount) {
-            //     const discount = action.payload.discount;
-            //     const totalCost =
-            //         action.payload.literQuantity * action.payload.price;
-            //     state.orderFuel.discount = +(
-            //         totalCost *
-            //         (discount / 100)
-            //     ).toFixed(2);
-            // }
         },
         removeOrderFuel: (state) => {
             state.orderFuel.price = 0;
