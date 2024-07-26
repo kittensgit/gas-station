@@ -5,6 +5,7 @@ import { IFuel, IOrderFuel } from 'types/fuel';
 
 import addIcon from 'assets/icons/add.png';
 import pointsIcon from 'assets/icons/points.png';
+import removeIcon from 'assets/icons/delete.png';
 
 import styles from './FuelItem.module.css';
 
@@ -18,6 +19,7 @@ interface FuelItemProps {
     onChangeLiterQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
     onAddOrderFuel: (fuel: IOrderFuel) => void;
     toggleEdit: (name: string) => void;
+    onRemoveFuel: (fuelId: IFuel['_id']) => void;
 }
 
 const FuelItem: FC<FuelItemProps> = ({
@@ -30,9 +32,10 @@ const FuelItem: FC<FuelItemProps> = ({
     onChangeLiterQuantity,
     onAddOrderFuel,
     toggleEdit,
+    onRemoveFuel,
 }) => {
     const navigate = useNavigate();
-    const { color, logo, name, price, discount, scores } = fuel;
+    const { color, logo, name, price, discount, scores, _id } = fuel;
 
     const addOrderFuel = () => {
         const newOrderFuel: IOrderFuel = {
@@ -98,6 +101,9 @@ const FuelItem: FC<FuelItemProps> = ({
                     </button>
                 )}
             </div>
+            <button className={styles.remove} onClick={() => onRemoveFuel(_id)}>
+                <img src={removeIcon} alt="remove" />
+            </button>
         </li>
     );
 };

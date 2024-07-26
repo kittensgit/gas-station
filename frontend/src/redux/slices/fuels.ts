@@ -11,10 +11,17 @@ export const fetchFuels = createAsyncThunk('fuels/fetchFuels', async () => {
 
 export const addFuel = createAsyncThunk(
     'fuels/addFuel',
-    async (params: IFuel) => {
+    async (params: Omit<IFuel, '_id'>) => {
         const { data } = await axios.post('/fuels/add', {
             ...params,
         });
+        return data;
+    }
+);
+export const removeFuel = createAsyncThunk(
+    'fuels/removeFuel',
+    async (params: IFuel['_id']) => {
+        const { data } = await axios.delete(`/fuels/${params}`);
         return data;
     }
 );
@@ -61,6 +68,18 @@ const fuelsSlice = createSlice({
                 }
             )
             .addCase(addFuel.rejected, (state) => {
+                state.status = 'error';
+            })
+            .addCase(removeFuel.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(removeFuel.fulfilled, (state, action) => {
+                state.fuels = state.fuels.filter(
+                    (item) => item._id !== action.meta.arg
+                );
+                state.status = 'loaded';
+            })
+            .addCase(removeFuel.rejected, (state) => {
                 state.status = 'error';
             });
     },

@@ -20,7 +20,8 @@ interface HomeContentProps {
     onAddOrderFuel: (orderFuel: IOrderFuel) => void;
     onRefuel: (refuelData: IRefuelData) => void;
     onResetOrder: () => void;
-    onAddFuel: (fuel: IFuel) => void;
+    onAddFuel: (fuel: Omit<IFuel, '_id'>) => void;
+    onRemoveFuel: (fuelId: IFuel['_id']) => void;
 }
 
 const HomeContent: FC<HomeContentProps> = ({
@@ -35,6 +36,7 @@ const HomeContent: FC<HomeContentProps> = ({
     onRefuel,
     onResetOrder,
     onAddFuel,
+    onRemoveFuel,
 }) => {
     return (
         <div className={styles.wrapper}>
@@ -48,6 +50,7 @@ const HomeContent: FC<HomeContentProps> = ({
                     fuels={fuels}
                     onAddOrderFuel={onAddOrderFuel}
                     onAddFuel={onAddFuel}
+                    onRemoveFuel={onRemoveFuel}
                 />
             )}
 

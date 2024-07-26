@@ -14,7 +14,8 @@ interface FuelListProps {
     isAddFuel: boolean;
     fuels: IFuel[];
     onAddOrderFuel: (orderFuel: IOrderFuel) => void;
-    onAddFuel: (fuel: IFuel) => void;
+    onAddFuel: (fuel: Omit<IFuel, '_id'>) => void;
+    onRemoveFuel: (fuelId: IFuel['_id']) => void;
 }
 
 const FuelList: FC<FuelListProps> = ({
@@ -24,6 +25,7 @@ const FuelList: FC<FuelListProps> = ({
     fuels,
     onAddOrderFuel,
     onAddFuel,
+    onRemoveFuel,
 }) => {
     const [literQuantity, setLiterQuantity] = useState(1);
     const [activeFuel, setActiveFuel] = useState<string | null>(null);
@@ -45,9 +47,9 @@ const FuelList: FC<FuelListProps> = ({
     return (
         <ul className={styles.list}>
             {isAdmin && <AddFuel onAddFuel={onAddFuel} />}
-            {fuels.map((item, index) => (
+            {fuels.map((item) => (
                 <FuelItem
-                    key={index}
+                    key={item._id}
                     fuel={item}
                     literQuantity={literQuantity}
                     isEditActive={activeFuel === item.name}
@@ -57,6 +59,7 @@ const FuelList: FC<FuelListProps> = ({
                     onChangeLiterQuantity={onChangeLiterQuantity}
                     onAddOrderFuel={handleAddOrderFuel}
                     toggleEdit={toggleActiveFuelEdit}
+                    onRemoveFuel={onRemoveFuel}
                 />
             ))}
         </ul>

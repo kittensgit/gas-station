@@ -4,7 +4,7 @@
 
 -   TypeScript
 
--   Redux Toolkit + RTK Query
+-   Redux Toolkit
 
 ## Dependecies
 
@@ -17,6 +17,8 @@
 `axios`
 
 `date-fns`
+
+`@stripe/stripe-js`
 
 ### Start application
 

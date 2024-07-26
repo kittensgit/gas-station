@@ -41,22 +41,20 @@ export const addFuel = async (req, res) => {
     }
 };
 
-// export const deleteProduct = async (req, res) => {
-//     try {
-//         const product = await ProductModel.findByIdAndDelete(
-//             req.params.productId
-//         );
-//         if (!product)
-//             return res.status(404).json({
-//                 message: 'Product not found',
-//             });
-//         res.json({
-//             success: true,
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({
-//             message: 'Failed to delete product',
-//         });
-//     }
-// };
+export const deleteFuel = async (req, res) => {
+    try {
+        const fuel = await FuelModel.findByIdAndDelete(req.params.fuelId);
+        if (!fuel)
+            return res.status(404).json({
+                message: 'Fuel not found',
+            });
+        res.json({
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to delete fuel',
+        });
+    }
+};

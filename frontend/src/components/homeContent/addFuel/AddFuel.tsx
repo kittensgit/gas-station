@@ -8,7 +8,7 @@ import { IFuel } from 'types/fuel';
 import styles from './AddFuel.module.css';
 
 interface AddFuelProps {
-    onAddFuel: (fuel: IFuel) => void;
+    onAddFuel: (fuel: Omit<IFuel, '_id'>) => void;
 }
 
 const AddFuel: FC<AddFuelProps> = ({ onAddFuel }) => {

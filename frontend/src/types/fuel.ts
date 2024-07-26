@@ -9,6 +9,7 @@ export interface IRefuelHistory {
 }
 
 export interface IFuel {
+    _id: string;
     logo: string;
     name: string;
     price: number;

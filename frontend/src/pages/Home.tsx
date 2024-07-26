@@ -14,7 +14,7 @@ import {
     fetchRefuel,
     removeOrderFuel,
 } from '../redux/slices/refuel';
-import { addFuel, fetchFuels } from '../redux/slices/fuels';
+import { addFuel, fetchFuels, removeFuel } from '../redux/slices/fuels';
 
 const stripePromise = loadStripe(
     'pk_test_51PWYf402vF6hOY02eEkeJtxfl6OPpJO1DgWyQp4QQ7ZYINWvDVpipn8oL13i0NfK6gyALs0CjS6FXlYVoj9ayVeU00IiLd8XXR'
@@ -64,8 +64,12 @@ const Home: FC = () => {
 
     // admin
 
-    const onAddFuel = (fuel: IFuel) => {
+    const onAddFuel = (fuel: Omit<IFuel, '_id'>) => {
         dispatch(addFuel(fuel));
+    };
+
+    const onRemoveFuel = (fuelId: IFuel['_id']) => {
+        dispatch(removeFuel(fuelId));
     };
 
     if (error) {
@@ -85,6 +89,7 @@ const Home: FC = () => {
             onRefuel={onRefuel}
             onResetOrder={onResetOrder}
             onAddFuel={onAddFuel}
+            onRemoveFuel={onRemoveFuel}
         />
     );
 };
