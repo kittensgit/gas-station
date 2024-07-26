@@ -13,6 +13,7 @@ interface FuelItemProps {
     isEditActive: boolean;
     isAddFuel: boolean;
     isAuth: boolean;
+    isAdmin: boolean;
     onChangeLiterQuantity: (e: ChangeEvent<HTMLInputElement>) => void;
     onAddOrderFuel: (fuel: IOrderFuel) => void;
     toggleEdit: (name: string) => void;
@@ -24,6 +25,7 @@ const FuelItem: FC<FuelItemProps> = ({
     isEditActive,
     isAddFuel,
     isAuth,
+    isAdmin,
     onChangeLiterQuantity,
     onAddOrderFuel,
     toggleEdit,
@@ -66,7 +68,9 @@ const FuelItem: FC<FuelItemProps> = ({
             <h3 className={styles.title}>{name}</h3>
             <div className={styles.price}>
                 <p>${price}</p>
-                {isEditActive ? (
+                {isAdmin ? (
+                    <p>40*</p>
+                ) : isEditActive ? (
                     <div className={styles.edit}>
                         <p>L:</p>
                         <input

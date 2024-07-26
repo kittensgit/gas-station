@@ -2,6 +2,8 @@ import { ChangeEvent, FC, useState } from 'react';
 
 import { IFuel, IOrderFuel } from 'types/fuel';
 
+import AddFuel from '../addFuel/AddFuel';
+
 import FuelItem from './fuelItem/FuelItem';
 
 import styles from './FuelList.module.css';
@@ -59,11 +61,17 @@ const fuelList: IFuel[] = [
 
 interface FuelListProps {
     isAuth: boolean;
+    isAdmin: boolean;
     isAddFuel: boolean;
     onAddOrderFuel: (orderFuel: IOrderFuel) => void;
 }
 
-const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth, isAddFuel }) => {
+const FuelList: FC<FuelListProps> = ({
+    onAddOrderFuel,
+    isAuth,
+    isAddFuel,
+    isAdmin,
+}) => {
     const [literQuantity, setLiterQuantity] = useState(1);
     const [activeFuel, setActiveFuel] = useState<string | null>(null);
 
@@ -71,7 +79,7 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth, isAddFuel }) => {
         setLiterQuantity(parseInt(e.target.value, 10));
     };
 
-    const toggleEdit = (name: string) => {
+    const toggleActiveFuelEdit = (name: string) => {
         setActiveFuel(name);
     };
 
@@ -83,6 +91,7 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth, isAddFuel }) => {
 
     return (
         <ul className={styles.list}>
+            {isAdmin && <AddFuel />}
             {fuelList.map((item, index) => (
                 <FuelItem
                     key={index}
@@ -91,9 +100,10 @@ const FuelList: FC<FuelListProps> = ({ onAddOrderFuel, isAuth, isAddFuel }) => {
                     isEditActive={activeFuel === item.name}
                     isAddFuel={isAddFuel}
                     isAuth={isAuth}
+                    isAdmin={isAdmin}
                     onChangeLiterQuantity={onChangeLiterQuantity}
                     onAddOrderFuel={handleAddOrderFuel}
-                    toggleEdit={toggleEdit}
+                    toggleEdit={toggleActiveFuelEdit}
                 />
             ))}
         </ul>

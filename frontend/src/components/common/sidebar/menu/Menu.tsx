@@ -42,6 +42,11 @@ const userLinkList = [
 
 const adminLinkList = [
     {
+        path: '',
+        naming: 'Fuels',
+        img: fuelIcon,
+    },
+    {
         path: 'users',
         naming: 'Users',
         img: usersIcon,

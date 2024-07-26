@@ -24,6 +24,8 @@ const Home: FC = () => {
 
     const { isAuth, role } = useAuth();
 
+    const isAdmin = role === 'admin';
+
     const [error, setError] = useState<StripeError | null>(null);
 
     const onAddOrderFuel = (orderFuel: IOrderFuel) => {
@@ -49,10 +51,6 @@ const Home: FC = () => {
         }
     };
 
-    if (role === 'admin') {
-        return <Navigate to={'/users'} />;
-    }
-
     if (error) {
         return <Error />;
     }
@@ -60,6 +58,7 @@ const Home: FC = () => {
     return (
         <HomeContent
             isAuth={isAuth}
+            isAdmin={isAdmin}
             onAddOrderFuel={onAddOrderFuel}
             onRefuel={onRefuel}
             onResetOrder={onResetOrder}

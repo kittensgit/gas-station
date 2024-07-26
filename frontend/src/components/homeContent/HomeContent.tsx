@@ -10,6 +10,7 @@ import styles from './HomeContent.module.css';
 
 interface HomeContentProps {
     isAuth: boolean;
+    isAdmin: boolean;
     onAddOrderFuel: (orderFuel: IOrderFuel) => void;
     onRefuel: (refuelData: IRefuelData) => void;
     onResetOrder: () => void;
@@ -17,6 +18,7 @@ interface HomeContentProps {
 
 const HomeContent: FC<HomeContentProps> = ({
     isAuth,
+    isAdmin,
     onAddOrderFuel,
     onRefuel,
     onResetOrder,
@@ -29,15 +31,18 @@ const HomeContent: FC<HomeContentProps> = ({
         <div className={styles.wrapper}>
             <FuelList
                 isAuth={isAuth}
+                isAdmin={isAdmin}
                 isAddFuel={isAddFuel}
                 onAddOrderFuel={onAddOrderFuel}
             />
-            <StationInfo
-                orderFuel={orderFuel}
-                totalCost={totalCost}
-                onRefuel={onRefuel}
-                onResetOrder={onResetOrder}
-            />
+            {!isAdmin && (
+                <StationInfo
+                    orderFuel={orderFuel}
+                    totalCost={totalCost}
+                    onRefuel={onRefuel}
+                    onResetOrder={onResetOrder}
+                />
+            )}
         </div>
     );
 };
