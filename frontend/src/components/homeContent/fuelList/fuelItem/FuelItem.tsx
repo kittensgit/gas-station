@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { IFuel, IOrderFuel } from 'types/fuel';
 
 import addIcon from 'assets/icons/add.png';
+import pointsIcon from 'assets/icons/points.png';
 
 import styles from './FuelItem.module.css';
 
@@ -69,7 +70,10 @@ const FuelItem: FC<FuelItemProps> = ({
             <div className={styles.price}>
                 <p>${price}</p>
                 {isAdmin ? (
-                    <p>40*</p>
+                    <div className={styles.scores}>
+                        <p>{scores}</p>
+                        <img src={pointsIcon} alt="scores" />
+                    </div>
                 ) : isEditActive ? (
                     <div className={styles.edit}>
                         <p>L:</p>

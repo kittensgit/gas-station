@@ -8,6 +8,7 @@ import { machinesReducer } from './slices/machines';
 import { showersReducer } from './slices/showers';
 import { userOrdersReducer } from './slices/userOrders';
 import { usersReducer } from './slices/users';
+import { fuelsReducer } from './slices/fuels';
 
 export const store = configureStore({
     reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
         machines: machinesReducer,
         showers: showersReducer,
         users: usersReducer,
+        fuels: fuelsReducer,
     },
 });

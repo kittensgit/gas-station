@@ -17,6 +17,7 @@ import {
     ProductController,
     ShowerController,
     UserController,
+    FuelController,
 } from './controllers/index.js';
 
 import {
@@ -70,6 +71,9 @@ app.post(
     UserController.setUserRole
 );
 app.delete('/users/:userId', checkAuth, checkAdmin, UserController.deleteUser);
+
+app.get('/fuels', FuelController.getFuels);
+app.post('/fuels/add', checkAuth, checkAdmin, FuelController.addFuel);
 
 app.get('/machines', MachineController.getMachines);
 app.get('/machines/:machineId/book', checkAuth, MachineController.bookMachine);

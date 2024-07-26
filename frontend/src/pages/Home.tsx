@@ -1,19 +1,20 @@
-import { FC, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
 import { loadStripe, StripeError } from '@stripe/stripe-js';
 
 import HomeContent from 'components/homeContent/HomeContent';
 import Error from 'components/common/error/Error';
 
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { useAuth } from 'hooks/useAuth';
-import { IOrderFuel, IRefuelData } from 'types/fuel';
+import { IFuel, IOrderFuel, IRefuelData } from 'types/fuel';
 
 import {
     addOrderFuel,
     fetchRefuel,
     removeOrderFuel,
 } from '../redux/slices/refuel';
+import { addFuel, fetchFuels } from '../redux/slices/fuels';
 
 const stripePromise = loadStripe(
     'pk_test_51PWYf402vF6hOY02eEkeJtxfl6OPpJO1DgWyQp4QQ7ZYINWvDVpipn8oL13i0NfK6gyALs0CjS6FXlYVoj9ayVeU00IiLd8XXR'
@@ -23,10 +24,20 @@ const Home: FC = () => {
     const dispatch = useAppDispatch();
 
     const { isAuth, role } = useAuth();
+    const { orderFuel, totalCost } = useAppSelector((state) => state.refuel);
+    const { fuels, status } = useAppSelector((state) => state.fuels);
+
+    useEffect(() => {
+        dispatch(fetchFuels());
+    }, [dispatch]);
+
+    const isAddFuel = !!orderFuel.name;
 
     const isAdmin = role === 'admin';
 
     const [error, setError] = useState<StripeError | null>(null);
+
+    // user
 
     const onAddOrderFuel = (orderFuel: IOrderFuel) => {
         dispatch(addOrderFuel(orderFuel));
@@ -51,6 +62,12 @@ const Home: FC = () => {
         }
     };
 
+    // admin
+
+    const onAddFuel = (fuel: IFuel) => {
+        dispatch(addFuel(fuel));
+    };
+
     if (error) {
         return <Error />;
     }
@@ -59,9 +76,15 @@ const Home: FC = () => {
         <HomeContent
             isAuth={isAuth}
             isAdmin={isAdmin}
+            isAddFuel={isAddFuel}
+            orderFuel={orderFuel}
+            totalCost={totalCost}
+            fuels={fuels}
+            status={status}
             onAddOrderFuel={onAddOrderFuel}
             onRefuel={onRefuel}
             onResetOrder={onResetOrder}
+            onAddFuel={onAddFuel}
         />
     );
 };

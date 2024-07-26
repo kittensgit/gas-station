@@ -3,9 +3,15 @@ import { ChangeEvent, FC, useState } from 'react';
 import plusIcon from 'assets/icons/plus.png';
 import fuelIcon from 'assets/icons/fuelSm.png';
 
+import { IFuel } from 'types/fuel';
+
 import styles from './AddFuel.module.css';
 
-const AddFuel: FC = () => {
+interface AddFuelProps {
+    onAddFuel: (fuel: IFuel) => void;
+}
+
+const AddFuel: FC<AddFuelProps> = ({ onAddFuel }) => {
     const [editFuel, setEditFuel] = useState<boolean>(false);
 
     const [color, setColor] = useState<string>('#80b7a9');
@@ -13,25 +19,37 @@ const AddFuel: FC = () => {
     const [iconName, setIconName] = useState<string>('');
     const [pricePerLiter, setPricePerLiter] = useState<number>(1);
     const [pointsPerLiter, setPointsPerLiter] = useState<number>(1);
+    const [discount, setDiscount] = useState<number>(0);
 
     const toggleEdit = () => {
         setEditFuel(!editFuel);
     };
 
-    const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-        setColor(e.target.value);
-    };
-    const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-    const handleChangeIconName = (e: ChangeEvent<HTMLInputElement>) => {
-        setIconName(e.target.value);
-    };
-    const handleChangePrice = (e: ChangeEvent<HTMLInputElement>) => {
-        setPricePerLiter(parseInt(e.target.value, 10));
-    };
-    const handleChangePoints = (e: ChangeEvent<HTMLInputElement>) => {
-        setPointsPerLiter(parseInt(e.target.value, 10));
+    const handleChange =
+        <T,>(
+            setter: React.Dispatch<React.SetStateAction<T>>,
+            parse: (value: string) => T
+        ) =>
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setter(parse(e.target.value));
+        };
+
+    const handleAddFuel = () => {
+        onAddFuel({
+            color,
+            discount,
+            logo: iconName,
+            name,
+            price: pricePerLiter,
+            scores: pointsPerLiter,
+        });
+        toggleEdit();
+        setColor('');
+        setName('');
+        setIconName('');
+        setDiscount(0);
+        setPointsPerLiter(1);
+        setPricePerLiter(1);
     };
 
     return (
@@ -52,7 +70,10 @@ const AddFuel: FC = () => {
                                 type="text"
                                 placeholder="Gasoline AI-95"
                                 value={name}
-                                onChange={handleChangeName}
+                                onChange={handleChange<string>(
+                                    setName,
+                                    (value) => value
+                                )}
                             />
                         </div>
                         <div className={styles.info_item}>
@@ -62,17 +83,11 @@ const AddFuel: FC = () => {
                                 type="text"
                                 placeholder="95"
                                 value={iconName}
-                                onChange={handleChangeIconName}
+                                onChange={handleChange<string>(
+                                    setIconName,
+                                    (value) => value
+                                )}
                                 maxLength={2}
-                            />
-                        </div>
-                        <div className={styles.info_item}>
-                            <p>Color icon:</p>
-                            <input
-                                className={styles.color_input}
-                                type="color"
-                                value={color}
-                                onChange={handleChangeColor}
                             />
                         </div>
                         <div className={styles.info_item}>
@@ -80,9 +95,12 @@ const AddFuel: FC = () => {
                             <input
                                 className={styles.sm_input}
                                 type="number"
-                                placeholder="0"
+                                placeholder="$"
                                 value={pricePerLiter}
-                                onChange={handleChangePrice}
+                                onChange={handleChange<number>(
+                                    setPricePerLiter,
+                                    parseFloat
+                                )}
                             />
                         </div>
                         <div className={styles.info_item}>
@@ -92,11 +110,39 @@ const AddFuel: FC = () => {
                                 type="number"
                                 placeholder="0"
                                 value={pointsPerLiter}
-                                onChange={handleChangePoints}
+                                onChange={handleChange<number>(
+                                    setPointsPerLiter,
+                                    (value) => parseInt(value, 10)
+                                )}
+                            />
+                        </div>
+                        <div className={styles.info_item}>
+                            <p>Color icon:</p>
+                            <input
+                                className={styles.color_input}
+                                type="color"
+                                value={color}
+                                onChange={handleChange<string>(
+                                    setColor,
+                                    (value) => value
+                                )}
+                            />
+                        </div>
+                        <div className={styles.info_item}>
+                            <p>Discount:</p>
+                            <input
+                                className={styles.sm_input}
+                                type="number"
+                                placeholder="%"
+                                value={discount}
+                                onChange={handleChange<number>(
+                                    setDiscount,
+                                    (value) => parseInt(value, 10)
+                                )}
                             />
                         </div>
                     </div>
-                    <button className={styles.add} onClick={toggleEdit}>
+                    <button className={styles.add} onClick={handleAddFuel}>
                         Add
                     </button>
                 </div>

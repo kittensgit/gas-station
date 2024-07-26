@@ -34,7 +34,7 @@ const initialState: IInitialState = {
 };
 
 const refuelSlice = createSlice({
-    name: 'auth',
+    name: 'refuel',
     initialState,
     reducers: {
         addOrderFuel: (state, action) => {
