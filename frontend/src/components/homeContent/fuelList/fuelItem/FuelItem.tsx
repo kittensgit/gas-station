@@ -101,9 +101,14 @@ const FuelItem: FC<FuelItemProps> = ({
                     </button>
                 )}
             </div>
-            <button className={styles.remove} onClick={() => onRemoveFuel(_id)}>
-                <img src={removeIcon} alt="remove" />
-            </button>
+            {isAdmin && (
+                <button
+                    className={styles.remove}
+                    onClick={() => onRemoveFuel(_id)}
+                >
+                    <img src={removeIcon} alt="remove" />
+                </button>
+            )}
         </li>
     );
 };

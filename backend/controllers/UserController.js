@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import Stripe from 'stripe';
 
 import UserModel from '../models/User.js';
+import OrderedProductModel from '../models/OrderedProduct.js';
 import { createToken } from '../helpers.js';
 
 export const register = async (req, res) => {
@@ -199,11 +200,17 @@ export const setUserRole = async (req, res) => {
 export const deleteUser = async (req, res) => {
     try {
         const userId = req.params.userId;
+
         const user = await UserModel.findByIdAndDelete(userId);
+
         if (!user)
             return res.status(404).json({
                 message: 'User not found',
             });
+
+        await OrderedProductModel.findOneAndDelete({
+            user: userId,
+        });
 
         res.json({
             message: 'User successfully deleted',
