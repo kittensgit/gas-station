@@ -1,22 +1,25 @@
-import { ComponentType, FC, useEffect } from 'react';
+import { ComponentType, FC, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Sidebar from 'components/common/sidebar/Sidebar';
+import Loading from 'components/common/loading/Loading';
 
-import Home from 'pages/Home';
-import Laundry from 'pages/Laundry';
-import Showers from 'pages/Showers';
-import Products from 'pages/Products';
-import Login from 'pages/Login';
-import Register from 'pages/Register';
-import RefuelHistory from 'pages/RefuelHistory';
-import UserOrders from 'pages/UserOrders';
-import Users from 'pages/Users';
-import NotFound from 'pages/NotFound';
-import Orders from 'pages/Orders';
-import ProductsCatalog from 'pages/ProductsCatalog';
-import WashMachinesCatalog from 'pages/WashMachinesCatalog';
-import ShowersCatalog from 'pages/ShowersCatalog';
+import {
+    LazyHomePage,
+    LazyLaundryPage,
+    LazyLoginPage,
+    LazyNotFoundPage,
+    LazyOrdersPage,
+    LazyProductsCatalogPage,
+    LazyProductsPage,
+    LazyRefuelHistoryPage,
+    LazyRegisterPage,
+    LazyShowersCatalogPage,
+    LazyShowersPage,
+    LazyUserOrdersPage,
+    LazyUsersPage,
+    LazyWashMachinesCatalogPage,
+} from 'pages/lazy';
 
 import { useAuth } from 'hooks/useAuth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -34,52 +37,77 @@ const App: FC = () => {
         <div className="wrapper">
             <div className="container">
                 <Sidebar />
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/laundry" element={<Laundry />} />
-                        <Route path="/showers" element={<Showers />} />
-                        <Route
-                            path="/products/:typeFilter"
-                            element={<Products />}
-                        />
-                        <Route
-                            path="/refuelHistory"
-                            element={<RefuelHistory />}
-                        />
-                        {/* Auth Routes */}
-                        <Route
-                            path="/userOrders"
-                            element={<AuthRoute element={UserOrders} />}
-                        />
-                        {/* Admin Routes */}
-                        <Route
-                            path="/users"
-                            element={<AdminRoute element={Users} />}
-                        />
-                        <Route
-                            path="/orders"
-                            element={<AdminRoute element={Orders} />}
-                        />
-                        <Route
-                            path="/products/catalog"
-                            element={<AdminRoute element={ProductsCatalog} />}
-                        />
-                        <Route
-                            path="/showers/catalog"
-                            element={<AdminRoute element={ShowersCatalog} />}
-                        />
-                        <Route
-                            path="/washMachines/catalog"
-                            element={
-                                <AdminRoute element={WashMachinesCatalog} />
-                            }
-                        />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </div>
+                <Suspense fallback={<Loading />}>
+                    <div className="content">
+                        <Routes>
+                            <Route path="/" element={<LazyHomePage />} />
+                            <Route path="/login" element={<LazyLoginPage />} />
+                            <Route
+                                path="/register"
+                                element={<LazyRegisterPage />}
+                            />
+                            <Route
+                                path="/laundry"
+                                element={<LazyLaundryPage />}
+                            />
+                            <Route
+                                path="/showers"
+                                element={<LazyShowersPage />}
+                            />
+                            <Route
+                                path="/products/:typeFilter"
+                                element={<LazyProductsPage />}
+                            />
+                            <Route
+                                path="/refuelHistory"
+                                element={<LazyRefuelHistoryPage />}
+                            />
+                            {/* Auth Routes */}
+                            <Route
+                                path="/userOrders"
+                                element={
+                                    <AuthRoute element={LazyUserOrdersPage} />
+                                }
+                            />
+                            {/* Admin Routes */}
+                            <Route
+                                path="/users"
+                                element={<AdminRoute element={LazyUsersPage} />}
+                            />
+                            <Route
+                                path="/orders"
+                                element={
+                                    <AdminRoute element={LazyOrdersPage} />
+                                }
+                            />
+                            <Route
+                                path="/products/catalog"
+                                element={
+                                    <AdminRoute
+                                        element={LazyProductsCatalogPage}
+                                    />
+                                }
+                            />
+                            <Route
+                                path="/showers/catalog"
+                                element={
+                                    <AdminRoute
+                                        element={LazyShowersCatalogPage}
+                                    />
+                                }
+                            />
+                            <Route
+                                path="/washMachines/catalog"
+                                element={
+                                    <AdminRoute
+                                        element={LazyWashMachinesCatalogPage}
+                                    />
+                                }
+                            />
+                            <Route path="*" element={<LazyNotFoundPage />} />
+                        </Routes>
+                    </div>
+                </Suspense>
             </div>
         </div>
     );
