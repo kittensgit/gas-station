@@ -65,6 +65,7 @@ const Showers: FC = () => {
         <ShowersContent
             showers={showers}
             userId={userId}
+            showerPrice={showerPrice}
             onReleaseShower={onReleaseShower}
             onBookShower={onBookShower}
         />

@@ -12,6 +12,7 @@ import styles from './ShowersContent.module.css';
 interface ShowersContentProps {
     userId: IUser['_id'];
     showers: IShower[];
+    showerPrice: number;
     onReleaseShower: (showerId: IShower['_id']) => void;
     onBookShower: (showerId: IShower['_id']) => void;
 }
@@ -19,6 +20,7 @@ interface ShowersContentProps {
 const ShowersContent: FC<ShowersContentProps> = ({
     showers,
     userId,
+    showerPrice,
     onReleaseShower,
     onBookShower,
 }) => {
@@ -30,7 +32,7 @@ const ShowersContent: FC<ShowersContentProps> = ({
         <div className={styles.wrapper}>
             <div className={styles.title}>
                 <h1>
-                    Showers - <span>1200</span>
+                    Showers - <span>{showerPrice}</span>
                 </h1>
                 <img src={pointsIcon} alt="points" />
             </div>

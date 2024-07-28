@@ -21,7 +21,7 @@ export const useAuth = () => {
             email: '',
             fullName: '',
             role: '',
-            scores: null,
+            scores: 0,
             refuelingHistory: [],
         };
     }
