@@ -92,7 +92,7 @@
 }
 
 .input input {
-    width: 260px;
+    min-width: 260px;
     background-color: transparent;
     border: none;
     border-bottom: 2px solid #6582aa;
@@ -130,4 +130,17 @@ select:-webkit-autofill:focus {
         rgba(255, 255, 255, 0) 51%,
         rgba(0, 174, 255, 0.03) 100%
     );
+}
+
+@media (max-width: 450px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    .introducing {
+        border-radius: 30px 30px 0 0;
+    }
+    .signup {
+        padding: 20px;
+    }
 }
