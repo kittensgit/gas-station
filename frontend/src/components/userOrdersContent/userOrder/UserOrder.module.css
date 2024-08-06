@@ -119,3 +119,28 @@
 .status p {
     color: #fff;
 }
+
+@media (max-width: 450px) {
+    .order_content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .cart_icon img,
+    .parcel_icon img {
+        width: 35px;
+        height: 35px;
+    }
+    .tooltip {
+        font-size: 12px;
+        padding: 2px 5px;
+    }
+    .tooltip img {
+        width: 18px;
+        height: 18px;
+    }
+    .tooltip::after {
+        border-width: 5px;
+        margin-top: -5px;
+    }
+}

@@ -163,7 +163,7 @@ export const changeStatusReady = async (req, res) => {
         );
 
         const now = new Date();
-        const end = new Date(Date.now() + 1 * 60 * 1000);
+        const end = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
         order.statusReady = true;
         order.readyTime = now;
