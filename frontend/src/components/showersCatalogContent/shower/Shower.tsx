@@ -18,7 +18,7 @@ const Shower: FC<ShowerProps> = ({ shower, showerNum, onRemoveShower }) => {
 
     return (
         <li className={styles.shower}>
-            <img src={showerIcon} alt="shower" />
+            <img className={styles.shower_img} src={showerIcon} alt="shower" />
             <div className={styles.shower_info}>
                 <h4>
                     Shower <span>#{showerNum}</span>

@@ -111,7 +111,11 @@ const ShowersCatalogContent: FC<ShowersCatalogContentProps> = ({
                 <li className={styles.add_shower}>
                     {isEditShower ? (
                         <div className={styles.edit}>
-                            <img src={showerIcon} alt="shower" />
+                            <img
+                                className={styles.shower_icon}
+                                src={showerIcon}
+                                alt="shower"
+                            />
                             <div className={styles.edit_info}>
                                 <p>Quantity:</p>
                                 <input

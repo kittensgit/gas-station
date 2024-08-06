@@ -173,3 +173,29 @@ input::-webkit-inner-spin-button {
 .add:hover {
     transform: scale(1.2);
 }
+
+@media (max-width: 450px) {
+    .title h1 {
+        font-size: 22px;
+    }
+    .price_input {
+        font-size: 22px;
+    }
+    .machines {
+        gap: 15px;
+    }
+    .add_machine {
+        width: 100%;
+        min-height: 150px;
+    }
+    .edit {
+        gap: 15px;
+    }
+    .machine_icon {
+        width: 85px !important;
+        height: 85px !important;
+    }
+    .edit_info {
+        gap: 10px;
+    }
+}

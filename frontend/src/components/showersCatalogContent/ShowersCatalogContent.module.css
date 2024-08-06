@@ -123,7 +123,7 @@ input::-webkit-inner-spin-button {
     gap: 10px;
 }
 
-.edit img {
+.shower_icon {
     width: 100px;
     height: 100px;
     object-fit: cover;
@@ -171,4 +171,30 @@ input::-webkit-inner-spin-button {
 
 .add:hover {
     transform: scale(1.2);
+}
+
+@media (max-width: 450px) {
+    .title h1 {
+        font-size: 22px;
+    }
+    .price_input {
+        font-size: 22px;
+    }
+    .showers {
+        gap: 15px;
+    }
+    .add_shower {
+        width: 100%;
+        min-height: 150px;
+    }
+    .edit {
+        gap: 15px;
+    }
+    .shower_icon {
+        width: 85px !important;
+        height: 85px !important;
+    }
+    .edit_info {
+        gap: 10px;
+    }
 }

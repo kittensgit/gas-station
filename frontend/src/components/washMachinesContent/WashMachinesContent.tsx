@@ -105,7 +105,11 @@ const WashMachinesContent: FC<WashMachinesCatalogProps> = ({
                 <li className={styles.add_machine}>
                     {isEditMachine ? (
                         <div className={styles.edit}>
-                            <img src={machineIcon} alt="shower" />
+                            <img
+                                className={styles.machine_icon}
+                                src={machineIcon}
+                                alt="shower"
+                            />
                             <div className={styles.edit_info}>
                                 <p>Quantity:</p>
                                 <input

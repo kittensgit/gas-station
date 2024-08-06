@@ -69,3 +69,24 @@
 .remove:hover {
     transform: scale(1.1);
 }
+
+@media (max-width: 450px) {
+    .machine {
+        padding: 15px;
+        width: 150px;
+    }
+    .machine_img {
+        width: 60px;
+        height: 60px;
+    }
+    .machine_info h4 {
+        font-size: 14px;
+    }
+    .status span {
+        font-size: 14px;
+    }
+    .remove img {
+        width: 25px;
+        height: 25px;
+    }
+}
