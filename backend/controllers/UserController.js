@@ -123,7 +123,7 @@ export const refuel = async (req, res) => {
                         product_data: {
                             name: fuelName,
                         },
-                        unit_amount: +(costPerLiter * 100).toFixed(2),
+                        unit_amount: Math.round(costPerLiter * 100),
                     },
                     quantity: litersFilled,
                 },
