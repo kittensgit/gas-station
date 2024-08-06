@@ -18,16 +18,14 @@ const UsersContent: FC<UsersContentProps> = ({
     onRemoveUser,
 }) => {
     return (
-        <table className={styles.table}>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Scores</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div className={styles.wrapper}>
+            <ul className={styles.users_top}>
+                <li>Name</li>
+                <li>Email</li>
+                <li>Role</li>
+                <li>Scores</li>
+            </ul>
+            <ul className={styles.users}>
                 {users.map((user) => (
                     <User
                         key={user._id}
@@ -36,8 +34,8 @@ const UsersContent: FC<UsersContentProps> = ({
                         onRemoveUser={onRemoveUser}
                     />
                 ))}
-            </tbody>
-        </table>
+            </ul>
+        </div>
     );
 };
 

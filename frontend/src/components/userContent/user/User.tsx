@@ -26,10 +26,10 @@ const User: FC<UserProps> = ({ user, onSetUserRole, onRemoveUser }) => {
         });
     };
     return (
-        <tr className={styles.user}>
-            <th>{fullName}</th>
-            <th className={styles.email}>{email}</th>
-            <th>
+        <li className={styles.user}>
+            <p>{fullName}</p>
+            <p className={styles.email}>{email}</p>
+            <p>
                 {
                     <span
                         onClick={handleSetUserRole}
@@ -49,20 +49,16 @@ const User: FC<UserProps> = ({ user, onSetUserRole, onRemoveUser }) => {
                         ></div>
                     </span>
                 }
-            </th>
-            <th className={styles.scores}>
+            </p>
+            <p className={styles.scores}>
                 <span>{scores}</span>
                 <img src={pointsIcon} alt="points" />
-            </th>
-            <th>
-                <button
-                    onClick={() => onRemoveUser(_id)}
-                    className={styles.remove}
-                >
-                    <img src={removeIcon} alt="remove" />
-                </button>
-            </th>
-        </tr>
+            </p>
+
+            <button onClick={() => onRemoveUser(_id)} className={styles.remove}>
+                <img src={removeIcon} alt="remove" />
+            </button>
+        </li>
     );
 };
 
