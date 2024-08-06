@@ -12,6 +12,12 @@
     position: relative;
 }
 
+.shower_img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
 .shower_info {
     display: flex;
     flex-direction: column;
@@ -76,4 +82,31 @@
     position: absolute;
     top: 5%;
     right: 6%;
+}
+
+@media (max-width: 450px) {
+    .shower {
+        padding: 15px;
+        width: 150px;
+    }
+    .shower_img {
+        width: 60px;
+        height: 60px;
+    }
+    .shower_info h4 {
+        font-size: 14px;
+    }
+    .status {
+        font-size: 14px;
+    }
+    .status span {
+        gap: 5px;
+    }
+    .booking img {
+        width: 15px;
+        height: 15px;
+    }
+    .time {
+        font-size: 12px;
+    }
 }
