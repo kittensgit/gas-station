@@ -131,6 +131,7 @@ export const refuel = async (req, res) => {
             mode: 'payment',
             success_url: 'http://localhost:3000/refuelHistory',
             cancel_url: 'http://localhost:3000/',
+            locale: 'en',
         });
 
         user.refuelingHistory.push({

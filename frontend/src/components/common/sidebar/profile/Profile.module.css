@@ -32,6 +32,7 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    display: inline-flex;
 }
 
 .btn img {
@@ -92,4 +93,43 @@
     color: #1e2b40;
     background-color: #6582aa;
     font-weight: 600;
+}
+
+@media (max-width: 450px) {
+    .wrapper {
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color: transparent;
+        padding: 0;
+    }
+    .wrapper h3 {
+        display: none;
+    }
+    .profile {
+        border-radius: 0 0 0 35px;
+        padding: 10px 8px 15px 12px;
+        background-color: #1e2b40;
+    }
+    .info {
+        gap: 10px;
+    }
+    .about h2 {
+        font-size: 14px;
+        font-weight: 700;
+    }
+    .about p {
+        font-size: 12px;
+        padding: 3px 1px 3px 3px;
+        margin-left: 8px;
+        font-weight: 700;
+    }
+    .about p img {
+        width: 15px;
+        height: 15px;
+    }
+    .btn img {
+        width: 30px;
+        height: 30px;
+    }
 }

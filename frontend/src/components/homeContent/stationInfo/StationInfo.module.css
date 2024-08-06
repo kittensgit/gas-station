@@ -108,3 +108,9 @@
         height: 20px;
     }
 }
+
+@media (max-width: 450px) {
+    .info {
+        gap: 20px;
+    }
+}

@@ -24,7 +24,7 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
                 }
             >
                 <img src={item.img} alt={item.naming} />
-                {item.naming}
+                <p>{item.naming}</p>
             </li>
         </Link>
     );

@@ -83,45 +83,43 @@ const Menu: FC<MenuProps> = ({ isAuth, userRole }) => {
 
     const isAdminRole = userRole === 'admin';
     return (
-        <div>
-            <ul className={styles.list}>
-                {isAdminRole
-                    ? adminLinkList.map((item, index) => (
-                          <MenuItem key={index} item={item} />
-                      ))
-                    : userLinkList.map((item, index) => (
-                          <MenuItem key={index} item={item} />
-                      ))}
-                {isAuth && !isAdminRole && (
-                    <Link to={'/refuelHistory'}>
-                        <li
-                            className={
-                                pathname === '/refuelHistory'
-                                    ? `${styles.link} ${styles.active}`
-                                    : styles.link
-                            }
-                        >
-                            <img src={historyIcon} alt="history" />
-                            Refuel history
-                        </li>
-                    </Link>
-                )}
-                {isAuth && !isAdminRole && (
-                    <Link to={'/userOrders'}>
-                        <li
-                            className={
-                                pathname === '/userOrders'
-                                    ? `${styles.link} ${styles.active}`
-                                    : styles.link
-                            }
-                        >
-                            <img src={orderIcon} alt="order" />
-                            Orders
-                        </li>
-                    </Link>
-                )}
-            </ul>
-        </div>
+        <ul className={styles.list}>
+            {isAdminRole
+                ? adminLinkList.map((item, index) => (
+                      <MenuItem key={index} item={item} />
+                  ))
+                : userLinkList.map((item, index) => (
+                      <MenuItem key={index} item={item} />
+                  ))}
+            {isAuth && !isAdminRole && (
+                <Link to={'/refuelHistory'}>
+                    <li
+                        className={
+                            pathname === '/refuelHistory'
+                                ? `${styles.link} ${styles.active}`
+                                : styles.link
+                        }
+                    >
+                        <img src={historyIcon} alt="history" />
+                        <p>Refuel history</p>
+                    </li>
+                </Link>
+            )}
+            {isAuth && !isAdminRole && (
+                <Link to={'/userOrders'}>
+                    <li
+                        className={
+                            pathname === '/userOrders'
+                                ? `${styles.link} ${styles.active}`
+                                : styles.link
+                        }
+                    >
+                        <img src={orderIcon} alt="order" />
+                        <p>Orders</p>
+                    </li>
+                </Link>
+            )}
+        </ul>
     );
 };
 

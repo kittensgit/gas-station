@@ -158,7 +158,6 @@ body {
     height: 100vh;
     display: grid;
     place-items: center;
-    padding: 20px;
 }
 
 .container {
@@ -168,6 +167,7 @@ body {
     grid-template-columns: 1fr 4fr;
     gap: 20px;
     width: 100%;
+    padding: 20px;
 }
 
 .content {
@@ -198,4 +198,11 @@ body {
     font-size: 20px;
     color: #6582aa;
     font-weight: 700;
+}
+
+@media (max-width: 450px) {
+    .container {
+        padding: 90px 0;
+        display: flex;
+    }
 }

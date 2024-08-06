@@ -26,3 +26,9 @@
     font-weight: 600;
     border-radius: 25px;
 }
+
+@media (max-width: 450px) {
+    .link p {
+        display: none;
+    }
+}
