@@ -91,3 +91,11 @@
 .green_circle {
     background-color: #65ff4d;
 }
+
+@media (max-width: 450px) {
+    .order_item {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
