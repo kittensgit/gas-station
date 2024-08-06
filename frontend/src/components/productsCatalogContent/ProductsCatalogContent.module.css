@@ -130,3 +130,12 @@ input::-webkit-inner-spin-button {
 .edit_add:hover img {
     transform: scale(1.2);
 }
+
+@media (max-width: 450px) {
+    .products {
+        gap: 15px;
+    }
+    .add_product {
+        width: 100%;
+    }
+}

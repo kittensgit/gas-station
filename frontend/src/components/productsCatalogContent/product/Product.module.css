@@ -83,3 +83,17 @@
     height: 30px;
     object-fit: cover;
 }
+
+@media (max-width: 450px) {
+    .product {
+        width: 100%;
+    }
+    .remove {
+        right: 2%;
+        top: 7%;
+    }
+    .remove img {
+        width: 25px;
+        height: 25px;
+    }
+}
