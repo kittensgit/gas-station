@@ -118,3 +118,18 @@
     transform: scale(1.05);
     background-color: #3d5270;
 }
+
+@media (max-width: 450px) {
+    .add_fuel {
+        min-height: 140px;
+        width: 100%;
+    }
+    .edit {
+        width: 100%;
+    }
+    .edit_info {
+        display: flex;
+        flex-direction: column;
+        align-self: normal;
+    }
+}
