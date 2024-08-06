@@ -60,10 +60,14 @@ const Machine: FC<MachineProps> = ({
 
     return (
         <li className={styles.machine}>
-            <img src={machineIcon} alt="machine" />
+            <img
+                className={styles.machine_img}
+                src={machineIcon}
+                alt="machine"
+            />
             <div className={styles.machine_info}>
                 <h4>
-                    Washing Machine <span>#{machineNum}</span>
+                    Wash Machine <span>#{machineNum}</span>
                 </h4>
                 <p className={styles.status}>
                     Status:

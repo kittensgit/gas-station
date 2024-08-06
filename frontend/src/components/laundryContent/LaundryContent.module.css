@@ -35,3 +35,12 @@
     justify-content: center;
     gap: 20px;
 }
+
+@media (max-width: 450px) {
+    .title h1 {
+        font-size: 22px;
+    }
+    .machines {
+        gap: 15px;
+    }
+}
