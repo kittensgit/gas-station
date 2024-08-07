@@ -29,9 +29,7 @@ import {
 dotenv.config();
 
 mongoose
-    .connect(
-        `mongodb+srv://Nika:${process.env.MONGODB_CLUSTER_PASSWORD}@cluster.bw68ue0.mongodb.net/gas_station?retryWrites=true&w=majority&appName=Cluster`
-    )
+    .connect(process.env.MONGODB_URI)
     .then(() => {
         console.log('DB OK');
     })
@@ -178,7 +176,7 @@ app.put(
     OrderedProductController.changeStatusReady
 );
 
-app.listen(2222, (err) => {
+app.listen(process.env.PORT, (err) => {
     if (err) return console.log(err);
 
     console.log('Server OK');

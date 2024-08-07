@@ -1,0 +1,10 @@
+{
+    "builds": [
+        {
+            "dir": "backend",
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
+    ]
+}
