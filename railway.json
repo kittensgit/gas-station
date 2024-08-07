@@ -2,7 +2,7 @@
     "builds": [
         {
             "dir": "backend",
-            "use": "nixpacks",
+            "use": "@nixpacks/node",
             "env": {
                 "NODE_ENV": "production"
             }
